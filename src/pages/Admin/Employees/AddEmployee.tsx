@@ -1,95 +1,204 @@
 import React from "react";
-import DataPicker from "../../../components/form/DatePicker/DataPicker";
-import Input from "../../../components/form/Input/Input";
-import Radio from "../../../components/form/Radio/Radio";
-import Select from "../../../components/form/Select/Select";
-import Button from "../../../components/ui/Button/Button";
+import dayjs from "dayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+import RadioGroup from "@mui/material/RadioGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import FormControl from "@mui/material/FormControl";
+import FormLabel from "@mui/material/FormLabel";
+import Radio from "@mui/material/Radio";
+import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
+import Select from "@mui/material/Select";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Grid from "@mui/material/Grid";
+import Container from "@mui/material/Container";
 
 function AddEmployee() {
-  return (
-    <div>
-      <div className="flex justify-evenly gap-36 px-5">
-        <div>
-          <div className="px-5 py-12 font-bold text-lg">
-            <h1 className="underline">Add Employee</h1>
-            <h3>
-              Step 1. <span>Basic Informations:</span>
-            </h3>
-          </div>
-          <Input type="text" label="First Name" placeholder="First Name" />
-          <Input type="text" label="Last Name" placeholder="Last Name" />
-          <Input type="email" label="Email" placeholder="Email" />
-          <Input type="phone" label="Phone" placeholder="Phone" />
+  const [dateOfJoiningValue, setDateOfJoiningValue] = React.useState(
+    dayjs("2014-08-18T21:11:54")
+  );
+  const [dateOfConfirmationValue, setDateOfConfirmationValue] = React.useState(
+    dayjs("2014-08-18T21:11:54")
+  );
 
+  const handleDateOfJoiningChange = (newValue: any) => {
+    setDateOfJoiningValue(newValue);
+  };
+  const handleDateOfConfirmationChange = (newValue: any) => {
+    setDateOfConfirmationValue(newValue);
+  };
+
+  return (
+    <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+      <Box className="flex flex-col items-center my-6">
+        <Typography variant="h4" component="h4" className="underline">
+          Add Employee
+        </Typography>
+      </Box>
+      <Grid container spacing={6} justifyContent="center">
+        <Grid item xs={12} md={4} lg={5}>
+          <Box sx={{ my: 5 }}>
+            <Typography variant="h5" component="h5">
+              Step 1. <span>Basic Informations:</span>
+            </Typography>
+          </Box>
+          {/* First Name */}
+          <TextField
+            margin="dense"
+            fullWidth
+            id="firstName"
+            label="First Name"
+            size="small"
+          />
+          {/* Last Name */}
+          <TextField margin="dense" fullWidth label="Last Name" size="small" />
+          {/* Email */}
+          <TextField margin="dense" fullWidth label="Email" size="small" />
+          {/* Phone */}
+          <TextField margin="dense" fullWidth label="Phone" size="small" />
+          {/* password */}
           <div>
-            <Input type="password" label="Password" placeholder="Password" />
+            <TextField
+              margin="dense"
+              fullWidth
+              type="password"
+              label="Password"
+              placeholder="password"
+              size="small"
+            />
             <div className="flex justify-between">
-              <Button>Generate Password</Button>
+              <Button size="small" variant="contained">
+                Generate Password
+              </Button>
               <p>afka24343!@#4</p>
             </div>
           </div>
-
-          <div className="mb-3 xl:w-96">
-            <label
-              htmlFor="exampleFormControlInput4"
-              className="form-label inline-block mb-2 text-gray-700 text-sm"
+          {/* gender */}
+          <FormControl fullWidth margin="dense" size="small">
+            <FormLabel id="demo-radio-buttons-group-label">Gender</FormLabel>
+            <RadioGroup
+              aria-labelledby="demo-radio-buttons-group-label"
+              defaultValue="male"
+              name="radio-buttons-group"
             >
-              Gender
-            </label>
-            <div>
-              <Radio
-                id={"male"}
-                name={"gender"}
-                label={"Male"}
-                checked={true}
+              <FormControlLabel value="male" control={<Radio />} label="Male" />
+              <FormControlLabel
+                value="female"
+                control={<Radio />}
+                label="Female"
               />
-              <Radio
-                id={"female"}
-                name={"gender"}
-                label={"Female"}
-                checked={true}
+            </RadioGroup>
+          </FormControl>
+
+          {/* data of joining date picker */}
+          <FormControl margin="dense" fullWidth size="small">
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DesktopDatePicker
+                label="Joining Date"
+                inputFormat="MM/DD/YYYY"
+                value={dateOfJoiningValue}
+                onChange={handleDateOfJoiningChange}
+                renderInput={(params) => <TextField {...params} />}
               />
-            </div>
-          </div>
+            </LocalizationProvider>
+          </FormControl>
 
-          <DataPicker label="Select Date of Joining" />
+          {/* employee status */}
+          <FormControl fullWidth margin="dense" size="small">
+            <InputLabel id="employee-status-select-label">
+              Employee Status
+            </InputLabel>
+            <Select
+              labelId="employee-status-select-label"
+              id="employee-status"
+              // value={status}
+              label="Employee Status"
+              // onChange={handleChange}
+            >
+              <MenuItem value={10}>Permanent</MenuItem>
+              <MenuItem value={20}>Contract</MenuItem>
+              <MenuItem value={30}>Manual</MenuItem>
+            </Select>
+          </FormControl>
 
-          <Select label="Select Employee Status">
-            <option selected value="1">
-              Permanent
-            </option>
-            <option value="2">Contaract</option>
-            <option value="3">Manual</option>
-          </Select>
+          {/* data of confirmation date picker */}
+          <FormControl margin="dense" fullWidth size="small">
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DesktopDatePicker
+                label="Confirmation Date"
+                inputFormat="MM/DD/YYYY"
+                value={dateOfConfirmationValue}
+                onChange={handleDateOfConfirmationChange}
+                renderInput={(params) => <TextField {...params} />}
+              />
+            </LocalizationProvider>
+          </FormControl>
 
-          <DataPicker label="Confirmation Date" />
+          <TextField
+            margin="dense"
+            fullWidth
+            label="Father Name"
+            size="small"
+          />
+          <TextField
+            margin="dense"
+            fullWidth
+            label="Spouse Name"
+            size="small"
+          />
+        </Grid>
 
-          <Input type="text" label="Father Name" placeholder="Father Name" />
-          <Input type="text" label="Spouse Name" placeholder="Spouse Name" />
-        </div>
-        <div>
-          <div className="px-5 py-16 font-bold text-lg">
-            <h3 className="py-2">
+        <Grid item xs={12} md={8} lg={5}>
+          <Box sx={{ my: 5 }}>
+            <Typography variant="h5" component="h5">
               Step 2. <span>Payment Method:</span>
-            </h3>
-          </div>
+            </Typography>
+          </Box>
 
-          <Select label="Select Payment Method">
-            <option selected value="1">
-              Bank Transfer
-            </option>
-            <option value="2">Cash</option>
-          </Select>
-          <Input
+          {/* Payment Methods */}
+          <FormControl fullWidth margin="dense" size="small">
+            <InputLabel id="payment-methods-select-label">
+              Payment Methods
+            </InputLabel>
+            <Select
+              labelId="payment-methods-select-label"
+              id="payment-method"
+              // value={status}
+              label="Payment Method"
+              // onChange={handleChange}
+            >
+              <MenuItem value={10}>Bank Transfer</MenuItem>
+              <MenuItem value={20}>Cash</MenuItem>
+            </Select>
+          </FormControl>
+
+          <TextField
             type="number"
             label="Accound Number"
+            margin="dense"
+            size="small"
             placeholder="Accound Number"
+            fullWidth
           />
-          <Input type="number" label="TIN Number" placeholder="TIN Number" />
-          <Button>Add Employee</Button>
-        </div>
-      </div>
-    </div>
+          <TextField
+            type="number"
+            margin="dense"
+            size="small"
+            fullWidth
+            label="TIN Number"
+            placeholder="TIN Number"
+          />
+          <Button variant="contained" size="small">
+            Add Employee
+          </Button>
+        </Grid>
+      </Grid>
+    </Container>
   );
 }
 

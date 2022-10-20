@@ -2,10 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
-html,
+/* html,
 body {
-  font-family: "Montserrat", sans-serif;
-}
+  font-family: sans-serif;
+} */
 
 .dashboard-body::-webkit-scrollbar {
   display: none; /* Safari and Chrome browsers */

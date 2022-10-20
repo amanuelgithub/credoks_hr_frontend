@@ -1,30 +1,61 @@
-import React from "react";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Grid from "@mui/material/Grid";
+import Container from "@mui/material/Container";
 import AttachFiles from "../../../components/AttachFiles/AttachFiles";
-import Input from "../../../components/form/Input/Input";
-import Button from "../../../components/ui/Button/Button";
 
 function AddCompany() {
   return (
-    <div className="h-screen">
-      <div className="flex justify-center gap-32 pt-10">
-        <div>
-          <div className="font-bold text-lg pb-10">
-            <h1 className="underline">Add Company</h1>
-          </div>
-          <div>
-            <Input type="text" label="Name" placeholder="Company Name" />
-            <Input type="text" label="Location" placeholder="Name" />
-            <Input type="text" label="Company Log" placeholder="Company Name" />
+    // <div className="h-screen">
+    <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+      <Box className="flex flex-col items-center my-6">
+        <Typography variant="h4" component="h4" className="underline">
+          Add Company
+        </Typography>
+      </Box>
 
-            <Button>Add Company</Button>
-          </div>
-        </div>
+      <Grid container spacing={5} justifyContent="center">
+        <Grid item xs={12} md={4} lg={5}>
+          {/* Name */}
+          <TextField
+            margin="dense"
+            fullWidth
+            id="name"
+            label="Name"
+            size="small"
+          />
 
-        <div className="py-16">
+          {/* status */}
+          {/* <TextField
+            margin="dense"
+            fullWidth
+            id="firstName"
+            label="First Name"
+            size="small"
+          /> */}
+
+          {/* Summary: Description */}
+          <TextField
+            margin="dense"
+            fullWidth
+            multiline
+            rows={5}
+            id="summary"
+            label="Company Description"
+            size="small"
+          />
+          <Button size="small" variant="contained">
+            Create Company
+          </Button>
+        </Grid>
+
+        <Grid item xs={12} md={8} lg={5}>
           <AttachFiles />
-        </div>
-      </div>
-    </div>
+        </Grid>
+      </Grid>
+    </Container>
   );
 }
 

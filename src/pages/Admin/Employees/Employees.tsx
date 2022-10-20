@@ -1,72 +1,103 @@
-import React, { useState } from "react";
-import { tableName, rows, columns } from "../../../mocks/employees";
-import DataTable, {
-  TableRow,
-  TableRowCell,
-} from "../../../components/DataTable/DataTable";
-import DetailEmployee from "./DetailEmployee";
+import React, { useEffect, useState } from "react";
+import {
+  DataGrid,
+  GridToolbarContainer,
+  GridToolbarColumnsButton,
+  GridToolbarFilterButton,
+  GridToolbarExport,
+  GridToolbarDensitySelector,
+  GridActionsCellItem,
+  GridColumns,
+  GridRowId,
+} from "@mui/x-data-grid";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
+import { IEmployee } from "../../../models/IEmployee";
+import { useGetEmployeesQuery } from "../../../services/employeeApiSlice";
+
+function CustomToolbar() {
+  return (
+    <GridToolbarContainer>
+      <GridToolbarColumnsButton />
+      <GridToolbarFilterButton />
+      <GridToolbarDensitySelector />
+      <GridToolbarExport />
+    </GridToolbarContainer>
+  );
+}
+
+type Row = IEmployee;
 
 function Employees() {
-  const [isOpenDetail, setIsOpenDetail] = useState(false);
-  const [selectedEmployeeId, setSelectedEmployeeId] = useState("");
+  const { data: employees, isLoading, isSuccess } = useGetEmployeesQuery();
+  const [flatEmployees, setFlatEmployees] = useState([]);
 
-  const handleShowDetailOpening = (id: string) => {
-    setIsOpenDetail(true);
-    setSelectedEmployeeId(id);
-    console.log("show detail opened", id);
-  };
+  useEffect(() => {
+    if (employees !== undefined) {
+      let employee;
+      const flatEmployeesArr: any = [];
+      for (let i = 0; i < employees.length; i++) {
+        const { user, ...remaining } = employees[i];
+        employee = { ...user, ...remaining };
+        flatEmployeesArr.push(employee);
+      }
+      setFlatEmployees(flatEmployeesArr);
+    }
+  }, [employees]);
+
+  const handleDeleteSubject = React.useCallback(
+    (id: GridRowId) => () => {},
+    []
+  );
+
+  const handleEditSubject = React.useCallback((id: GridRowId) => () => {}, []);
+
+  const columns = React.useMemo<GridColumns<Row>>(
+    () => [
+      { field: "id", headerName: "ID", width: 80 },
+      { field: "firstName", headerName: "firstName", width: 140 },
+      { field: "lastName", headerName: "LastName", width: 140 },
+      { field: "phone", headerName: "phone", width: 140 },
+      { field: "email", headerName: "email", width: 140 },
+      { field: "type", headerName: "type", width: 140 },
+      { field: "gender", headerName: "gender", width: 140 },
+      { field: "status", headerName: "status", width: 140 },
+      {
+        field: "actions",
+        type: "actions",
+        width: 80,
+        getActions: (params) => [
+          <GridActionsCellItem
+            icon={<EditIcon />}
+            label="Edit"
+            onClick={handleEditSubject(params.id)}
+          />,
+          <GridActionsCellItem
+            icon={<DeleteIcon />}
+            label="Delete"
+            onClick={handleDeleteSubject(params.id)}
+          />,
+        ],
+      },
+    ],
+    [handleDeleteSubject, handleEditSubject]
+  );
 
   return (
-    <div>
-      <div className={`${isOpenDetail && "flex justify-between w-full"}`}>
-        <div className={`${isOpenDetail && "w-8/12"}`}>
-          <DataTable
-            tableName={tableName}
-            rows={rows}
-            columns={columns}
-            addUrl="/admin-dashboard/employees/add"
-          >
-            {/* all table rows */}
-            {rows.map((row) => {
-              return (
-                <TableRow
-                  id={row.id}
-                  editUrl="/admin-dashboard/employees/edit"
-                  deleteUrl="/admin-dashboard/employees/delete"
-                  showDetail={handleShowDetailOpening}
-                >
-                  <TableRowCell>{row.firstName}</TableRowCell>
-                  <TableRowCell>{row.lastName}</TableRowCell>
-                  <TableRowCell>{row.phone}</TableRowCell>
-                  <TableRowCell>{row.password}</TableRowCell>
-                  <TableRowCell>{row.type}</TableRowCell>
-                  <TableRowCell>{row.email}</TableRowCell>
-                  <TableRowCell>{row.mobileNumber}</TableRowCell>
-                  <TableRowCell>{row.dateOfBirth}</TableRowCell>
-                  <TableRowCell>{row.gender}</TableRowCell>
-                  <TableRowCell>{row.status}</TableRowCell>
-                  <TableRowCell>{row.dateOfJoining}</TableRowCell>
-                  <TableRowCell>{row.confirmationDate}</TableRowCell>
-                  <TableRowCell>{row.emergencyContactName}</TableRowCell>
-                  <TableRowCell>{row.emergencyContactNumber}</TableRowCell>
-                  <TableRowCell>{row.fatherName}</TableRowCell>
-                  <TableRowCell>{row.spouseName}</TableRowCell>
-                  <TableRowCell>{row.accountNumber}</TableRowCell>
-                </TableRow>
-              );
-            })}
-          </DataTable>
-        </div>
-        {isOpenDetail && (
-          <div className="w-4/12">
-            <DetailEmployee
-              // key={}
-              showOpenDetail={setIsOpenDetail}
-              employeeId={selectedEmployeeId}
-            />
-          </div>
-        )}
-      </div>
+    <div style={{ height: "100vh", width: "100%" }}>
+      <DataGrid
+        rows={flatEmployees}
+        columns={columns}
+        pageSize={10}
+        rowsPerPageOptions={[10]}
+        autoHeight
+        loading={false}
+        error={undefined}
+        checkboxSelection
+        components={{
+          Toolbar: CustomToolbar,
+        }}
+      />
     </div>
   );
 }

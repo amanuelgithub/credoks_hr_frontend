@@ -69,10 +69,10 @@ export default function DropBox({ onDrop }: { onDrop: any }) {
           marginBottom: 2,
         }}
       >
-        <p style={{ fontWeight: "bold" }}>Attach Logo:</p>
+        <p>Attach Company Logo:</p>
       </div>
       <div
-        className={`flex h-32 w-full items-center justify-center border-2 border-dashed ${dropBoxColor}`}
+        className={`flex h-16 w-full items-center justify-center border-2 border-dashed ${dropBoxColor}`}
         {...getRootProps({ isDragAccept, isFocused, isDragReject })}
       >
         <input {...getInputProps()} />

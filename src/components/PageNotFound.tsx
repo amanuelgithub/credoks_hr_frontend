@@ -1,7 +1,13 @@
-import React from "react";
-import Button from "./ui/Button/Button";
+import Button from "@mui/material/Button";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 
 function PageNotFound() {
+  const navigate = useNavigate();
+
+  const goBack = (e: any) => {
+    e.preventDefault();
+  };
+
   return (
     <div className="h-screen w-screen bg-white flex justify-center items-center">
       <div>
@@ -19,7 +25,6 @@ function PageNotFound() {
         </div>
         <div className="flex justify-center gap-10">
           <div></div>
-          <Button>Go Back</Button>
         </div>
       </div>
     </div>
