@@ -16,9 +16,29 @@ import Select from "@mui/material/Select";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
-import Container from "@mui/material/Container";
+import Modal from "@mui/material/Modal";
 
-function AddEmployee() {
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 900,
+  height: "95%",
+  bgcolor: "background.paper",
+  border: "2px solid #000",
+  boxShadow: 24,
+  p: 4,
+  overflow: "scroll",
+};
+
+function AddEmployee({
+  openModal,
+  handleCloseModal,
+}: {
+  openModal: boolean;
+  handleCloseModal: () => void;
+}) {
   const [dateOfJoiningValue, setDateOfJoiningValue] = React.useState(
     dayjs("2014-08-18T21:11:54")
   );
@@ -34,171 +54,191 @@ function AddEmployee() {
   };
 
   return (
-    <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-      <Box className="flex flex-col items-center my-6">
-        <Typography variant="h4" component="h4" className="underline">
-          Add Employee
-        </Typography>
-      </Box>
-      <Grid container spacing={6} justifyContent="center">
-        <Grid item xs={12} md={4} lg={5}>
-          <Box sx={{ my: 5 }}>
-            <Typography variant="h5" component="h5">
-              Step 1. <span>Basic Informations:</span>
+    <>
+      <Modal
+        open={openModal}
+        onClose={handleCloseModal}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <Box className="flex flex-col items-center my-6">
+            <Typography variant="h4" component="h4" className="underline">
+              Add Employee
             </Typography>
           </Box>
-          {/* First Name */}
-          <TextField
-            margin="dense"
-            fullWidth
-            id="firstName"
-            label="First Name"
-            size="small"
-          />
-          {/* Last Name */}
-          <TextField margin="dense" fullWidth label="Last Name" size="small" />
-          {/* Email */}
-          <TextField margin="dense" fullWidth label="Email" size="small" />
-          {/* Phone */}
-          <TextField margin="dense" fullWidth label="Phone" size="small" />
-          {/* password */}
-          <div>
-            <TextField
-              margin="dense"
-              fullWidth
-              type="password"
-              label="Password"
-              placeholder="password"
-              size="small"
-            />
-            <div className="flex justify-between">
-              <Button size="small" variant="contained">
-                Generate Password
+          <Grid container spacing={6} justifyContent="center">
+            <Grid item xs={12} md={4} lg={5}>
+              <Box sx={{ my: 5 }}>
+                <Typography variant="h5" component="h5">
+                  Step 1. <span>Basic Informations:</span>
+                </Typography>
+              </Box>
+              {/* First Name */}
+              <TextField
+                margin="dense"
+                fullWidth
+                id="firstName"
+                label="First Name"
+                size="small"
+              />
+              {/* Last Name */}
+              <TextField
+                margin="dense"
+                fullWidth
+                label="Last Name"
+                size="small"
+              />
+              {/* Email */}
+              <TextField margin="dense" fullWidth label="Email" size="small" />
+              {/* Phone */}
+              <TextField margin="dense" fullWidth label="Phone" size="small" />
+              {/* password */}
+              <div>
+                <TextField
+                  margin="dense"
+                  fullWidth
+                  type="password"
+                  label="Password"
+                  placeholder="password"
+                  size="small"
+                />
+                <div className="flex justify-between">
+                  <Button size="small" variant="contained">
+                    Generate Password
+                  </Button>
+                  <p>afka24343!@#4</p>
+                </div>
+              </div>
+              {/* gender */}
+              <FormControl fullWidth margin="dense" size="small">
+                <FormLabel id="demo-radio-buttons-group-label">
+                  Gender
+                </FormLabel>
+                <RadioGroup
+                  aria-labelledby="demo-radio-buttons-group-label"
+                  defaultValue="male"
+                  name="radio-buttons-group"
+                >
+                  <FormControlLabel
+                    value="male"
+                    control={<Radio />}
+                    label="Male"
+                  />
+                  <FormControlLabel
+                    value="female"
+                    control={<Radio />}
+                    label="Female"
+                  />
+                </RadioGroup>
+              </FormControl>
+
+              {/* data of joining date picker */}
+              <FormControl margin="dense" fullWidth size="small">
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <DesktopDatePicker
+                    label="Joining Date"
+                    inputFormat="MM/DD/YYYY"
+                    value={dateOfJoiningValue}
+                    onChange={handleDateOfJoiningChange}
+                    renderInput={(params) => <TextField {...params} />}
+                  />
+                </LocalizationProvider>
+              </FormControl>
+
+              {/* employee status */}
+              <FormControl fullWidth margin="dense" size="small">
+                <InputLabel id="employee-status-select-label">
+                  Employee Status
+                </InputLabel>
+                <Select
+                  labelId="employee-status-select-label"
+                  id="employee-status"
+                  // value={status}
+                  label="Employee Status"
+                  // onChange={handleChange}
+                >
+                  <MenuItem value={10}>Permanent</MenuItem>
+                  <MenuItem value={20}>Contract</MenuItem>
+                  <MenuItem value={30}>Manual</MenuItem>
+                </Select>
+              </FormControl>
+
+              {/* data of confirmation date picker */}
+              <FormControl margin="dense" fullWidth size="small">
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <DesktopDatePicker
+                    label="Confirmation Date"
+                    inputFormat="MM/DD/YYYY"
+                    value={dateOfConfirmationValue}
+                    onChange={handleDateOfConfirmationChange}
+                    renderInput={(params) => <TextField {...params} />}
+                  />
+                </LocalizationProvider>
+              </FormControl>
+
+              <TextField
+                margin="dense"
+                fullWidth
+                label="Father Name"
+                size="small"
+              />
+              <TextField
+                margin="dense"
+                fullWidth
+                label="Spouse Name"
+                size="small"
+              />
+            </Grid>
+
+            <Grid item xs={12} md={8} lg={5}>
+              <Box sx={{ my: 5 }}>
+                <Typography variant="h5" component="h5">
+                  Step 2. <span>Payment Method:</span>
+                </Typography>
+              </Box>
+
+              {/* Payment Methods */}
+              <FormControl fullWidth margin="dense" size="small">
+                <InputLabel id="payment-methods-select-label">
+                  Payment Methods
+                </InputLabel>
+                <Select
+                  labelId="payment-methods-select-label"
+                  id="payment-method"
+                  // value={status}
+                  label="Payment Method"
+                  // onChange={handleChange}
+                >
+                  <MenuItem value={10}>Bank Transfer</MenuItem>
+                  <MenuItem value={20}>Cash</MenuItem>
+                </Select>
+              </FormControl>
+
+              <TextField
+                type="number"
+                label="Accound Number"
+                margin="dense"
+                size="small"
+                placeholder="Accound Number"
+                fullWidth
+              />
+              <TextField
+                type="number"
+                margin="dense"
+                size="small"
+                fullWidth
+                label="TIN Number"
+                placeholder="TIN Number"
+              />
+              <Button variant="contained" size="small">
+                Add Employee
               </Button>
-              <p>afka24343!@#4</p>
-            </div>
-          </div>
-          {/* gender */}
-          <FormControl fullWidth margin="dense" size="small">
-            <FormLabel id="demo-radio-buttons-group-label">Gender</FormLabel>
-            <RadioGroup
-              aria-labelledby="demo-radio-buttons-group-label"
-              defaultValue="male"
-              name="radio-buttons-group"
-            >
-              <FormControlLabel value="male" control={<Radio />} label="Male" />
-              <FormControlLabel
-                value="female"
-                control={<Radio />}
-                label="Female"
-              />
-            </RadioGroup>
-          </FormControl>
-
-          {/* data of joining date picker */}
-          <FormControl margin="dense" fullWidth size="small">
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DesktopDatePicker
-                label="Joining Date"
-                inputFormat="MM/DD/YYYY"
-                value={dateOfJoiningValue}
-                onChange={handleDateOfJoiningChange}
-                renderInput={(params) => <TextField {...params} />}
-              />
-            </LocalizationProvider>
-          </FormControl>
-
-          {/* employee status */}
-          <FormControl fullWidth margin="dense" size="small">
-            <InputLabel id="employee-status-select-label">
-              Employee Status
-            </InputLabel>
-            <Select
-              labelId="employee-status-select-label"
-              id="employee-status"
-              // value={status}
-              label="Employee Status"
-              // onChange={handleChange}
-            >
-              <MenuItem value={10}>Permanent</MenuItem>
-              <MenuItem value={20}>Contract</MenuItem>
-              <MenuItem value={30}>Manual</MenuItem>
-            </Select>
-          </FormControl>
-
-          {/* data of confirmation date picker */}
-          <FormControl margin="dense" fullWidth size="small">
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DesktopDatePicker
-                label="Confirmation Date"
-                inputFormat="MM/DD/YYYY"
-                value={dateOfConfirmationValue}
-                onChange={handleDateOfConfirmationChange}
-                renderInput={(params) => <TextField {...params} />}
-              />
-            </LocalizationProvider>
-          </FormControl>
-
-          <TextField
-            margin="dense"
-            fullWidth
-            label="Father Name"
-            size="small"
-          />
-          <TextField
-            margin="dense"
-            fullWidth
-            label="Spouse Name"
-            size="small"
-          />
-        </Grid>
-
-        <Grid item xs={12} md={8} lg={5}>
-          <Box sx={{ my: 5 }}>
-            <Typography variant="h5" component="h5">
-              Step 2. <span>Payment Method:</span>
-            </Typography>
-          </Box>
-
-          {/* Payment Methods */}
-          <FormControl fullWidth margin="dense" size="small">
-            <InputLabel id="payment-methods-select-label">
-              Payment Methods
-            </InputLabel>
-            <Select
-              labelId="payment-methods-select-label"
-              id="payment-method"
-              // value={status}
-              label="Payment Method"
-              // onChange={handleChange}
-            >
-              <MenuItem value={10}>Bank Transfer</MenuItem>
-              <MenuItem value={20}>Cash</MenuItem>
-            </Select>
-          </FormControl>
-
-          <TextField
-            type="number"
-            label="Accound Number"
-            margin="dense"
-            size="small"
-            placeholder="Accound Number"
-            fullWidth
-          />
-          <TextField
-            type="number"
-            margin="dense"
-            size="small"
-            fullWidth
-            label="TIN Number"
-            placeholder="TIN Number"
-          />
-          <Button variant="contained" size="small">
-            Add Employee
-          </Button>
-        </Grid>
-      </Grid>
-    </Container>
+            </Grid>
+          </Grid>
+        </Box>
+      </Modal>
+    </>
   );
 }
 

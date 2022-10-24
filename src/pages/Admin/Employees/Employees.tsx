@@ -14,6 +14,8 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { IEmployee } from "../../../models/IEmployee";
 import { useGetEmployeesQuery } from "../../../services/employeeApiSlice";
+import Button from "@mui/material/Button";
+import AddEmployee from "./AddEmployee";
 
 function CustomToolbar() {
   return (
@@ -83,8 +85,19 @@ function Employees() {
     [handleDeleteSubject, handleEditSubject]
   );
 
+  // states to keep track of opening and closing actions of the
+  // add employee child component
+  const [openModal, setOpenModal] = React.useState(false);
+  const handleOpenModal = () => setOpenModal(true);
+  const handleCloseModal = () => setOpenModal(false);
+
   return (
     <div style={{ height: "100vh", width: "100%" }}>
+      <Button sx={{ my: 2 }} variant="outlined" onClick={handleOpenModal}>
+        + Add Employee
+      </Button>
+      <AddEmployee openModal={openModal} handleCloseModal={handleCloseModal} />
+
       <DataGrid
         rows={flatEmployees}
         columns={columns}

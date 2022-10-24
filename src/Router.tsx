@@ -10,7 +10,6 @@ import AddDepartment from "./pages/Admin/Departments/AddDepartment";
 import Departments from "./pages/Admin/Departments/Departments";
 import DetailDepartment from "./pages/Admin/Departments/DetailDepartment";
 import EditDepartment from "./pages/Admin/Departments/EditDepartment";
-import AddEmployee from "./pages/Admin/Employees/AddEmployee";
 import EditEmployee from "./pages/Admin/Employees/EditEmployee";
 import Employees from "./pages/Admin/Employees/Employees";
 import AddLocation from "./pages/Admin/Locations/AddLocation";
@@ -38,7 +37,6 @@ function Router() {
         <Route path="admin-dashboard" element={<AdminDashboard />}>
           <Route path="employees">
             <Route index element={<Employees />} />
-            <Route path="add" element={<AddEmployee />} />
             <Route path="edit/:id" element={<EditEmployee />} />
           </Route>
           <Route path="companies">
