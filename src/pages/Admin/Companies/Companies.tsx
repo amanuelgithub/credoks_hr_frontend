@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   DataGrid,
   GridToolbarContainer,
@@ -14,8 +14,13 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import Button from "@mui/material/Button";
 import { ICompany } from "../../../models/ICompany";
-import { useGetCompaniesQuery } from "../../../services/companyApiSlice";
-import { Link } from "react-router-dom";
+import {
+  useGetCompaniesQuery,
+  useDeleteCompanyMutation,
+} from "../../../services/companyApiSlice";
+import { Link, useNavigate } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
+import DeleteCompanyDialog from "./DeleteCompanyDialog";
 
 function CustomToolbar() {
   return (
@@ -30,23 +35,69 @@ function CustomToolbar() {
 
 type Row = ICompany;
 
+let initialCompanies: any[] = [];
+
 function Companies() {
+  const [idToBeDeleted, setIdToBeDeleted] = useState("");
+  const [openDeleteModal, setOpenDeleteModal] = React.useState(false);
+  const handleOpenModal = () => setOpenDeleteModal(true);
+  const handleCloseModal = () => setOpenDeleteModal(false);
+
+  const [companies, setCompanies] = useState(initialCompanies);
   const { data, isLoading, isSuccess } = useGetCompaniesQuery();
+  const [deleteCompany, { isLoading: isDeleting, isSuccess: isDeleted }] =
+    useDeleteCompanyMutation();
+
+  const navigate = useNavigate();
+
+  // a function to delete a company
+  const handleDeleteCompany = (id: string) => {
+    handleCloseModal();
+    deleteCompany(id);
+  };
 
   const handleDeleteSubject = React.useCallback(
-    (id: GridRowId) => () => {},
+    (id: GridRowId) => () => {
+      handleOpenModal();
+      setIdToBeDeleted(id.toString());
+    },
     []
   );
 
-  const handleEditSubject = React.useCallback((id: GridRowId) => () => {}, []);
+  const handleEditSubject = React.useCallback(
+    (id: GridRowId) => () => {
+      navigate(`/admin-dashboard/companies/edit/${id}`, { state: { id } });
+    },
+    []
+  );
+
+  useEffect(() => {
+    if (data !== undefined) {
+      let fetchedCompanies = data !== undefined ? data : [];
+      setCompanies(fetchedCompanies);
+    }
+
+    return () => {
+      setCompanies(initialCompanies);
+    };
+  }, [data]);
+
+  useEffect(() => {
+    if (isDeleted) {
+      toast.success("Company deleted successfully", {
+        autoClose: 2000,
+        hideProgressBar: true,
+      });
+    }
+  }, [isDeleted]);
 
   const columns = React.useMemo<GridColumns<Row>>(
     () => [
       { field: "id", headerName: "ID", width: 80 },
       { field: "name", headerName: "name", width: 140 },
-      { field: "companyLogo", headerName: "companyLogo", width: 140 },
-      { field: "status", headerName: "status", width: 140 },
       { field: "summary", headerName: "summary", width: 140 },
+      { field: "status", headerName: "status", width: 140 },
+      { field: "companyLogo", headerName: "companyLogo", width: 140 },
       {
         field: "actions",
         type: "actions",
@@ -70,12 +121,21 @@ function Companies() {
 
   return (
     <div style={{ height: "100vh", width: "100%" }}>
+      <ToastContainer />
+
+      <DeleteCompanyDialog
+        id={idToBeDeleted}
+        openModal={openDeleteModal}
+        handleCloseModal={handleCloseModal}
+        handleDeleteCompany={handleDeleteCompany}
+      />
+
       <Button variant="outlined" sx={{ my: 2 }}>
         <Link to="/admin-dashboard/companies/add">+ Add Company</Link>
       </Button>
 
       <DataGrid
-        rows={data ?? []}
+        rows={companies ?? []}
         columns={columns}
         pageSize={10}
         rowsPerPageOptions={[10]}

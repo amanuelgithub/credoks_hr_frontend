@@ -1,9 +1,9 @@
 export interface ICompany {
-  id: string;
-  name: string;
-  companyLogo: string;
-  status: CompanyStatusEnum;
-  summary: string;
+  id?: string;
+  name?: string;
+  companyLogo?: string;
+  status?: CompanyStatusEnum;
+  summary?: string;
   //   locations: Location[];
   //   departments: Department[];
 }
