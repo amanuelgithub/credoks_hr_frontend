@@ -7,11 +7,12 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 450,
+  width: 350,
   bgcolor: "background.paper",
   border: "2px solid #000",
   boxShadow: 24,
-  p: 4,
+  py: 2,
+  px: 3,
 };
 
 function DeleteCompanyDialog({
@@ -37,13 +38,19 @@ function DeleteCompanyDialog({
           <div className="flex justify-center items-center font-bold">
             <p>Are you sure you want to delte this?</p>
           </div>
-          <div className="py-5 flex justify-between items-end">
-            <Button variant="outlined" color="error" onClick={handleCloseModal}>
+          <div className="py-5 flex justify-evenly items-end">
+            <Button
+              variant="contained"
+              size="small"
+              color="error"
+              onClick={handleCloseModal}
+            >
               Cancel
             </Button>
             <Button
               color="success"
-              variant="outlined"
+              variant="contained"
+              size="small"
               onClick={() => handleDeleteCompany(id)}
             >
               Delete
