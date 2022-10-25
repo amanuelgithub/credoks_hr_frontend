@@ -1,18 +1,24 @@
-export interface IEmployee {
-  id: string;
-  firstName: string;
-  lastName: string;
-  phone: string;
-  type: string;
-  email: string;
-  dateOfBirth: string;
-  gender: string;
-  status: string;
-  dateOfJoining: string;
-  confirmationDate: string;
-  emergencyContactName: string;
-  emergencyContactNumber: string;
-  fatherName: string;
-  spouseName: string;
-  accountNumber: string;
+import { IUser } from "./IUser";
+
+export interface IEmployee extends IUser {
+  status?: EmployeeStatusEnum;
+  dateOfJoining?: string;
+  confirmationDate?: string;
+  emergencyContactName?: string;
+  emergencyContactNumber?: string;
+  fatherName?: string;
+  spouseName?: string;
+  accountNumber?: string;
+  startsAt?: string;
+  endsAt?: string;
+  // user: User;
+  // manager?: Manager;
+  // hr?: Hr;
+}
+
+export enum EmployeeStatusEnum {
+  CONFIRMED = "Confirmed",
+  CONTRACT = "Contract",
+  PROBAATION = "Probation",
+  TRAINEE = "Trainee",
 }

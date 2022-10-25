@@ -13,9 +13,14 @@ import {
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { IEmployee } from "../../../models/IEmployee";
-import { useGetEmployeesQuery } from "../../../services/employeeApiSlice";
+import {
+  useGetEmployeesQuery,
+  useDeleteEmployeeMutation,
+} from "../../../services/employeeApiSlice";
 import Button from "@mui/material/Button";
 import AddEmployee from "./AddEmployee";
+import DeleteModal from "../../../components/DeleteModal/DeleteModal";
+import { ToastContainer } from "react-toastify";
 
 function CustomToolbar() {
   return (
@@ -31,8 +36,27 @@ function CustomToolbar() {
 type Row = IEmployee;
 
 function Employees() {
-  const { data: employees, isLoading, isSuccess } = useGetEmployeesQuery();
+  const {
+    data: employees,
+    isLoading: isLoading,
+    isSuccess: isLoaded,
+  } = useGetEmployeesQuery();
+  const [
+    deleteEmployee,
+    { isLoading: isDeleting, isSuccess: isDeleted, isError },
+  ] = useDeleteEmployeeMutation();
   const [flatEmployees, setFlatEmployees] = useState([]);
+
+  // add employee modal state controller
+  const [openModal, setOpenModal] = React.useState(false);
+  const handleOpenModal = () => setOpenModal(true);
+  const handleCloseModal = () => setOpenModal(false);
+
+  // confirmation dialog/modal state controller
+  const [idToBeDeleted, setIdToBeDeleted] = useState("");
+  const [openDeleteModal, setOpenDeleteModal] = React.useState(false);
+  const handleOpenDeleteModal = () => setOpenDeleteModal(true);
+  const handleCloseDeleteModal = () => setOpenDeleteModal(false);
 
   useEffect(() => {
     if (employees !== undefined) {
@@ -47,12 +71,27 @@ function Employees() {
     }
   }, [employees]);
 
+  // hander to delete an employee
+  const handleDeleteEmployee = (id: string) => {
+    handleCloseDeleteModal();
+    deleteEmployee(id);
+  };
+
   const handleDeleteSubject = React.useCallback(
-    (id: GridRowId) => () => {},
+    (id: GridRowId) => () => {
+      // console.log("delete id: ", id);
+      handleOpenDeleteModal();
+      setIdToBeDeleted(id.toString());
+    },
     []
   );
 
-  const handleEditSubject = React.useCallback((id: GridRowId) => () => {}, []);
+  const handleEditSubject = React.useCallback(
+    (id: GridRowId) => () => {
+      console.log("edit id: ", id);
+    },
+    []
+  );
 
   const columns = React.useMemo<GridColumns<Row>>(
     () => [
@@ -85,14 +124,20 @@ function Employees() {
     [handleDeleteSubject, handleEditSubject]
   );
 
-  // states to keep track of opening and closing actions of the
-  // add employee child component
-  const [openModal, setOpenModal] = React.useState(false);
-  const handleOpenModal = () => setOpenModal(true);
-  const handleCloseModal = () => setOpenModal(false);
-
   return (
     <div style={{ height: "100vh", width: "100%" }}>
+      {/* react-toastifiy container */}
+      <ToastContainer />
+
+      {/* delete employee dialog */}
+      <DeleteModal
+        id={idToBeDeleted}
+        message={"Are you sure you want to delete this employee?"}
+        openModal={openDeleteModal}
+        handleCloseModal={handleCloseDeleteModal}
+        handleDelete={handleDeleteEmployee}
+      />
+
       <Button sx={{ my: 2 }} variant="outlined" onClick={handleOpenModal}>
         + Add Employee
       </Button>

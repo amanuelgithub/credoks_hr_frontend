@@ -88,7 +88,9 @@ function AddCompany() {
         initialValues={initialValues}
         validationSchema={validationSchema}
         onSubmit={(values: FormValues, { setSubmitting }) => {
+          setSubmitting(true);
           handleSubmit({ ...values });
+          setSubmitting(false);
         }}
       >
         {({ errors, touched, handleSubmit, isSubmitting }) => (
