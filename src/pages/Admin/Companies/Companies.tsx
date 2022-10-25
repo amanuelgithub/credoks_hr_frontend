@@ -20,7 +20,7 @@ import {
 } from "../../../services/companyApiSlice";
 import { Link, useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
-import DeleteCompanyDialog from "./DeleteCompanyDialog";
+import DeleteModal from "../../../components/DeleteModal/DeleteModal";
 
 function CustomToolbar() {
   return (
@@ -123,11 +123,12 @@ function Companies() {
     <div style={{ height: "100vh", width: "100%" }}>
       <ToastContainer />
 
-      <DeleteCompanyDialog
+      <DeleteModal
         id={idToBeDeleted}
+        message={"Are you sure you want to delete this company?"}
         openModal={openDeleteModal}
         handleCloseModal={handleCloseModal}
-        handleDeleteCompany={handleDeleteCompany}
+        handleDelete={handleDeleteCompany}
       />
 
       <Button variant="outlined" sx={{ my: 2 }}>
