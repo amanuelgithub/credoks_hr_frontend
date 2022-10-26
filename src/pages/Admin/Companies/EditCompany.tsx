@@ -22,8 +22,6 @@ import * as yup from "yup";
 import { useLocation, useNavigate } from "react-router-dom";
 import { errorToast, successToast } from "../../../utils/toastify";
 
-let initialValues: ICompany;
-
 const validationSchema = yup.object({
   name: yup.string().required(),
   summary: yup.string().required(),
@@ -51,10 +49,6 @@ function EditCompany() {
   };
 
   useEffect(() => {
-    initialValues = data;
-  }, [data]);
-
-  useEffect(() => {
     if (isSuccess) {
       successToast("Successfuly updated company.");
       navigate("/admin-dashboard/companies");
@@ -71,94 +65,98 @@ function EditCompany() {
         </Typography>
       </Box>
 
-      <Formik
-        initialValues={initialValues}
-        validationSchema={validationSchema}
-        onSubmit={(values: ICompany, { setSubmitting }) => {
-          handleSubmit({ ...values });
-        }}
-      >
-        {({ errors, touched, handleSubmit, isSubmitting }) => (
-          <Box component="form" onSubmit={handleSubmit}>
-            <Grid container spacing={5} justifyContent="center">
-              <Grid item xs={12} md={4} lg={5}>
-                {/* Name */}
-                <Field
-                  margin="dense"
-                  fullWidth
-                  label="Name"
-                  size="small"
-                  name="name"
-                  type="text"
-                  as={TextField}
-                  error={touched.name && Boolean(errors.name)}
-                  helperText={touched.name && errors.name}
-                />
-
-                {/* Summary: Description */}
-                <Field
-                  margin="dense"
-                  fullWidth
-                  multiline
-                  rows={5}
-                  label="Company Description"
-                  size="small"
-                  type="text"
-                  name="summary"
-                  as={TextField}
-                  error={touched.summary && Boolean(errors.summary)}
-                  helperText={touched.summary && errors.summary}
-                />
-
-                {/* company status */}
-                <FormControl
-                  fullWidth
-                  margin="dense"
-                  size="small"
-                  error={touched.status && Boolean(errors.status)}
-                >
-                  <InputLabel id="company-status-select-label">
-                    Company Status
-                  </InputLabel>
+      {data && (
+        <Formik
+          initialValues={data}
+          validationSchema={validationSchema}
+          onSubmit={(values: ICompany, { setSubmitting }) => {
+            handleSubmit({ ...values });
+          }}
+        >
+          {({ errors, touched, handleSubmit, isSubmitting }) => (
+            <Box component="form" onSubmit={handleSubmit}>
+              <Grid container spacing={5} justifyContent="center">
+                <Grid item xs={12} md={4} lg={5}>
+                  {/* Name */}
                   <Field
-                    name="status"
-                    type="select"
-                    label="Company Status"
-                    as={Select}
-                  >
-                    <MenuItem value={CompanyStatusEnum.ACTIVE}>Active</MenuItem>
-                    <MenuItem value={CompanyStatusEnum.INACTIVE}>
-                      Inactive
-                    </MenuItem>
-                  </Field>
-                </FormControl>
-              </Grid>
+                    margin="dense"
+                    fullWidth
+                    label="Name"
+                    size="small"
+                    name="name"
+                    type="text"
+                    as={TextField}
+                    error={touched.name && Boolean(errors.name)}
+                    helperText={touched.name && errors.name}
+                  />
 
-              <Grid item xs={12} md={8} lg={5}>
-                <AttachFiles />
+                  {/* Summary: Description */}
+                  <Field
+                    margin="dense"
+                    fullWidth
+                    multiline
+                    rows={5}
+                    label="Company Description"
+                    size="small"
+                    type="text"
+                    name="summary"
+                    as={TextField}
+                    error={touched.summary && Boolean(errors.summary)}
+                    helperText={touched.summary && errors.summary}
+                  />
+
+                  {/* company status */}
+                  <FormControl
+                    fullWidth
+                    margin="dense"
+                    size="small"
+                    error={touched.status && Boolean(errors.status)}
+                  >
+                    <InputLabel id="company-status-select-label">
+                      Company Status
+                    </InputLabel>
+                    <Field
+                      name="status"
+                      type="select"
+                      label="Company Status"
+                      as={Select}
+                    >
+                      <MenuItem value={CompanyStatusEnum.ACTIVE}>
+                        Active
+                      </MenuItem>
+                      <MenuItem value={CompanyStatusEnum.INACTIVE}>
+                        Inactive
+                      </MenuItem>
+                    </Field>
+                  </FormControl>
+                </Grid>
+
+                <Grid item xs={12} md={8} lg={5}>
+                  <AttachFiles />
+                </Grid>
               </Grid>
-            </Grid>
-            <Box
-              sx={{
-                width: "100%",
-                display: "flex",
-                px: 12,
-                justifyContent: "start",
-              }}
-            >
-              <Button
-                type="submit"
-                sx={{ my: 2 }}
-                size="small"
-                disabled={isSubmitting}
-                variant="contained"
+              <Box
+                sx={{
+                  width: "100%",
+                  display: "flex",
+                  px: 12,
+                  justifyContent: "start",
+                }}
               >
-                Update Company
-              </Button>
+                <Button
+                  type="submit"
+                  sx={{ my: 2 }}
+                  size="small"
+                  disabled={isSubmitting}
+                  variant="contained"
+                >
+                  Update Company
+                </Button>
+              </Box>
             </Box>
-          </Box>
-        )}
-      </Formik>
+          )}
+        </Formik>
+      )}
     </Container>
   );
 }

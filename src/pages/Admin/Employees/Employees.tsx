@@ -18,9 +18,12 @@ import {
   useDeleteEmployeeMutation,
 } from "../../../services/employeeApiSlice";
 import Button from "@mui/material/Button";
+import MoreIcon from "@mui/icons-material/More";
 import AddEmployee from "./AddEmployee";
 import DeleteModal from "../../../components/DeleteModal/DeleteModal";
 import { ToastContainer } from "react-toastify";
+import EditEmployee from "./EditEmployee";
+import { useNavigate } from "react-router-dom";
 
 function CustomToolbar() {
   return (
@@ -35,9 +38,12 @@ function CustomToolbar() {
 
 type Row = IEmployee;
 
+let initialEmployees: any[] = [];
+
 function Employees() {
+  const [employees, setEmployees] = useState(initialEmployees);
   const {
-    data: employees,
+    data,
     isLoading: isLoading,
     isSuccess: isLoaded,
   } = useGetEmployeesQuery();
@@ -45,50 +51,56 @@ function Employees() {
     deleteEmployee,
     { isLoading: isDeleting, isSuccess: isDeleted, isError },
   ] = useDeleteEmployeeMutation();
-  const [flatEmployees, setFlatEmployees] = useState([]);
 
   // add employee modal state controller
-  const [openModal, setOpenModal] = React.useState(false);
-  const handleOpenModal = () => setOpenModal(true);
-  const handleCloseModal = () => setOpenModal(false);
+  const [openAddEmployeeModal, setOpenAddEmployeeModal] = useState(false);
+  const handleOpenAddEmployeeModal = () => setOpenAddEmployeeModal(true);
+  const handleCloseAddEmployeeModal = () => setOpenAddEmployeeModal(false);
+
+  // edit employee modal state controller
+  const [idToBeEdited, setIdToBeEdited] = useState("");
+  const [openEditEmployeeModal, setOpenEditEmployeeModal] = useState(false);
+  const handleOpenEditEmployeeModal = () => setOpenEditEmployeeModal(true);
+  const handleCloseEditEmployeeModal = () => setOpenEditEmployeeModal(false);
 
   // confirmation dialog/modal state controller
   const [idToBeDeleted, setIdToBeDeleted] = useState("");
-  const [openDeleteModal, setOpenDeleteModal] = React.useState(false);
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const handleOpenDeleteModal = () => setOpenDeleteModal(true);
   const handleCloseDeleteModal = () => setOpenDeleteModal(false);
 
+  const navigate = useNavigate();
+
   useEffect(() => {
-    if (employees !== undefined) {
-      let employee;
-      const flatEmployeesArr: any = [];
-      for (let i = 0; i < employees.length; i++) {
-        const { user, ...remaining } = employees[i];
-        employee = { ...user, ...remaining };
-        flatEmployeesArr.push(employee);
-      }
-      setFlatEmployees(flatEmployeesArr);
+    if (data !== undefined) {
+      let fetchedEmployees = data !== undefined ? data : [];
+      setEmployees(fetchedEmployees);
     }
-  }, [employees]);
 
-  // hander to delete an employee
-  const handleDeleteEmployee = (id: string) => {
-    handleCloseDeleteModal();
-    deleteEmployee(id);
-  };
+    return () => {
+      setEmployees(initialEmployees);
+    };
+  }, [data]);
 
-  const handleDeleteSubject = React.useCallback(
+  const handleMoreEmployeeFieldAction = React.useCallback(
     (id: GridRowId) => () => {
-      // console.log("delete id: ", id);
-      handleOpenDeleteModal();
-      setIdToBeDeleted(id.toString());
+      navigate(`/admin-dashboard/employees/detail/${id}`);
     },
     []
   );
 
-  const handleEditSubject = React.useCallback(
+  const handleDeleteEmployeeFieldAction = React.useCallback(
     (id: GridRowId) => () => {
-      console.log("edit id: ", id);
+      setIdToBeDeleted(id.toString());
+      handleOpenDeleteModal();
+    },
+    []
+  );
+
+  const handleEditEmployeeFieldAction = React.useCallback(
+    (id: GridRowId) => () => {
+      handleOpenEditEmployeeModal();
+      setIdToBeEdited(id.toString());
     },
     []
   );
@@ -106,23 +118,38 @@ function Employees() {
       {
         field: "actions",
         type: "actions",
-        width: 80,
+        width: 200,
         getActions: (params) => [
+          <GridActionsCellItem
+            icon={<MoreIcon />}
+            label="Detail"
+            onClick={handleMoreEmployeeFieldAction(params.id)}
+          />,
           <GridActionsCellItem
             icon={<EditIcon />}
             label="Edit"
-            onClick={handleEditSubject(params.id)}
+            onClick={handleEditEmployeeFieldAction(params.id)}
           />,
           <GridActionsCellItem
             icon={<DeleteIcon />}
             label="Delete"
-            onClick={handleDeleteSubject(params.id)}
+            onClick={handleDeleteEmployeeFieldAction(params.id)}
           />,
         ],
       },
     ],
-    [handleDeleteSubject, handleEditSubject]
+    [
+      handleMoreEmployeeFieldAction,
+      handleDeleteEmployeeFieldAction,
+      handleEditEmployeeFieldAction,
+    ]
   );
+
+  // hander to delete an employee
+  const handleDeleteEmployee = (id: string) => {
+    handleCloseDeleteModal();
+    deleteEmployee(id);
+  };
 
   return (
     <div style={{ height: "100vh", width: "100%" }}>
@@ -130,21 +157,40 @@ function Employees() {
       <ToastContainer />
 
       {/* delete employee dialog */}
-      <DeleteModal
-        id={idToBeDeleted}
-        message={"Are you sure you want to delete this employee?"}
-        openModal={openDeleteModal}
-        handleCloseModal={handleCloseDeleteModal}
-        handleDelete={handleDeleteEmployee}
+      {idToBeDeleted && (
+        <DeleteModal
+          id={idToBeDeleted}
+          message={"Are you sure you want to delete this employee?"}
+          openModal={openDeleteModal}
+          handleCloseModal={handleCloseDeleteModal}
+          handleDelete={handleDeleteEmployee}
+        />
+      )}
+
+      <AddEmployee
+        openModal={openAddEmployeeModal}
+        handleCloseModal={handleCloseAddEmployeeModal}
       />
 
-      <Button sx={{ my: 2 }} variant="outlined" onClick={handleOpenModal}>
+      {idToBeEdited && (
+        <EditEmployee
+          key={idToBeEdited}
+          id={idToBeEdited}
+          openModal={openEditEmployeeModal}
+          handleCloseModal={handleCloseEditEmployeeModal}
+        />
+      )}
+
+      <Button
+        sx={{ my: 2 }}
+        variant="outlined"
+        onClick={handleOpenAddEmployeeModal}
+      >
         + Add Employee
       </Button>
-      <AddEmployee openModal={openModal} handleCloseModal={handleCloseModal} />
 
       <DataGrid
-        rows={flatEmployees}
+        rows={employees}
         columns={columns}
         pageSize={10}
         rowsPerPageOptions={[10]}

@@ -10,7 +10,6 @@ import PeopleIcon from "@mui/icons-material/People";
 import BusinessIcon from "@mui/icons-material/Business";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import GroupsIcon from "@mui/icons-material/Groups";
-import AssignmentIcon from "@mui/icons-material/Assignment";
 import { Link } from "react-router-dom";
 
 export const mainListItems = (
@@ -37,22 +36,6 @@ export const mainListItems = (
           <PeopleIcon />
         </ListItemIcon>
         <ListItemText primary="Employees" />
-      </ListItemButton>
-    </Link>
-    <Link to="/admin-dashboard/managers">
-      <ListItemButton>
-        <ListItemIcon>
-          <ManageAccountsIcon />
-        </ListItemIcon>
-        <ListItemText primary="Managers" />
-      </ListItemButton>
-    </Link>
-    <Link to="">
-      <ListItemButton>
-        <ListItemIcon>
-          <SupervisorAccountIcon />
-        </ListItemIcon>
-        <ListItemText primary="Hrs" />
       </ListItemButton>
     </Link>
     <Link to="/admin-dashboard/departments">

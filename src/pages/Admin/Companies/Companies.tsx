@@ -19,7 +19,7 @@ import {
   useDeleteCompanyMutation,
 } from "../../../services/companyApiSlice";
 import { Link, useNavigate } from "react-router-dom";
-import { toast, ToastContainer } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import DeleteModal from "../../../components/DeleteModal/DeleteModal";
 import { errorToast, successToast } from "../../../utils/toastify";
 import Loading from "../../../components/Loading";
@@ -64,15 +64,16 @@ function Companies() {
     deleteCompany(id);
   };
 
-  const handleDeleteSubject = React.useCallback(
+  // used by the mui DataGrid action field
+  const handleDeleteCompanyFieldAction = React.useCallback(
     (id: GridRowId) => () => {
       handleOpenModal();
       setIdToBeDeleted(id.toString());
     },
     []
   );
-
-  const handleEditSubject = React.useCallback(
+  // used by the mui DataGrid action field
+  const handleEditCompanyFieldAction = React.useCallback(
     (id: GridRowId) => () => {
       navigate(`/admin-dashboard/companies/edit/${id}`, { state: { id } });
     },
@@ -110,17 +111,17 @@ function Companies() {
           <GridActionsCellItem
             icon={<EditIcon />}
             label="Edit"
-            onClick={handleEditSubject(params.id)}
+            onClick={handleEditCompanyFieldAction(params.id)}
           />,
           <GridActionsCellItem
             icon={<DeleteIcon />}
             label="Delete"
-            onClick={handleDeleteSubject(params.id)}
+            onClick={handleDeleteCompanyFieldAction(params.id)}
           />,
         ],
       },
     ],
-    [handleDeleteSubject, handleEditSubject]
+    [handleDeleteCompanyFieldAction, handleEditCompanyFieldAction]
   );
 
   return (

@@ -29,8 +29,9 @@ import * as yup from "yup";
 import { Field, Formik } from "formik";
 import FormHelperText from "@mui/material/FormHelperText";
 import { useAddEmployeeMutation } from "../../../services/employeeApiSlice";
-import { toast, ToastContainer } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import Divider from "@mui/material/Divider";
+import { errorToast, successToast } from "../../../utils/toastify";
 
 const initialValues: IEmployee = {
   // user fields
@@ -61,7 +62,12 @@ const validationSchema = yup.object({
   password: yup.string().required(),
   type: yup
     .mixed()
-    .oneOf([UserTypeEnum.EMPLOYEE, UserTypeEnum.MANAGER, UserTypeEnum.HR])
+    .oneOf([
+      UserTypeEnum.EMPLOYEE,
+      UserTypeEnum.MANAGER,
+      UserTypeEnum.HR,
+      UserTypeEnum.ADMIN,
+    ])
     .required(),
   dateOfBirth: yup.string(),
   gender: yup.string().required(),
@@ -138,16 +144,8 @@ function AddEmployee({
   };
 
   useEffect(() => {
-    if (isSuccess)
-      toast.success("Successfuly Added New Employee.", {
-        autoClose: 2000,
-        hideProgressBar: true,
-      });
-    else if (isError)
-      toast.error("Error Creating Employee.", {
-        autoClose: 2000,
-        hideProgressBar: true,
-      });
+    if (isSuccess) successToast("Successfuly Added New Employee.");
+    else if (isError) errorToast("Error Creating Employee.");
   }, [isSuccess, isError]);
 
   return (
@@ -209,6 +207,7 @@ function AddEmployee({
                         label="User Type"
                         as={Select}
                       >
+                        <MenuItem value={UserTypeEnum.ADMIN}>Admin</MenuItem>
                         <MenuItem value={UserTypeEnum.EMPLOYEE}>
                           Employee
                         </MenuItem>
