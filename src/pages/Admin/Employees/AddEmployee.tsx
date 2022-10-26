@@ -175,9 +175,6 @@ function AddEmployee({
             onSubmit={(values: IEmployee, { setSubmitting }) => {
               setSubmitting(true);
               handleSubmit(values);
-              setTimeout(() => {
-                alert(`${JSON.stringify(values, null, 2)}`);
-              }, 400);
               setSubmitting(false);
             }}
           >

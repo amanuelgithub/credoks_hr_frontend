@@ -6,10 +6,8 @@ import AddCompany from "./pages/Admin/Companies/AddCompany";
 import Companies from "./pages/Admin/Companies/Companies";
 import DetailCompany from "./pages/Admin/Companies/DetailCompany";
 import EditCompany from "./pages/Admin/Companies/EditCompany";
-import AddDepartment from "./pages/Admin/Departments/AddDepartment";
 import Departments from "./pages/Admin/Departments/Departments";
 import DetailDepartment from "./pages/Admin/Departments/DetailDepartment";
-import EditDepartment from "./pages/Admin/Departments/EditDepartment";
 import Employees from "./pages/Admin/Employees/Employees";
 import AddLocation from "./pages/Admin/Locations/AddLocation";
 import DetailLocation from "./pages/Admin/Locations/DetailLocation";
@@ -43,8 +41,6 @@ function Router() {
           </Route>
           <Route path="departments">
             <Route index element={<Departments />} />
-            <Route path="add" element={<AddDepartment />} />
-            <Route path="edit/:id" element={<EditDepartment />} />
             <Route path="detail/:id" element={<DetailDepartment />} />
           </Route>
           <Route path="locations">

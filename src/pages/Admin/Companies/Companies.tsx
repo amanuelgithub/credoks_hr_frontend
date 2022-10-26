@@ -1,11 +1,6 @@
 import React, { useState, useEffect } from "react";
 import {
   DataGrid,
-  GridToolbarContainer,
-  GridToolbarColumnsButton,
-  GridToolbarFilterButton,
-  GridToolbarExport,
-  GridToolbarDensitySelector,
   GridActionsCellItem,
   GridColumns,
   GridRowId,
@@ -23,17 +18,6 @@ import { ToastContainer } from "react-toastify";
 import DeleteModal from "../../../components/DeleteModal/DeleteModal";
 import { errorToast, successToast } from "../../../utils/toastify";
 import Loading from "../../../components/Loading";
-
-function CustomToolbar() {
-  return (
-    <GridToolbarContainer>
-      <GridToolbarColumnsButton />
-      <GridToolbarFilterButton />
-      <GridToolbarDensitySelector />
-      <GridToolbarExport />
-    </GridToolbarContainer>
-  );
-}
 
 type Row = ICompany;
 
@@ -151,9 +135,6 @@ function Companies() {
         loading={false}
         error={undefined}
         checkboxSelection
-        components={{
-          Toolbar: CustomToolbar,
-        }}
       />
     </div>
   );
