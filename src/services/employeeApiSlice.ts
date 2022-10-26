@@ -6,7 +6,7 @@ export const employeeApiSlice = apiSlice.injectEndpoints({
     getEmployees: builder.query<any[], void>({
       query: () => ({ url: "/employees" }),
       providesTags: [{ type: "Employee", id: "LIST" }],
-      // keepUnusedDataFor: 10,
+      keepUnusedDataFor: 10,
     }),
 
     addEmployee: builder.mutation({

@@ -21,6 +21,8 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import DeleteModal from "../../../components/DeleteModal/DeleteModal";
+import { errorToast, successToast } from "../../../utils/toastify";
+import Loading from "../../../components/Loading";
 
 function CustomToolbar() {
   return (
@@ -44,9 +46,15 @@ function Companies() {
   const handleCloseModal = () => setOpenDeleteModal(false);
 
   const [companies, setCompanies] = useState(initialCompanies);
-  const { data, isLoading, isSuccess } = useGetCompaniesQuery();
-  const [deleteCompany, { isLoading: isDeleting, isSuccess: isDeleted }] =
-    useDeleteCompanyMutation();
+  const {
+    data,
+    isLoading: isLoadingCompanies,
+    isSuccess: isSuccessCompanies,
+  } = useGetCompaniesQuery();
+  const [
+    deleteCompany,
+    { isSuccess: isDeletedCompany, isError: isErrorDeleteCompany },
+  ] = useDeleteCompanyMutation();
 
   const navigate = useNavigate();
 
@@ -83,13 +91,9 @@ function Companies() {
   }, [data]);
 
   useEffect(() => {
-    if (isDeleted) {
-      toast.success("Company deleted successfully", {
-        autoClose: 2000,
-        hideProgressBar: true,
-      });
-    }
-  }, [isDeleted]);
+    if (isDeletedCompany) successToast("Company deleted successfully");
+    if (isErrorDeleteCompany) errorToast("Error deleting company");
+  }, [isDeletedCompany, isErrorDeleteCompany]);
 
   const columns = React.useMemo<GridColumns<Row>>(
     () => [
@@ -122,6 +126,8 @@ function Companies() {
   return (
     <div style={{ height: "100vh", width: "100%" }}>
       <ToastContainer />
+
+      {isLoadingCompanies ? <Loading /> : null}
 
       <DeleteModal
         id={idToBeDeleted}

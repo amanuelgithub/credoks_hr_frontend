@@ -15,12 +15,12 @@ import {
   useGetCompanyQuery,
   useUpdateCompanyMutation,
 } from "../../../services/companyApiSlice";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Formik, Field } from "formik";
 import * as yup from "yup";
-import { FormHelperText } from "@mui/material";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { errorToast, successToast } from "../../../utils/toastify";
 
 let initialValues: ICompany;
 
@@ -40,6 +40,8 @@ function EditCompany() {
   const [updateCompany, { isLoading, isSuccess, isError }] =
     useUpdateCompanyMutation();
 
+  const navigate = useNavigate();
+
   const handleSubmit = async (values: ICompany) => {
     try {
       await updateCompany(values).unwrap();
@@ -53,35 +55,22 @@ function EditCompany() {
   }, [data]);
 
   useEffect(() => {
-    if (isSuccess)
-      toast.success("Successfuly updated company.", {
-        autoClose: 2000,
-        hideProgressBar: true,
-      });
-    else if (isError)
-      toast.error("Error updating company.", {
-        autoClose: 15000,
-        hideProgressBar: true,
-      });
+    if (isSuccess) {
+      successToast("Successfuly updated company.");
+      navigate("/admin-dashboard/companies");
+    } else if (isError) errorToast("Error updating company.");
   }, [isSuccess, isError]);
 
   return (
     <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
       <ToastContainer />
 
-      <Box className="mx-24 my-6">
-        <Link
-          to="/admin-dashboard/companies"
-          className="text-blue-400 underline visited:text-blue-900"
-        >
-          view companies
-        </Link>
-      </Box>
       <Box className="flex flex-col items-center my-6">
         <Typography variant="h4" component="h4" className="underline">
           Update Company
         </Typography>
       </Box>
+
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}

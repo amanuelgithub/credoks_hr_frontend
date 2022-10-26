@@ -17,7 +17,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { Formik, Field } from "formik";
 import * as yup from "yup";
 import { FormHelperText } from "@mui/material";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 interface FormValues {
   name: string;
@@ -46,6 +46,8 @@ function AddCompany() {
   const [createCompany, { isLoading, isSuccess, isError }] =
     useAddCompanyMutation();
 
+  const navigate = useNavigate();
+
   const handleSubmit = async (values: FormValues) => {
     try {
       await createCompany(values).unwrap();
@@ -55,12 +57,14 @@ function AddCompany() {
   };
 
   useEffect(() => {
-    if (isSuccess)
+    if (isSuccess) {
       toast.success("Successfuly created company.", {
         autoClose: 2000,
         hideProgressBar: true,
       });
-    else if (isError)
+
+      navigate("/admin-dashboard/companies");
+    } else if (isError)
       toast.error("Error creating company.", {
         autoClose: 15000,
         hideProgressBar: true,
@@ -71,19 +75,12 @@ function AddCompany() {
     <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
       <ToastContainer />
 
-      <Box className="mx-24 my-6">
-        <Link
-          to="/admin-dashboard/companies"
-          className="text-blue-400 underline visited:text-blue-900"
-        >
-          view companies
-        </Link>
-      </Box>
       <Box className="flex flex-col items-center my-6">
         <Typography variant="h4" component="h4" className="underline">
           Add Company
         </Typography>
       </Box>
+
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
