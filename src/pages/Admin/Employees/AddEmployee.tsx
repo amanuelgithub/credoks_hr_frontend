@@ -19,9 +19,13 @@ import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import Modal from "@mui/material/Modal";
 import CloseIcon from "@mui/icons-material/Close";
-import { EmployeeStatusEnum, IEmployee } from "../../../models/IEmployee";
+import {
+  EmployeeStatusEnum,
+  GenderEnum,
+  IEmployee,
+  UserTypeEnum,
+} from "../../../models/IEmployee";
 import * as yup from "yup";
-import { GenderEnum, UserTypeEnum } from "../../../models/IUser";
 import { Field, Formik } from "formik";
 import FormHelperText from "@mui/material/FormHelperText";
 import { useAddEmployeeMutation } from "../../../services/employeeApiSlice";

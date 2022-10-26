@@ -1,6 +1,13 @@
-import { IUser } from "./IUser";
+export interface IEmployee {
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  phone?: string;
+  password?: string;
+  type?: UserTypeEnum;
+  dateOfBirth?: string;
+  gender?: GenderEnum;
 
-export interface IEmployee extends IUser {
   status?: EmployeeStatusEnum;
   dateOfJoining?: string;
   confirmationDate?: string;
@@ -11,9 +18,6 @@ export interface IEmployee extends IUser {
   accountNumber?: string;
   startsAt?: string;
   endsAt?: string;
-  // user: User;
-  // manager?: Manager;
-  // hr?: Hr;
 }
 
 export enum EmployeeStatusEnum {
@@ -21,4 +25,16 @@ export enum EmployeeStatusEnum {
   CONTRACT = "Contract",
   PROBAATION = "Probation",
   TRAINEE = "Trainee",
+}
+
+export enum UserTypeEnum {
+  ADMIN = "ADMIN",
+  MANAGER = "MANAGER",
+  EMPLOYEE = "EMPLOYEE",
+  HR = "HR",
+}
+
+export enum GenderEnum {
+  MALE = "Male",
+  FEMALE = "Female",
 }
