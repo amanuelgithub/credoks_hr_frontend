@@ -9,9 +9,7 @@ import EditCompany from "./pages/Admin/Companies/EditCompany";
 import Departments from "./pages/Admin/Departments/Departments";
 import DetailDepartment from "./pages/Admin/Departments/DetailDepartment";
 import Employees from "./pages/Admin/Employees/Employees";
-import AddLocation from "./pages/Admin/Locations/AddLocation";
 import DetailLocation from "./pages/Admin/Locations/DetailLocation";
-import EditLocation from "./pages/Admin/Locations/EditLocation";
 import Locations from "./pages/Admin/Locations/Locations";
 import Login from "./pages/Login";
 import { useAppSelector } from "../src/app/hooks";
@@ -45,8 +43,6 @@ function Router() {
           </Route>
           <Route path="locations">
             <Route index element={<Locations />} />
-            <Route path="add" element={<AddLocation />} />
-            <Route path="edit/:id" element={<EditLocation />} />
             <Route path="detail/:id" element={<DetailLocation />} />
           </Route>
         </Route>
