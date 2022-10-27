@@ -121,8 +121,7 @@ function AddEmployee({
     dayjs("2014-08-18T21:11:54")
   );
 
-  const [createEmployee, { isLoading, isSuccess, isError }] =
-    useAddEmployeeMutation();
+  const [createEmployee, { isSuccess, isError }] = useAddEmployeeMutation();
 
   const handleDateOfBirthChange = (newValue: any) => {
     setDateOfBirthValue(newValue);
@@ -178,7 +177,7 @@ function AddEmployee({
               setSubmitting(false);
             }}
           >
-            {({ values, errors, touched, handleSubmit, isSubmitting }) => (
+            {({ errors, touched, handleSubmit, isSubmitting }) => (
               <Box component="form" onSubmit={handleSubmit}>
                 <Grid container spacing={6} justifyContent="center">
                   <Grid item xs={12} md={4} lg={5}>

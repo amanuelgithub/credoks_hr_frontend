@@ -62,8 +62,7 @@ function AddLocation({
   openModal: boolean;
   handleCloseModal: () => void;
 }) {
-  const [createLocation, { isLoading, isSuccess, isError }] =
-    useAddLocationMutation();
+  const [createLocation, { isSuccess, isError }] = useAddLocationMutation();
 
   const [companies, setCompanies] = useState(initialCompanies);
   const { data } = useGetCompaniesQuery();
@@ -128,7 +127,6 @@ function AddLocation({
               errors,
               touched,
               handleSubmit,
-              handleChange,
               setFieldValue,
               isSubmitting,
             }) => (

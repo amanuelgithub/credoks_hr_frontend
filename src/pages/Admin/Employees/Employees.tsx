@@ -42,15 +42,8 @@ let initialEmployees: any[] = [];
 
 function Employees() {
   const [employees, setEmployees] = useState(initialEmployees);
-  const {
-    data,
-    isLoading: isLoading,
-    isSuccess: isLoaded,
-  } = useGetEmployeesQuery();
-  const [
-    deleteEmployee,
-    { isLoading: isDeleting, isSuccess: isDeleted, isError },
-  ] = useDeleteEmployeeMutation();
+  const { data } = useGetEmployeesQuery();
+  const [deleteEmployee] = useDeleteEmployeeMutation();
 
   // add employee modal state controller
   const [openAddEmployeeModal, setOpenAddEmployeeModal] = useState(false);

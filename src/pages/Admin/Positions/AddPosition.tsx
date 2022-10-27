@@ -47,8 +47,7 @@ function AddPosition({
   openModal: boolean;
   handleCloseModal: () => void;
 }) {
-  const [createPosition, { isLoading, isSuccess, isError }] =
-    useAddPositionMutation();
+  const [createPosition, { isSuccess, isError }] = useAddPositionMutation();
 
   const handleSubmit = async (values: IDepartment) => {
     try {
@@ -94,14 +93,7 @@ function AddPosition({
               setSubmitting(false);
             }}
           >
-            {({
-              values,
-              errors,
-              touched,
-              handleSubmit,
-              handleChange,
-              isSubmitting,
-            }) => (
+            {({ errors, touched, handleSubmit, isSubmitting }) => (
               <Box component="form" onSubmit={handleSubmit}>
                 <Box>
                   <Divider sx={{ my: 3 }} />

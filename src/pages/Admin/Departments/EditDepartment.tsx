@@ -50,10 +50,10 @@ function EditDepartment({
   handleCloseModal: () => void;
 }) {
   const { data: department } = useGetDepartmentQuery(id);
-  const [updateDepartment, { isLoading, isSuccess, isError }] =
+  const [updateDepartment, { isSuccess, isError }] =
     useUpdateDepartmentMutation();
 
-  const [companies, setCompanies] = useState(initialCompanies);
+  const [, setCompanies] = useState(initialCompanies);
   const { data: fetchedCompanies } = useGetCompaniesQuery();
 
   const handleSubmit = async (values: IDepartment) => {
@@ -113,7 +113,7 @@ function EditDepartment({
                   setSubmitting(false);
                 }}
               >
-                {({ values, errors, touched, handleSubmit, isSubmitting }) => (
+                {({ errors, touched, handleSubmit, isSubmitting }) => (
                   <Box component="form" onSubmit={handleSubmit}>
                     <Box>
                       {/* Company Name */}

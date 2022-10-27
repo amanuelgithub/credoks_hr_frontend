@@ -17,7 +17,6 @@ import MoreIcon from "@mui/icons-material/More";
 import DeleteModal from "../../../components/DeleteModal/DeleteModal";
 import { ToastContainer } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import EditEmployee from "../Employees/EditEmployee";
 import { IDepartment } from "../../../models/IDepartment";
 import {
   useDeleteDepartmentMutation,
@@ -43,15 +42,8 @@ let initialDepartments: any[] = [];
 
 function Departments() {
   const [departments, setDepartments] = useState(initialDepartments);
-  const {
-    data,
-    isLoading: isLoading,
-    isSuccess: isLoaded,
-  } = useGetDepartmentsQuery();
-  const [
-    deleteDepartment,
-    { isLoading: isDeleting, isSuccess: isDeleted, isError },
-  ] = useDeleteDepartmentMutation();
+  const { data } = useGetDepartmentsQuery();
+  const [deleteDepartment] = useDeleteDepartmentMutation();
 
   // add department modal state controller
   const [openAddDepartmentModal, setOpenAddDepartmentModal] = useState(false);

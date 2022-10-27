@@ -35,8 +35,7 @@ function EditCompany() {
   const { state } = useLocation();
   const { id } = state;
   const { data } = useGetCompanyQuery(id);
-  const [updateCompany, { isLoading, isSuccess, isError }] =
-    useUpdateCompanyMutation();
+  const [updateCompany, { isSuccess, isError }] = useUpdateCompanyMutation();
 
   const navigate = useNavigate();
 
@@ -69,7 +68,7 @@ function EditCompany() {
         <Formik
           initialValues={data}
           validationSchema={validationSchema}
-          onSubmit={(values: ICompany, { setSubmitting }) => {
+          onSubmit={(values: ICompany) => {
             handleSubmit({ ...values });
           }}
         >

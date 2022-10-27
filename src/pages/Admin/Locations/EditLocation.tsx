@@ -1,17 +1,12 @@
 import { useEffect, useState } from "react";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
 import TextField from "@mui/material/TextField";
 import IconButton from "@mui/material/IconButton";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import CloseIcon from "@mui/icons-material/Close";
 import * as yup from "yup";
 import { Field, Formik } from "formik";
-import FormHelperText from "@mui/material/FormHelperText";
 import { ToastContainer } from "react-toastify";
 import Divider from "@mui/material/Divider";
 import { errorToast, successToast } from "../../../utils/toastify";
@@ -61,8 +56,7 @@ function EditLocation({
   handleCloseModal: () => void;
 }) {
   const { data: location } = useGetLocationQuery(id);
-  const [updateLocation, { isLoading, isSuccess, isError }] =
-    useUpdateLocationMutation();
+  const [updateLocation, { isSuccess, isError }] = useUpdateLocationMutation();
 
   const [companies, setCompanies] = useState(initialCompanies);
   const { data: fetchedCompanies } = useGetCompaniesQuery();
@@ -129,7 +123,6 @@ function EditLocation({
                   errors,
                   touched,
                   handleSubmit,
-                  handleChange,
                   setFieldValue,
                   isSubmitting,
                 }) => (

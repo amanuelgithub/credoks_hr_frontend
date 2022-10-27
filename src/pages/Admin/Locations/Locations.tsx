@@ -17,8 +17,6 @@ import MoreIcon from "@mui/icons-material/More";
 import DeleteModal from "../../../components/DeleteModal/DeleteModal";
 import { ToastContainer } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import AddDepartment from "../Departments/AddDepartment";
-import EditDepartment from "../Departments/EditDepartment";
 import { ILocation } from "../../../models/ILocation";
 import {
   useDeleteLocationMutation,
@@ -44,15 +42,8 @@ let initialLocations: ILocation[] = [];
 
 function Locations() {
   const [locations, setLocations] = useState(initialLocations);
-  const {
-    data,
-    isLoading: isLoading,
-    isSuccess: isLoaded,
-  } = useGetLocationsQuery();
-  const [
-    deleteLocation,
-    { isLoading: isDeleting, isSuccess: isDeleted, isError },
-  ] = useDeleteLocationMutation();
+  const { data } = useGetLocationsQuery();
+  const [deleteLocation] = useDeleteLocationMutation();
 
   // add location modal state controller
   const [openAddLocationModal, setOpenAddLocationModal] = useState(false);

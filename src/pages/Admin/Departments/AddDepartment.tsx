@@ -4,13 +4,11 @@ import MenuItem from "@mui/material/MenuItem";
 import TextField from "@mui/material/TextField";
 import IconButton from "@mui/material/IconButton";
 import FormControl from "@mui/material/FormControl";
-import Autocomplete from "@mui/material/Autocomplete";
 import Select from "@mui/material/Select";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import CloseIcon from "@mui/icons-material/Close";
-import { UserTypeEnum } from "../../../models/IEmployee";
 import * as yup from "yup";
 import { Field, Formik } from "formik";
 import FormHelperText from "@mui/material/FormHelperText";
@@ -21,7 +19,7 @@ import { IDepartment } from "../../../models/IDepartment";
 import { useAddDepartmentMutation } from "../../../services/departmentApiSlice";
 import Button from "@mui/material/Button";
 import { useGetCompaniesQuery } from "../../../services/companyApiSlice";
-import { CompanyStatusEnum, ICompany } from "../../../models/ICompany";
+import { ICompany } from "../../../models/ICompany";
 
 let initialCompanies: ICompany[] = [];
 
@@ -65,8 +63,7 @@ function AddDepartment({
   openModal: boolean;
   handleCloseModal: () => void;
 }) {
-  const [createDepartment, { isLoading, isSuccess, isError }] =
-    useAddDepartmentMutation();
+  const [createDepartment, { isSuccess, isError }] = useAddDepartmentMutation();
 
   const [companies, setCompanies] = useState(initialCompanies);
   const { data } = useGetCompaniesQuery();
@@ -126,14 +123,7 @@ function AddDepartment({
               setSubmitting(false);
             }}
           >
-            {({
-              values,
-              errors,
-              touched,
-              handleSubmit,
-              handleChange,
-              isSubmitting,
-            }) => (
+            {({ errors, touched, handleSubmit, isSubmitting }) => (
               <Box component="form" onSubmit={handleSubmit}>
                 <Box>
                   {/* Company */}

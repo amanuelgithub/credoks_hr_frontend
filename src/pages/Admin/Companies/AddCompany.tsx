@@ -43,8 +43,7 @@ const validationSchema = yup.object({
 });
 
 function AddCompany() {
-  const [createCompany, { isLoading, isSuccess, isError }] =
-    useAddCompanyMutation();
+  const [createCompany, { isSuccess, isError }] = useAddCompanyMutation();
 
   const navigate = useNavigate();
 

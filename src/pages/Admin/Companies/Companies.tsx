@@ -30,11 +30,7 @@ function Companies() {
   const handleCloseModal = () => setOpenDeleteModal(false);
 
   const [companies, setCompanies] = useState(initialCompanies);
-  const {
-    data,
-    isLoading: isLoadingCompanies,
-    isSuccess: isSuccessCompanies,
-  } = useGetCompaniesQuery();
+  const { data, isLoading: isLoadingCompanies } = useGetCompaniesQuery();
   const [
     deleteCompany,
     { isSuccess: isDeletedCompany, isError: isErrorDeleteCompany },

@@ -101,8 +101,7 @@ function EditEmployee({
 
   const { data } = useGetEmployeeQuery(id);
 
-  const [updateEmployee, { isLoading, isSuccess, isError }] =
-    useUpdateEmployeeMutation();
+  const [updateEmployee, { isSuccess, isError }] = useUpdateEmployeeMutation();
 
   const handleDateOfBirthChange = (newValue: any) => {
     setDateOfBirthValue(newValue);
@@ -160,7 +159,7 @@ function EditEmployee({
                   setSubmitting(false);
                 }}
               >
-                {({ values, errors, touched, handleSubmit, isSubmitting }) => (
+                {({ errors, touched, handleSubmit, isSubmitting }) => (
                   <Box component="form" onSubmit={handleSubmit}>
                     <Grid container spacing={6} justifyContent="center">
                       <Grid item xs={12} md={4} lg={5}>
