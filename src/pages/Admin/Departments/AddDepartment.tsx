@@ -21,9 +21,9 @@ import { IDepartment } from "../../../models/IDepartment";
 import { useAddDepartmentMutation } from "../../../services/departmentApiSlice";
 import Button from "@mui/material/Button";
 import { useGetCompaniesQuery } from "../../../services/companyApiSlice";
-import { CompanyStatusEnum } from "../../../models/ICompany";
+import { CompanyStatusEnum, ICompany } from "../../../models/ICompany";
 
-let initialCompanies: any[] = [];
+let initialCompanies: ICompany[] = [];
 
 const initialValues: IDepartment = {
   name: "",
@@ -40,7 +40,7 @@ const initialValues: IDepartment = {
 const validationSchema = yup.object({
   name: yup.string().required(),
   description: yup.string().required(),
-  company: yup.string().required(),
+  companyId: yup.string().required(),
 });
 
 // style applied to the modals container
@@ -147,7 +147,7 @@ function AddDepartment({
                       Company
                     </InputLabel>
                     <Field
-                      name="company"
+                      name="companyId"
                       type="select"
                       label="Company"
                       as={Select}
