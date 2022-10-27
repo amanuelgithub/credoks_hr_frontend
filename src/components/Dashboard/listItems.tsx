@@ -4,6 +4,7 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import ListSubheader from "@mui/material/ListSubheader";
 import DashboardIcon from "@mui/icons-material/Dashboard";
+import GradingIcon from "@mui/icons-material/Grading";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import SupervisorAccountIcon from "@mui/icons-material/SupervisorAccount";
 import PeopleIcon from "@mui/icons-material/People";
@@ -30,14 +31,6 @@ export const mainListItems = (
         <ListItemText primary="Companies" />
       </ListItemButton>
     </Link>
-    <Link to="/admin-dashboard/employees">
-      <ListItemButton>
-        <ListItemIcon>
-          <PeopleIcon />
-        </ListItemIcon>
-        <ListItemText primary="Employees" />
-      </ListItemButton>
-    </Link>
     <Link to="/admin-dashboard/departments">
       <ListItemButton>
         <ListItemIcon>
@@ -52,6 +45,22 @@ export const mainListItems = (
           <LocationOnIcon />
         </ListItemIcon>
         <ListItemText primary="Locations" />
+      </ListItemButton>
+    </Link>
+    <Link to="/admin-dashboard/employees">
+      <ListItemButton>
+        <ListItemIcon>
+          <PeopleIcon />
+        </ListItemIcon>
+        <ListItemText primary="Employees" />
+      </ListItemButton>
+    </Link>
+    <Link to="/admin-dashboard/positions">
+      <ListItemButton>
+        <ListItemIcon>
+          <GradingIcon />
+        </ListItemIcon>
+        <ListItemText primary="Positions" />
       </ListItemButton>
     </Link>
   </React.Fragment>

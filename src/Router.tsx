@@ -14,6 +14,7 @@ import Locations from "./pages/Admin/Locations/Locations";
 import Login from "./pages/Login";
 import { useAppSelector } from "../src/app/hooks";
 import DetailEmployee from "./pages/Admin/Employees/DetailEmployee";
+import Positions from "./pages/Admin/Positions/Positions";
 
 function Router() {
   const token = useAppSelector((state) => state.auth.access_token);
@@ -44,6 +45,9 @@ function Router() {
           <Route path="locations">
             <Route index element={<Locations />} />
             <Route path="detail/:id" element={<DetailLocation />} />
+          </Route>
+          <Route path="positions">
+            <Route index element={<Positions />} />
           </Route>
         </Route>
       </Route>
