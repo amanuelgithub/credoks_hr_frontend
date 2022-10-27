@@ -16,34 +16,32 @@ import { useAppDispatch } from "../app/hooks";
 import { useLoginMutation } from "../services/authApiSlice";
 import { setCredentials } from "../features/auth/authSlice";
 import { useNavigate } from "react-router-dom";
+import * as yup from "yup";
+import Loading from "../components/Loading";
+import { Field, Formik } from "formik";
+import { IAuth } from "../models/IAuth";
+
+const initialValues: IAuth = {
+  email: "",
+  password: "",
+};
+
+const validationSchema = yup.object({
+  email: yup.string().email().required(),
+  password: yup.string().required(),
+});
 
 function Login() {
-  const userRef: any = useRef();
-
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
-  const [login, { isLoading }] = useLoginMutation();
+  const [login, { isLoading, isError, error }] = useLoginMutation();
 
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    userRef.current.focus();
-  }, []);
-
-  const handleSubmit = async (e: any) => {
-    e.preventDefault();
-    console.log("email:", email, "password:", password);
-
+  const handleSubmit = async (values: IAuth) => {
     try {
-      const userData = await login({ email, password }).unwrap();
+      const userData = await login(values).unwrap();
       dispatch(setCredentials({ ...userData }));
 
-      console.log("userData: ", userData);
-
-      setEmail("");
-      setPassword("");
       navigate("/admin-dashboard");
     } catch (err: any) {
       console.log("Error: ", err);
@@ -53,6 +51,7 @@ function Login() {
   return (
     <Grid container component="main" sx={{ height: "100vh" }}>
       <CssBaseline />
+
       <Grid
         item
         xs={false}
@@ -69,6 +68,7 @@ function Login() {
           backgroundPosition: "center",
         }}
       />
+
       <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
         <Box
           sx={{
@@ -78,73 +78,100 @@ function Login() {
             flexDirection: "column",
             alignItems: "center",
           }}
+          className="relative"
         >
+          {isLoading ? <Loading /> : null}
+
+          {isError ? (
+            <p className="text-xs text-red-300">
+              Authentication Error. Please check your credentials and try again!
+            </p>
+          ) : null}
+
           <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
             <LockOutlinedIcon />
           </Avatar>
+
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
-          <Box
-            component="form"
-            noValidate
-            onSubmit={handleSubmit}
-            sx={{ mt: 1 }}
+
+          <Formik
+            initialValues={initialValues}
+            validationSchema={validationSchema}
+            onSubmit={(values: IAuth, { setSubmitting }) => {
+              setSubmitting(true);
+              handleSubmit(values);
+              setSubmitting(false);
+            }}
           >
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              size="small"
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
-              autoFocus
-              value={email}
-              onChange={(e: any) => setEmail(e.target.value)}
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              size="small"
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-              ref={userRef}
-              value={password}
-              onChange={(e: any) => setPassword(e.target.value)}
-            />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            />
-            <Button
-              type="submit"
-              fullWidth
-              size="small"
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
-              Sign In
-            </Button>
-            <Grid container>
-              <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
-              </Grid>
-              <Grid item>
-                <Link href="#" variant="body2">
-                  {"Don't have an account? Sign Up"}
-                </Link>
-              </Grid>
-            </Grid>
-            <Copyright sx={{ mt: 5 }} />
-          </Box>
+            {({
+              values,
+              errors,
+              touched,
+              handleSubmit,
+              handleChange,
+              isSubmitting,
+            }) => (
+              <Box
+                component="form"
+                noValidate
+                onSubmit={handleSubmit}
+                sx={{ mt: 1 }}
+              >
+                <Field
+                  name="email"
+                  margin="normal"
+                  fullWidth
+                  size="small"
+                  label="Email Address"
+                  autoComplete="email"
+                  as={TextField}
+                  error={touched.email && Boolean(errors.email)}
+                  helperText={touched.email && errors.email}
+                />
+                <Field
+                  name="password"
+                  margin="normal"
+                  fullWidth
+                  size="small"
+                  label="Password"
+                  type="password"
+                  autoComplete="current-password"
+                  as={TextField}
+                  error={touched.password && Boolean(errors.password)}
+                  helperText={touched.password && errors.password}
+                />
+                <FormControlLabel
+                  control={<Checkbox value="remember" color="primary" />}
+                  label="Remember me"
+                />
+                <Button
+                  type="submit"
+                  fullWidth
+                  disabled={isSubmitting}
+                  size="small"
+                  variant="contained"
+                  sx={{ mt: 3, mb: 2 }}
+                >
+                  Sign In
+                </Button>
+                <Grid container>
+                  <Grid item xs>
+                    <Link href="#" variant="body2">
+                      Forgot password?
+                    </Link>
+                  </Grid>
+                  <Grid item>
+                    <Link href="#" variant="body2">
+                      {"Don't have an account? Sign Up"}
+                    </Link>
+                  </Grid>
+                </Grid>
+                <Copyright sx={{ mt: 5 }} />
+              </Box>
+            )}
+          </Formik>
         </Box>
       </Grid>
     </Grid>
