@@ -1,20 +1,13 @@
 import { useEffect, useState } from "react";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
 import TextField from "@mui/material/TextField";
 import IconButton from "@mui/material/IconButton";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import CloseIcon from "@mui/icons-material/Close";
-import { UserTypeEnum } from "../../../models/IEmployee";
 import * as yup from "yup";
 import { Field, Formik } from "formik";
-import FormHelperText from "@mui/material/FormHelperText";
 import { ToastContainer } from "react-toastify";
-import Divider from "@mui/material/Divider";
 import { errorToast, successToast } from "../../../utils/toastify";
 import { IDepartment } from "../../../models/IDepartment";
 import {
@@ -23,13 +16,13 @@ import {
 } from "../../../services/departmentApiSlice";
 import Button from "@mui/material/Button";
 import { useGetCompaniesQuery } from "../../../services/companyApiSlice";
+import { ICompany } from "../../../models/ICompany";
 
-let initialCompanies: any[] = [];
+let initialCompanies: ICompany[] = [];
 
 const validationSchema = yup.object({
   name: yup.string().required(),
   description: yup.string().required(),
-  company: yup.string().required(),
 });
 
 // style applied to the modals container
@@ -61,7 +54,7 @@ function EditDepartment({
     useUpdateDepartmentMutation();
 
   const [companies, setCompanies] = useState(initialCompanies);
-  const { data } = useGetCompaniesQuery();
+  const { data: fetchedCompanies } = useGetCompaniesQuery();
 
   const handleSubmit = async (values: IDepartment) => {
     try {
@@ -73,15 +66,15 @@ function EditDepartment({
   };
 
   useEffect(() => {
-    if (data !== undefined) {
-      let fetchedCompanies = data !== undefined ? data : [];
-      setCompanies(fetchedCompanies);
+    if (fetchedCompanies !== undefined) {
+      let companies = fetchedCompanies !== undefined ? fetchedCompanies : [];
+      setCompanies(companies);
     }
 
     return () => {
       setCompanies(initialCompanies);
     };
-  }, [data]);
+  }, [fetchedCompanies]);
 
   useEffect(() => {
     if (isSuccess) successToast("Successfully Updated Department.");
@@ -90,7 +83,7 @@ function EditDepartment({
 
   return (
     <>
-      {data && (
+      {department && (
         <>
           <ToastContainer />
 
@@ -123,37 +116,6 @@ function EditDepartment({
                 {({ values, errors, touched, handleSubmit, isSubmitting }) => (
                   <Box component="form" onSubmit={handleSubmit}>
                     <Box>
-                      {/* Company */}
-                      <FormControl
-                        fullWidth
-                        margin="normal"
-                        size="small"
-                        error={touched.company && Boolean(errors.company)}
-                      >
-                        <InputLabel id="company-type-select-label">
-                          Company
-                        </InputLabel>
-                        <Field
-                          name="company"
-                          type="select"
-                          label="Company"
-                          as={Select}
-                          // value={values.company}
-                        >
-                          {companies.map((company) => (
-                            <MenuItem value={company.id}>
-                              {company.name}
-                            </MenuItem>
-                          ))}
-                        </Field>
-                        <FormHelperText>
-                          first select the company
-                          {/* {touched.company && errors.company} */}
-                        </FormHelperText>
-                      </FormControl>
-
-                      <Divider sx={{ my: 3 }} />
-
                       {/* Company Name */}
                       <Field
                         name="name"
