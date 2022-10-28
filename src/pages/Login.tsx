@@ -1,4 +1,3 @@
-import { useState, useRef, useEffect } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -14,12 +13,15 @@ import Typography from "@mui/material/Typography";
 import Copyright from "../components/Copyright";
 import { useAppDispatch } from "../app/hooks";
 import { useLoginMutation } from "../services/authApiSlice";
-import { setCredentials } from "../features/auth/authSlice";
+import { IAuthUser, setAuthUser } from "../features/auth/authSlice";
 import { useNavigate } from "react-router-dom";
 import * as yup from "yup";
 import Loading from "../components/Loading";
 import { Field, Formik } from "formik";
 import { IAuth } from "../models/IAuth";
+import { IToken } from "../models/IToken";
+import jwt_decode from "jwt-decode";
+import { UserTypeEnum } from "../models/IEmployee";
 
 const initialValues: IAuth = {
   email: "",
@@ -32,20 +34,41 @@ const validationSchema = yup.object({
 });
 
 function Login() {
-  const [login, { isLoading, isError, error }] = useLoginMutation();
+  const [login, { isLoading, isError }] = useLoginMutation();
 
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
   const handleSubmit = async (values: IAuth) => {
     try {
-      const userData = await login(values).unwrap();
-      dispatch(setCredentials({ ...userData }));
+      const userData: IToken = await login(values).unwrap();
 
-      navigate("/admin-dashboard");
+      const user: Partial<IAuthUser> = jwt_decode(userData.access_token);
+
+      dispatch(
+        setAuthUser({
+          ...userData,
+          sub: user.sub ?? "",
+          email: user.email ?? "",
+          userType: user.userType ?? "",
+        })
+      );
+
+      user.userType !== undefined && user.userType !== ""
+        ? dashboardRedirector(user.userType)
+        : console.log(
+            "Error: could not login because user type is not specified"
+          );
     } catch (err: any) {
       console.log("Error: ", err);
     }
+  };
+
+  const dashboardRedirector = (userType: UserTypeEnum) => {
+    if (userType === UserTypeEnum.ADMIN) navigate("/admin-dashboard");
+    if (userType === UserTypeEnum.EMPLOYEE) navigate("/employee-dashboard");
+    if (userType === UserTypeEnum.HR) navigate("/hr-dashboard");
+    if (userType === UserTypeEnum.MANAGER) navigate("/manager-dashboard");
   };
 
   return (
@@ -105,14 +128,7 @@ function Login() {
               setSubmitting(false);
             }}
           >
-            {({
-              values,
-              errors,
-              touched,
-              handleSubmit,
-              handleChange,
-              isSubmitting,
-            }) => (
+            {({ errors, touched, handleSubmit, isSubmitting }) => (
               <Box
                 component="form"
                 noValidate

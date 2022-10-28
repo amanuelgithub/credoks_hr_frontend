@@ -5,15 +5,13 @@ import ListItemText from "@mui/material/ListItemText";
 import ListSubheader from "@mui/material/ListSubheader";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import GradingIcon from "@mui/icons-material/Grading";
-import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
-import SupervisorAccountIcon from "@mui/icons-material/SupervisorAccount";
 import PeopleIcon from "@mui/icons-material/People";
 import BusinessIcon from "@mui/icons-material/Business";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import GroupsIcon from "@mui/icons-material/Groups";
 import { Link } from "react-router-dom";
 
-export const mainListItems = (
+export const adminSidebarMainListItems = (
   <React.Fragment>
     <Link to="/admin-dashboard">
       <ListItemButton>
@@ -66,7 +64,7 @@ export const mainListItems = (
   </React.Fragment>
 );
 
-export const secondaryListItems = (
+export const adminSidebarSecondaryListItems = (
   <React.Fragment>
     <ListSubheader component="div" inset>
       Saved reports

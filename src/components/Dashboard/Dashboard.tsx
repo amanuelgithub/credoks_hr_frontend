@@ -14,7 +14,6 @@ import Container from "@mui/material/Container";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import NotificationsIcon from "@mui/icons-material/Notifications";
-import { mainListItems, secondaryListItems } from "./listItems";
 import { Outlet } from "react-router-dom";
 import Copyright from "../Copyright";
 
@@ -70,7 +69,15 @@ const Drawer = styled(MuiDrawer, {
 
 const mdTheme = createTheme();
 
-function DashboardContent() {
+function DashboardContent({
+  dashboardName,
+  sidebarMainListItems,
+  sidebarSecondaryListItems,
+}: {
+  dashboardName: string;
+  sidebarMainListItems: any;
+  sidebarSecondaryListItems: any;
+}) {
   const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {
     setOpen(!open);
@@ -105,7 +112,7 @@ function DashboardContent() {
               noWrap
               sx={{ flexGrow: 1 }}
             >
-              Dashboard
+              {dashboardName}
             </Typography>
             <IconButton color="inherit">
               <Badge badgeContent={4} color="secondary">
@@ -114,6 +121,7 @@ function DashboardContent() {
             </IconButton>
           </Toolbar>
         </AppBar>
+
         <Drawer variant="permanent" open={open}>
           <Toolbar
             sx={{
@@ -129,9 +137,11 @@ function DashboardContent() {
           </Toolbar>
           <Divider />
           <List component="nav">
-            {mainListItems}
+            {/* sidebar-main-list-items */}
+            {sidebarMainListItems}
             <Divider sx={{ my: 1 }} />
-            {secondaryListItems}
+            {/* sidebar-seconday-list-items */}
+            {sidebarSecondaryListItems}
           </List>
         </Drawer>
         <Box
@@ -158,6 +168,20 @@ function DashboardContent() {
   );
 }
 
-export default function Dashboard() {
-  return <DashboardContent />;
+export default function Dashboard({
+  dashboardName,
+  sidebarMainListItems,
+  sidebarSecondaryListItems,
+}: {
+  dashboardName: string;
+  sidebarMainListItems: any;
+  sidebarSecondaryListItems: any;
+}) {
+  return (
+    <DashboardContent
+      dashboardName={dashboardName}
+      sidebarMainListItems={sidebarMainListItems}
+      sidebarSecondaryListItems={sidebarSecondaryListItems}
+    />
+  );
 }

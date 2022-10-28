@@ -15,6 +15,9 @@ import Login from "./pages/Login";
 import { useAppSelector } from "../src/app/hooks";
 import DetailEmployee from "./pages/Admin/Employees/DetailEmployee";
 import Positions from "./pages/Admin/Positions/Positions";
+import HrDashboard from "./pages/HR/HrDashboard";
+import ManagerDashboard from "./pages/Manager/ManagerDashboard";
+import EmployeeDashboard from "./pages/Employee/EmployeeDashboard";
 
 function Router() {
   const token = useAppSelector((state) => state.auth.access_token);
@@ -26,6 +29,7 @@ function Router() {
       {!token ? <Route path="/signin" element={<Login />} /> : null}
 
       {/* Protected Routes */}
+      {/* Admin Routes */}
       <Route element={<ProtectedRoutes />}>
         <Route path="admin-dashboard" element={<AdminDashboard />}>
           <Route path="employees">
@@ -50,7 +54,17 @@ function Router() {
             <Route index element={<Positions />} />
           </Route>
         </Route>
+
+        {/* HR Routes */}
+        <Route path="hr-dashboard" element={<HrDashboard />} />
+
+        {/* Manager Routes */}
+        <Route path="manager-dashboard" element={<ManagerDashboard />} />
+
+        {/* Employee Routes */}
+        <Route path="employee-dashboard" element={<EmployeeDashboard />} />
       </Route>
+
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );
