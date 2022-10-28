@@ -49,6 +49,8 @@ function Login() {
         setAuthUser({
           ...userData,
           sub: user.sub ?? "",
+          firstName: user.firstName ?? "",
+          lastName: user.lastName ?? "",
           email: user.email ?? "",
           userType: user.userType ?? "",
         })

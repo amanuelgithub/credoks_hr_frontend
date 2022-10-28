@@ -7,6 +7,7 @@ import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import List from "@mui/material/List";
 import Typography from "@mui/material/Typography";
+import LogoutIcon from "@mui/icons-material/Logout";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import Badge from "@mui/material/Badge";
@@ -16,6 +17,8 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import { Outlet } from "react-router-dom";
 import Copyright from "../Copyright";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { logout } from "../../features/auth/authSlice";
 
 const drawerWidth: number = 240;
 
@@ -81,6 +84,15 @@ function DashboardContent({
     setOpen(!open);
   };
 
+  const dispatch = useAppDispatch();
+
+  const firstName = useAppSelector((state) => state.auth.firstName);
+
+  const handleLogout = (e: any) => {
+    e.preventDefault();
+    dispatch(logout());
+  };
+
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
@@ -111,11 +123,21 @@ function DashboardContent({
           >
             {dashboardName}
           </Typography>
-          <IconButton color="inherit">
-            <Badge badgeContent={4} color="secondary">
-              <NotificationsIcon />
-            </Badge>
-          </IconButton>
+          <Box>
+            <IconButton color="inherit" sx={{ mr: 1.5 }}>
+              <Badge badgeContent={4} color="secondary">
+                <NotificationsIcon />
+              </Badge>
+            </IconButton>
+            <IconButton color="inherit" sx={{ mr: 1.5 }} onClick={handleLogout}>
+              <LogoutIcon />
+            </IconButton>
+
+            {/* logged-in user first & last name */}
+          </Box>
+          <Box sx={{ mr: 1.5 }}>
+            <Typography>{firstName}</Typography>
+          </Box>
         </Toolbar>
       </AppBar>
 
