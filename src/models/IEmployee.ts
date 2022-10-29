@@ -16,6 +16,7 @@ export interface IEmployee {
   emergencyContactNumber?: string;
   fatherName?: string;
   spouseName?: string;
+  bankName?: string;
   accountNumber?: string;
   startsAt?: string;
   endsAt?: string;

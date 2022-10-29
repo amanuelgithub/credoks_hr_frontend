@@ -9,7 +9,7 @@ export const employeeApiSlice = apiSlice.injectEndpoints({
       keepUnusedDataFor: 10,
     }),
 
-    getEmployee: builder.query({
+    getEmployee: builder.query<IEmployee, any>({
       query: (id: string | undefined) => ({ url: `/employees/${id}` }),
       providesTags: [{ type: "Employee", id: "LIST" }],
     }),
