@@ -1,16 +1,15 @@
 import Dashboard from "../../components/Dashboard/Dashboard";
 import {
-  managerSidebarMainListItems,
-  managerSidebarSecondaryListItems,
-} from "./manager-sidebar-list-items";
+  ManagerSidebarMainListItems,
+  ManagerSidebarSecondaryListItems,
+} from "./ManagerSidebarListItems";
 
 function ManagerDashboard() {
   return (
-    <Dashboard
-      dashboardName="Manager Dashboard"
-      sidebarMainListItems={managerSidebarMainListItems}
-      sidebarSecondaryListItems={managerSidebarSecondaryListItems}
-    />
+    <Dashboard dashboardName="Manager Dashboard">
+      <ManagerSidebarMainListItems />
+      <ManagerSidebarSecondaryListItems />
+    </Dashboard>
   );
 }
 

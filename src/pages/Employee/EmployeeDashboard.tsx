@@ -1,16 +1,19 @@
-import Dashboard from "../../components/Dashboard/Dashboard";
 import {
-  employeeSidebarMainListItems,
-  employeeSidebarSecondaryListItems,
-} from "./employee-sidebar-list-items";
+  EmployeeSidebarMainListItems,
+  EmployeeSidebarSecondaryListItems,
+} from "./EmployeeSidebarIistItems";
+import Divider from "@mui/material/Divider";
+import Dashboard from "../../components/Dashboard/Dashboard";
 
 function EmployeeDashboard() {
   return (
-    <Dashboard
-      dashboardName="Employee Dashboard"
-      sidebarMainListItems={employeeSidebarMainListItems}
-      sidebarSecondaryListItems={employeeSidebarSecondaryListItems}
-    />
+    <Dashboard dashboardName="Employee Dashboard">
+      <EmployeeSidebarMainListItems />
+
+      <Divider sx={{ my: 1 }} />
+
+      <EmployeeSidebarSecondaryListItems />
+    </Dashboard>
   );
 }
 

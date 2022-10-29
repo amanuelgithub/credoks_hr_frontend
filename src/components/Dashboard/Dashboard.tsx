@@ -72,12 +72,10 @@ const Drawer = styled(MuiDrawer, {
 
 function DashboardContent({
   dashboardName,
-  sidebarMainListItems,
-  sidebarSecondaryListItems,
+  children,
 }: {
   dashboardName: string;
-  sidebarMainListItems: any;
-  sidebarSecondaryListItems: any;
+  children: any;
 }) {
   const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {
@@ -155,13 +153,7 @@ function DashboardContent({
           </IconButton>
         </Toolbar>
         <Divider />
-        <List component="nav">
-          {/* sidebar-main-list-items */}
-          {sidebarMainListItems}
-          <Divider sx={{ my: 1 }} />
-          {/* sidebar-seconday-list-items */}
-          {sidebarSecondaryListItems}
-        </List>
+        <List component="nav">{children}</List>
       </Drawer>
       <Box
         component="main"
@@ -186,20 +178,15 @@ function DashboardContent({
   );
 }
 
-export default function Dashboard({
-  dashboardName,
-  sidebarMainListItems,
-  sidebarSecondaryListItems,
-}: {
+type Props = {
   dashboardName: string;
-  sidebarMainListItems: any;
-  sidebarSecondaryListItems: any;
-}) {
+  children: any;
+};
+
+export default function Dashboard({ dashboardName, children }: Props) {
   return (
-    <DashboardContent
-      dashboardName={dashboardName}
-      sidebarMainListItems={sidebarMainListItems}
-      sidebarSecondaryListItems={sidebarSecondaryListItems}
-    />
+    <DashboardContent dashboardName={dashboardName}>
+      {children}
+    </DashboardContent>
   );
 }

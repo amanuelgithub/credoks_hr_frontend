@@ -1,6 +1,5 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import PageNotFound from "./components/PageNotFound";
-import ProtectedRoutes from "./components/ProtectedRoutes";
 import AdminDashboard from "./pages/Admin/AdminDashboard";
 import AddCompany from "./pages/Admin/Companies/AddCompany";
 import Companies from "./pages/Admin/Companies/Companies";
@@ -18,6 +17,11 @@ import Positions from "./pages/Admin/Positions/Positions";
 import HrDashboard from "./pages/HR/HrDashboard";
 import ManagerDashboard from "./pages/Manager/ManagerDashboard";
 import EmployeeDashboard from "./pages/Employee/EmployeeDashboard";
+import Profile from "./pages/Employee/Profile/Profile";
+import AdminRoutesProtector from "./components/RouteProtector/AdminRoutesProtector";
+import HrRoutesProtector from "./components/RouteProtector/HrRoutesProtector";
+import ManagerRoutesProtector from "./components/RouteProtector/ManagerRoutesProtector";
+import EmployeeRoutesProtector from "./components/RouteProtector/EmployeeRoutesProtector";
 
 function Router() {
   const token = useAppSelector((state) => state.auth.access_token);
@@ -29,8 +33,9 @@ function Router() {
       {!token ? <Route path="/signin" element={<Login />} /> : null}
 
       {/* Protected Routes */}
+
       {/* Admin Routes */}
-      <Route element={<ProtectedRoutes />}>
+      <Route element={<AdminRoutesProtector />}>
         <Route path="admin-dashboard" element={<AdminDashboard />}>
           <Route path="employees">
             <Route index element={<Employees />} />
@@ -54,15 +59,23 @@ function Router() {
             <Route index element={<Positions />} />
           </Route>
         </Route>
+      </Route>
 
-        {/* HR Routes */}
+      {/* HR Routes */}
+      <Route element={<HrRoutesProtector />}>
         <Route path="hr-dashboard" element={<HrDashboard />} />
+      </Route>
 
-        {/* Manager Routes */}
+      {/* Manager Routes */}
+      <Route element={<ManagerRoutesProtector />}>
         <Route path="manager-dashboard" element={<ManagerDashboard />} />
+      </Route>
 
-        {/* Employee Routes */}
-        <Route path="employee-dashboard" element={<EmployeeDashboard />} />
+      {/* Employee Routes */}
+      <Route element={<EmployeeRoutesProtector />}>
+        <Route path="employee-dashboard" element={<EmployeeDashboard />}>
+          <Route path="profile" element={<Profile />} />
+        </Route>
       </Route>
 
       <Route path="*" element={<PageNotFound />} />

@@ -1,16 +1,19 @@
-import {
-  adminSidebarMainListItems,
-  adminSidebarSecondaryListItems,
-} from "./admin-sidebar-list-items";
 import Dashboard from "../../components/Dashboard/Dashboard";
+import {
+  AdminSidebarMainListItems,
+  AdminSidebarSecondaryListItems,
+} from "./AdminSidebarListItems";
+import Divider from "@mui/material/Divider";
 
 function AdminDashboard() {
   return (
-    <Dashboard
-      dashboardName="Admin Dashboard"
-      sidebarMainListItems={adminSidebarMainListItems}
-      sidebarSecondaryListItems={adminSidebarSecondaryListItems}
-    />
+    <Dashboard dashboardName="Admin Dashboard">
+      <AdminSidebarMainListItems />
+
+      <Divider sx={{ my: 1 }} />
+
+      <AdminSidebarSecondaryListItems />
+    </Dashboard>
   );
 }
 
