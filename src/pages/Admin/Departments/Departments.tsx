@@ -187,7 +187,6 @@ function Departments() {
         autoHeight
         loading={false}
         error={undefined}
-        checkboxSelection
         components={{
           Toolbar: CustomToolbar,
         }}

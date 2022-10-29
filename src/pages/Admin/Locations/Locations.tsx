@@ -190,7 +190,6 @@ function Locations() {
         autoHeight
         loading={false}
         error={undefined}
-        checkboxSelection
         components={{
           Toolbar: CustomToolbar,
         }}

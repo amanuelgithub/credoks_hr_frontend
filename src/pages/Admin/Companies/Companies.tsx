@@ -130,7 +130,6 @@ function Companies() {
         autoHeight
         loading={false}
         error={undefined}
-        checkboxSelection
       />
     </div>
   );
