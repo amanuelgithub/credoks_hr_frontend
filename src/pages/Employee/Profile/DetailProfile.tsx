@@ -69,7 +69,7 @@ function DetailProfile({
                 sx={{ fontWeight: "bold", color: "gray", fontSize: 18 }}
               >
                 {/* Amanuel Girma */}
-                {data?.firstName ?? "Null"} {data?.lastName ?? "Null"}
+                {data?.firstName ?? "Null"} {data?.fatherName ?? "Null"}
               </Typography>
               <Typography sx={{ fontSize: 10, color: "secondary.main" }}>
                 Software Developer
@@ -107,7 +107,7 @@ function DetailProfile({
             }}
           >
             {/* Permanent */}
-            {data?.status ?? "Null"}
+            {data?.employmentStatus ?? "Null"}
           </Typography>
         </Box>
 
@@ -153,15 +153,6 @@ function DetailProfile({
                 label="Date of Birth"
                 value={data?.dateOfBirth ?? "Null"}
               />
-              <Field
-                label="Emergency Contact Name"
-                value={data?.emergencyContactName ?? "Null"}
-              />
-              <Field
-                label="Emergency Contact Number"
-                value={data?.emergencyContactNumber ?? "Null"}
-              />
-              <Field label="Spouse Name " value={data?.spouseName ?? "Null"} />
             </Box>
           </Box>
 
@@ -179,7 +170,7 @@ function DetailProfile({
             </Typography>
 
             <Box>
-              <Field label="Bank Name" value={data?.bankName ?? "Null"} />
+              {/* <Field label="Bank Name" value={data?.bankName ?? "Null"} /> */}
               <Field
                 label="Account Number"
                 value={data?.accountNumber ?? "Null"}

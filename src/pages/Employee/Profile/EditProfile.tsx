@@ -12,7 +12,7 @@ import * as yup from "yup";
 import { Field, Formik } from "formik";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
-import { IEmployee } from "../../../models/IEmployee";
+import { GenderEnum, IEmployee } from "../../../models/IEmployee";
 import Button from "@mui/material/Button";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
@@ -33,16 +33,13 @@ import { ToastContainer } from "react-toastify";
 
 const validationSchema = yup.object({
   firstName: yup.string().required(),
-  lastName: yup.string().required(),
-  email: yup.string().required(),
+  fatherName: yup.string().required(),
+  grandFatherName: yup.string().required(),
+  gender: yup.mixed().oneOf([GenderEnum.FEMALE, GenderEnum.MALE]),
+  dateOfBirth: yup.date(),
+  email: yup.string().required().email(),
   phone: yup.string().required(),
   password: yup.string().required(),
-  dateOfBirth: yup.string(),
-  gender: yup.string().required(),
-  emergencyContactName: yup.string().required(),
-  emergencyContactNumber: yup.string().required(),
-  fatherName: yup.string().required(),
-  spouseName: yup.string().required(),
   accountNumber: yup.string().required(),
 });
 
@@ -150,17 +147,37 @@ function EditProfile({
                           helperText={touched.firstName && errors.firstName}
                         />
 
-                        {/* Last Name */}
+                        {/* Father Name */}
                         <Field
-                          name="lastName"
+                          name="fatherName"
                           margin="dense"
                           fullWidth
-                          label="Last Name"
+                          label="Father Name"
                           size="small"
                           type="text"
                           as={TextField}
-                          error={touched.lastName && Boolean(errors.lastName)}
-                          helperText={touched.lastName && errors.lastName}
+                          error={
+                            touched.fatherName && Boolean(errors.fatherName)
+                          }
+                          helperText={touched.fatherName && errors.fatherName}
+                        />
+
+                        {/* Grand Father Name */}
+                        <Field
+                          name="grandFatherName"
+                          margin="dense"
+                          fullWidth
+                          label="Grand Father Name"
+                          size="small"
+                          type="text"
+                          as={TextField}
+                          error={
+                            touched.grandFatherName &&
+                            Boolean(errors.grandFatherName)
+                          }
+                          helperText={
+                            touched.grandFatherName && errors.grandFatherName
+                          }
                         />
 
                         {/* gender */}
@@ -177,12 +194,12 @@ function EditProfile({
                             name="radio-buttons-group"
                           >
                             <FormControlLabel
-                              value="male"
+                              value={GenderEnum.MALE}
                               control={<Radio />}
                               label="Male"
                             />
                             <FormControlLabel
-                              value="female"
+                              value={GenderEnum.FEMALE}
                               control={<Radio />}
                               label="Female"
                             />
@@ -216,56 +233,6 @@ function EditProfile({
                             touched.fatherName && Boolean(errors.fatherName)
                           }
                           helperText={touched.fatherName && errors.fatherName}
-                        />
-
-                        {/* Spouse Name */}
-                        <Field
-                          name="spouseName"
-                          margin="dense"
-                          fullWidth
-                          label="Spouse Name"
-                          size="small"
-                          as={TextField}
-                          error={
-                            touched.spouseName && Boolean(errors.spouseName)
-                          }
-                          helperText={touched.spouseName && errors.spouseName}
-                        />
-
-                        {/* Emergency Contact Name */}
-                        <Field
-                          name="emergencyContactName"
-                          margin="dense"
-                          fullWidth
-                          label="Emergency Contact Name"
-                          size="small"
-                          as={TextField}
-                          error={
-                            touched.emergencyContactName &&
-                            Boolean(errors.emergencyContactName)
-                          }
-                          helperText={
-                            touched.emergencyContactName &&
-                            errors.emergencyContactName
-                          }
-                        />
-
-                        {/* Emergency Contact Number */}
-                        <Field
-                          name="emergencyContactNumber"
-                          margin="dense"
-                          fullWidth
-                          label="Emergency Contact Number"
-                          size="small"
-                          as={TextField}
-                          error={
-                            touched.emergencyContactNumber &&
-                            Boolean(errors.emergencyContactNumber)
-                          }
-                          helperText={
-                            touched.emergencyContactNumber &&
-                            errors.emergencyContactNumber
-                          }
                         />
                       </AccordionDetails>
                     </Accordion>

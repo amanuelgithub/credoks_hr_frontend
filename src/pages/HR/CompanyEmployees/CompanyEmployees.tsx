@@ -13,17 +13,15 @@ import {
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { IEmployee } from "../../../models/IEmployee";
-import {
-  useGetEmployeesQuery,
-  useDeleteEmployeeMutation,
-} from "../../../services/employeeApiSlice";
+import { useGetEmployeesByCompanyQuery } from "../../../services/employeeApiSlice";
 import Button from "@mui/material/Button";
 import MoreIcon from "@mui/icons-material/More";
-import AddEmployee from "./AddEmployee";
+// import AddEmployee from "./AddEmployee";
 import DeleteModal from "../../../components/DeleteModal/DeleteModal";
 import { ToastContainer } from "react-toastify";
-import EditEmployee from "./EditEmployee";
+// import EditEmployee from "./EditEmployee";
 import { useNavigate } from "react-router-dom";
+import { useAppSelector } from "../../../app/hooks";
 
 function CustomToolbar() {
   return (
@@ -40,10 +38,11 @@ type Row = IEmployee;
 
 let initialEmployees: any[] = [];
 
-function Employees() {
+function CompanyEmployees() {
+  const companyId = useAppSelector((state) => state.auth.companyId);
   const [employees, setEmployees] = useState(initialEmployees);
-  const { data } = useGetEmployeesQuery();
-  const [deleteEmployee] = useDeleteEmployeeMutation();
+
+  const { data } = useGetEmployeesByCompanyQuery(companyId);
 
   // add employee modal state controller
   const [openAddEmployeeModal, setOpenAddEmployeeModal] = useState(false);
@@ -55,12 +54,6 @@ function Employees() {
   const [openEditEmployeeModal, setOpenEditEmployeeModal] = useState(false);
   const handleOpenEditEmployeeModal = () => setOpenEditEmployeeModal(true);
   const handleCloseEditEmployeeModal = () => setOpenEditEmployeeModal(false);
-
-  // confirmation dialog/modal state controller
-  const [idToBeDeleted, setIdToBeDeleted] = useState("");
-  const [openDeleteModal, setOpenDeleteModal] = useState(false);
-  const handleOpenDeleteModal = () => setOpenDeleteModal(true);
-  const handleCloseDeleteModal = () => setOpenDeleteModal(false);
 
   const navigate = useNavigate();
 
@@ -82,14 +75,6 @@ function Employees() {
     []
   );
 
-  const handleDeleteEmployeeFieldAction = React.useCallback(
-    (id: GridRowId) => () => {
-      setIdToBeDeleted(id.toString());
-      handleOpenDeleteModal();
-    },
-    []
-  );
-
   const handleEditEmployeeFieldAction = React.useCallback(
     (id: GridRowId) => () => {
       handleOpenEditEmployeeModal();
@@ -101,15 +86,13 @@ function Employees() {
   const columns = React.useMemo<GridColumns<Row>>(
     () => [
       { field: "id", headerName: "ID", width: 80 },
-      { field: "firstName", headerName: "First Name", width: 140 },
-      { field: "fatherName", headerName: "Father Name", width: 140 },
-      { field: "grandFatherName", headerName: "Grand Father Name", width: 140 },
-      { field: "phone", headerName: "Phone", width: 140 },
-      { field: "email", headerName: "Email", width: 140 },
+      { field: "firstName", headerName: "firstName", width: 140 },
+      { field: "lastName", headerName: "LastName", width: 140 },
+      { field: "phone", headerName: "phone", width: 140 },
+      { field: "email", headerName: "email", width: 140 },
       { field: "type", headerName: "type", width: 140 },
-      { field: "accountNumber", headerName: "Account Number", width: 140 },
       { field: "gender", headerName: "gender", width: 140 },
-      { field: "employmentStatus", headerName: "status", width: 140 },
+      { field: "status", headerName: "status", width: 140 },
       {
         field: "actions",
         type: "actions",
@@ -125,43 +108,18 @@ function Employees() {
             label="Edit"
             onClick={handleEditEmployeeFieldAction(params.id)}
           />,
-          <GridActionsCellItem
-            icon={<DeleteIcon />}
-            label="Delete"
-            onClick={handleDeleteEmployeeFieldAction(params.id)}
-          />,
         ],
       },
     ],
-    [
-      handleMoreEmployeeFieldAction,
-      handleDeleteEmployeeFieldAction,
-      handleEditEmployeeFieldAction,
-    ]
+    [handleMoreEmployeeFieldAction, handleEditEmployeeFieldAction]
   );
-
-  // hander to delete an employee
-  const handleDeleteEmployee = (id: string) => {
-    handleCloseDeleteModal();
-    deleteEmployee(id);
-  };
 
   return (
     <div style={{ height: "100vh", width: "100%" }}>
       {/* react-toastifiy container */}
       <ToastContainer />
 
-      {/* delete employee dialog */}
-      {idToBeDeleted && (
-        <DeleteModal
-          id={idToBeDeleted}
-          message={"Are you sure you want to delete this employee?"}
-          openModal={openDeleteModal}
-          handleCloseModal={handleCloseDeleteModal}
-          handleDelete={handleDeleteEmployee}
-        />
-      )}
-
+      {/* 
       <AddEmployee
         openModal={openAddEmployeeModal}
         handleCloseModal={handleCloseAddEmployeeModal}
@@ -174,7 +132,7 @@ function Employees() {
           openModal={openEditEmployeeModal}
           handleCloseModal={handleCloseEditEmployeeModal}
         />
-      )}
+      )} */}
 
       <Button
         sx={{ my: 2 }}
@@ -200,4 +158,4 @@ function Employees() {
   );
 }
 
-export default Employees;
+export default CompanyEmployees;

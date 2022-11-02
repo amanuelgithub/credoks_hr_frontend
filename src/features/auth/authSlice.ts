@@ -8,7 +8,8 @@ export interface IAuthUser {
   firstName: string;
   lastName: string;
   email: string;
-  userType: UserTypeEnum | "";
+  type: UserTypeEnum | "";
+  companyId: string;
 }
 
 const initialState: IAuthUser = {
@@ -18,7 +19,8 @@ const initialState: IAuthUser = {
   firstName: "",
   lastName: "",
   email: "",
-  userType: "",
+  type: "",
+  companyId: "",
 };
 
 export const authSlice = createSlice({
@@ -33,7 +35,8 @@ export const authSlice = createSlice({
         firstName,
         lastName,
         email,
-        userType,
+        type,
+        companyId,
       } = action.payload;
 
       state.access_token = access_token;
@@ -42,7 +45,8 @@ export const authSlice = createSlice({
       state.firstName = firstName;
       state.lastName = lastName;
       state.email = email;
-      state.userType = userType;
+      state.type = type;
+      state.companyId = companyId;
     },
     logout: (state) => {
       state.access_token = "";
@@ -51,7 +55,8 @@ export const authSlice = createSlice({
       state.firstName = "";
       state.lastName = "";
       state.email = "";
-      state.userType = "";
+      state.type = "";
+      state.companyId = "";
     },
   },
 });

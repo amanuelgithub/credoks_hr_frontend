@@ -21,25 +21,28 @@ import { useNavigate } from "react-router-dom";
 
 interface FormValues {
   name: string;
+  logo: string;
+  companyStatus: CompanyStatusEnum;
+  // bussinessType: string;
   summary: string;
-  status: CompanyStatusEnum;
-  companyLogo: string;
 }
 
 const initialValues: FormValues = {
   name: "",
+  logo: "",
+  companyStatus: CompanyStatusEnum.INACTIVE,
+  // bussinessType: "",
   summary: "",
-  status: CompanyStatusEnum.INACTIVE,
-  companyLogo: "",
 };
 
 const validationSchema = yup.object({
   name: yup.string().required(),
-  summary: yup.string().required(),
-  status: yup
+  companyStatus: yup
     .mixed()
-    .oneOf([CompanyStatusEnum.ACTIVE, CompanyStatusEnum.INACTIVE], "some")
+    .oneOf([CompanyStatusEnum.ACTIVE, CompanyStatusEnum.INACTIVE])
     .required(),
+  // bussinessType: yup.string(),
+  summary: yup.string().required(),
 });
 
 function AddCompany() {
@@ -126,7 +129,7 @@ function AddCompany() {
                   fullWidth
                   margin="dense"
                   size="small"
-                  error={touched.status && Boolean(errors.status)}
+                  error={touched.companyStatus && Boolean(errors.companyStatus)}
                 >
                   <InputLabel id="company-status-select-label">
                     Company Status
@@ -143,7 +146,7 @@ function AddCompany() {
                     </MenuItem>
                   </Field>
                   <FormHelperText>
-                    {touched.status && errors.status}
+                    {touched.companyStatus && errors.companyStatus}
                   </FormHelperText>
                 </FormControl>
               </Grid>

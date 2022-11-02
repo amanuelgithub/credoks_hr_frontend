@@ -1,11 +1,10 @@
 export interface ICompany {
   id?: string;
   name?: string;
-  companyLogo?: string;
-  status?: CompanyStatusEnum;
+  logo?: string;
+  companyStatus?: CompanyStatusEnum;
+  bussinessType?: string;
   summary?: string;
-  //   locations: Location[];
-  //   departments: Department[];
 }
 
 export enum CompanyStatusEnum {

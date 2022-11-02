@@ -1,32 +1,32 @@
 export interface IEmployee {
   id?: string;
   firstName?: string;
-  lastName?: string;
+  fatherName?: string;
+  grandFatherName?: string;
+  gender?: GenderEnum;
+  dateOfBirth?: string;
+  type?: UserTypeEnum;
   email?: string;
   phone?: string;
   password?: string;
-  type?: UserTypeEnum;
-  dateOfBirth?: string;
-  gender?: GenderEnum;
-
-  status?: EmployeeStatusEnum;
+  employmentStatus?: EmploymentStatusEnum;
+  maritalStatus?: MaritalStatusEnum;
   dateOfJoining?: string;
-  confirmationDate?: string;
-  emergencyContactName?: string;
-  emergencyContactNumber?: string;
-  fatherName?: string;
-  spouseName?: string;
-  bankName?: string;
+  tinNumber?: string;
   accountNumber?: string;
-  startsAt?: string;
-  endsAt?: string;
 }
 
-export enum EmployeeStatusEnum {
+export enum EmploymentStatusEnum {
   CONFIRMED = "Confirmed",
   CONTRACT = "Contract",
   PROBAATION = "Probation",
   TRAINEE = "Trainee",
+}
+
+export enum MaritalStatusEnum {
+  SINGLE = "SINGLE",
+  MARRIED = "MARRIED",
+  DIVORCED = "DIVORCED",
 }
 
 export enum UserTypeEnum {

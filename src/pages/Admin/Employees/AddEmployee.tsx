@@ -20,9 +20,10 @@ import Grid from "@mui/material/Grid";
 import Modal from "@mui/material/Modal";
 import CloseIcon from "@mui/icons-material/Close";
 import {
-  EmployeeStatusEnum,
+  EmploymentStatusEnum,
   GenderEnum,
   IEmployee,
+  MaritalStatusEnum,
   UserTypeEnum,
 } from "../../../models/IEmployee";
 import * as yup from "yup";
@@ -32,34 +33,42 @@ import { useAddEmployeeMutation } from "../../../services/employeeApiSlice";
 import { ToastContainer } from "react-toastify";
 import Divider from "@mui/material/Divider";
 import { errorToast, successToast } from "../../../utils/toastify";
+import { useGetCompaniesQuery } from "../../../services/companyApiSlice";
 
-const initialValues: IEmployee = {
-  // user fields
+// Note: dateOfBirth and dateOfJoining are not validated
+// by Formik they are keept in the state and are included
+// when submitting the fileds to the createEmployee method
+// of the RTK hook function
+
+const employeeInitials: IEmployee = {
   firstName: "",
-  lastName: "",
+  fatherName: "",
+  grandFatherName: "",
+  gender: GenderEnum.MALE,
+  // dateOfBirth: undefined,
+  type: UserTypeEnum.EMPLOYEE,
   email: "",
   phone: "",
   password: "",
-  type: UserTypeEnum.EMPLOYEE,
-  dateOfBirth: "",
-  gender: GenderEnum.MALE,
-  // employee fields
-  status: EmployeeStatusEnum.PROBAATION,
-  dateOfJoining: "",
-  confirmationDate: "",
-  emergencyContactName: "",
-  emergencyContactNumber: "",
-  fatherName: "",
-  spouseName: "",
+  employmentStatus: EmploymentStatusEnum.CONFIRMED,
+  maritalStatus: MaritalStatusEnum.SINGLE,
+  // dateOfJoining: undefined,
+  tinNumber: "",
   accountNumber: "",
 };
 
+const initialValues: any = {
+  companyId: "",
+  ...employeeInitials,
+};
+
 const validationSchema = yup.object({
+  companyId: yup.string().required(),
   firstName: yup.string().required(),
-  lastName: yup.string().required(),
-  email: yup.string().required().email(),
-  phone: yup.string().required(),
-  password: yup.string().required(),
+  fatherName: yup.string().required(),
+  grandFatherName: yup.string().required(),
+  gender: yup.mixed().oneOf([GenderEnum.FEMALE, GenderEnum.MALE]),
+  // dateOfBirth: yup.date().required(),
   type: yup
     .mixed()
     .oneOf([
@@ -69,23 +78,28 @@ const validationSchema = yup.object({
       UserTypeEnum.ADMIN,
     ])
     .required(),
-  dateOfBirth: yup.string(),
-  gender: yup.string().required(),
-  status: yup
+  email: yup.string().required().email(),
+  phone: yup.string().required(),
+  password: yup.string().required(),
+  employmentStatus: yup
     .mixed()
     .oneOf([
-      EmployeeStatusEnum.PROBAATION,
-      EmployeeStatusEnum.TRAINEE,
-      EmployeeStatusEnum.CONTRACT,
-      EmployeeStatusEnum.CONFIRMED,
+      EmploymentStatusEnum.PROBAATION,
+      EmploymentStatusEnum.TRAINEE,
+      EmploymentStatusEnum.CONTRACT,
+      EmploymentStatusEnum.CONFIRMED,
     ])
     .required(),
-  dateOfJoining: yup.string(),
-  confirmationDate: yup.string(),
-  emergencyContactName: yup.string().required(),
-  emergencyContactNumber: yup.string().required(),
-  fatherName: yup.string().required(),
-  spouseName: yup.string().required(),
+  maritalStatus: yup
+    .mixed()
+    .oneOf([
+      MaritalStatusEnum.SINGLE,
+      MaritalStatusEnum.DIVORCED,
+      MaritalStatusEnum.MARRIED,
+    ])
+    .required(),
+  // dateOfJoining: yup.date().required(),
+  tinNumber: yup.string().required(),
   accountNumber: yup.string().required(),
 });
 
@@ -111,15 +125,12 @@ function AddEmployee({
   openModal: boolean;
   handleCloseModal: () => void;
 }) {
-  const [dateOfBirthValue, setDateOfBirthValue] = useState(
-    dayjs("2014-08-18T21:11:54")
-  );
+  const [dateOfBirthValue, setDateOfBirthValue] = useState(dayjs("2014-08-18"));
   const [dateOfJoiningValue, setDateOfJoiningValue] = useState(
-    dayjs("2014-08-18T21:11:54")
+    dayjs("2014-08-18")
   );
-  const [dateOfConfirmationValue, setDateOfConfirmationValue] = useState(
-    dayjs("2014-08-18T21:11:54")
-  );
+
+  const { data: companies } = useGetCompaniesQuery();
 
   const [createEmployee, { isSuccess, isError }] = useAddEmployeeMutation();
 
@@ -129,13 +140,54 @@ function AddEmployee({
   const handleDateOfJoiningChange = (newValue: any) => {
     setDateOfJoiningValue(newValue);
   };
-  const handleDateOfConfirmationChange = (newValue: any) => {
-    setDateOfConfirmationValue(newValue);
-  };
 
-  const handleSubmit = async (values: IEmployee) => {
+  useEffect(() => {
+    console.log("Date of birth", dateOfBirthValue.format("DD/MM/YYYY"));
+  }, [dateOfBirthValue]);
+
+  const handleSubmit = async (values: any) => {
     try {
-      await createEmployee(values).unwrap();
+      console.log("employee data:", values);
+      const {
+        companyId,
+        // employee information
+        firstName,
+        fatherName,
+        grandFatherName,
+        gender,
+        // dateOfBirth,
+        type,
+        email,
+        phone,
+        password,
+        employmentStatus,
+        maritalStatus,
+        // dateOfJoining,
+        tinNumber,
+        accountNumber,
+      } = values;
+
+      const employee: IEmployee = {
+        firstName,
+        fatherName,
+        grandFatherName,
+        gender,
+        // adding date of birth to the request object
+        dateOfBirth: dateOfBirthValue.format("DD/MM/YYYY"),
+        type,
+        email,
+        phone,
+        password,
+        employmentStatus,
+        maritalStatus,
+        // adding date of confirmation to the request object
+        dateOfJoining: dateOfJoiningValue.format("DD/MM/YYYY"),
+        tinNumber,
+        accountNumber,
+      };
+
+      await createEmployee({ companyId, employee }).unwrap();
+
       handleCloseModal();
     } catch (err: any) {
       console.log("Error: ", err);
@@ -171,13 +223,18 @@ function AddEmployee({
           <Formik
             initialValues={initialValues}
             validationSchema={validationSchema}
-            onSubmit={(values: IEmployee, { setSubmitting }) => {
+            onSubmit={(
+              values: { companyId: string; employee: IEmployee },
+              { setSubmitting }
+            ) => {
               setSubmitting(true);
+
               handleSubmit(values);
+
               setSubmitting(false);
             }}
           >
-            {({ errors, touched, handleSubmit, isSubmitting }) => (
+            {({ values, errors, touched, handleSubmit, isSubmitting }) => (
               <Box component="form" onSubmit={handleSubmit}>
                 <Grid container spacing={6} justifyContent="center">
                   <Grid item xs={12} md={4} lg={5}>
@@ -202,6 +259,9 @@ function AddEmployee({
                         type="select"
                         label="User Type"
                         as={Select}
+                        helperText={
+                          touched.employmentStatus && errors.employmentStatus
+                        }
                       >
                         <MenuItem value={UserTypeEnum.ADMIN}>Admin</MenuItem>
                         <MenuItem value={UserTypeEnum.EMPLOYEE}>
@@ -214,7 +274,36 @@ function AddEmployee({
                       </Field>
                       <FormHelperText>
                         first select the type of user to create
-                        {touched.status && errors.status}
+                        {/* {touched.employmentStatus && errors.employmentStatus} */}
+                      </FormHelperText>
+                    </FormControl>
+
+                    {/* Company Name */}
+                    <FormControl
+                      fullWidth
+                      margin="normal"
+                      size="small"
+                      error={touched.companyId && Boolean(errors.companyId)}
+                    >
+                      <InputLabel id="user-type-select-label">
+                        Company
+                      </InputLabel>
+                      <Field
+                        name="companyId"
+                        type="select"
+                        label="User Type"
+                        as={Select}
+                        helperText={touched.companyId && errors.companyId}
+                      >
+                        {companies?.map((company) => (
+                          <MenuItem key={company.id} value={company.id}>
+                            {company.name}
+                          </MenuItem>
+                        ))}
+                      </Field>
+                      <FormHelperText>
+                        select the company you want to register this
+                        {/* {touched.companyId && errors.companyId} */}
                       </FormHelperText>
                     </FormControl>
 
@@ -233,18 +322,58 @@ function AddEmployee({
                       helperText={touched.firstName && errors.firstName}
                     />
 
-                    {/* Last Name */}
+                    {/* Father Name */}
                     <Field
-                      name="lastName"
+                      name="fatherName"
                       margin="dense"
                       fullWidth
-                      label="Last Name"
+                      label="Father Name"
                       size="small"
                       type="text"
                       as={TextField}
-                      error={touched.lastName && Boolean(errors.lastName)}
-                      helperText={touched.lastName && errors.lastName}
+                      error={touched.fatherName && Boolean(errors.fatherName)}
+                      helperText={touched.fatherName && errors.fatherName}
                     />
+
+                    {/* Grand Father Name */}
+                    <Field
+                      name="grandFatherName"
+                      margin="dense"
+                      fullWidth
+                      label="Grand Father Name"
+                      size="small"
+                      as={TextField}
+                      error={
+                        touched.grandFatherName &&
+                        Boolean(errors.grandFatherName)
+                      }
+                      helperText={
+                        touched.grandFatherName && errors.grandFatherName
+                      }
+                    />
+
+                    {/* gender */}
+                    <FormControl fullWidth margin="dense" size="small">
+                      <FormLabel id="demo-radio-buttons-group-label">
+                        Gender
+                      </FormLabel>
+                      <RadioGroup
+                        aria-labelledby="demo-radio-buttons-group-label"
+                        defaultValue="male"
+                        name="radio-buttons-group"
+                      >
+                        <FormControlLabel
+                          value={GenderEnum.MALE}
+                          control={<Radio />}
+                          label="Male"
+                        />
+                        <FormControlLabel
+                          value={GenderEnum.FEMALE}
+                          control={<Radio />}
+                          label="Female"
+                        />
+                      </RadioGroup>
+                    </FormControl>
 
                     {/* Email */}
                     <Field
@@ -273,7 +402,7 @@ function AddEmployee({
                     />
 
                     {/* password */}
-                    <div>
+                    <div className="my-4">
                       <Field
                         name="password"
                         margin="dense"
@@ -294,29 +423,6 @@ function AddEmployee({
                       </div>
                     </div>
 
-                    {/* gender */}
-                    <FormControl fullWidth margin="dense" size="small">
-                      <FormLabel id="demo-radio-buttons-group-label">
-                        Gender
-                      </FormLabel>
-                      <RadioGroup
-                        aria-labelledby="demo-radio-buttons-group-label"
-                        defaultValue="male"
-                        name="radio-buttons-group"
-                      >
-                        <FormControlLabel
-                          value="male"
-                          control={<Radio />}
-                          label="Male"
-                        />
-                        <FormControlLabel
-                          value="female"
-                          control={<Radio />}
-                          label="Female"
-                        />
-                      </RadioGroup>
-                    </FormControl>
-
                     {/* data of Birth */}
                     <FormControl margin="dense" fullWidth size="small">
                       <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -325,7 +431,9 @@ function AddEmployee({
                           inputFormat="MM/DD/YYYY"
                           value={dateOfBirthValue}
                           onChange={handleDateOfBirthChange}
-                          renderInput={(params) => <TextField {...params} />}
+                          renderInput={(params: any) => (
+                            <TextField {...params} />
+                          )}
                         />
                       </LocalizationProvider>
                     </FormControl>
@@ -338,7 +446,9 @@ function AddEmployee({
                           inputFormat="MM/DD/YYYY"
                           value={dateOfJoiningValue}
                           onChange={handleDateOfJoiningChange}
-                          renderInput={(params) => <TextField {...params} />}
+                          renderInput={(params: any) => (
+                            <TextField {...params} />
+                          )}
                         />
                       </LocalizationProvider>
                     </FormControl>
@@ -348,7 +458,10 @@ function AddEmployee({
                       fullWidth
                       margin="normal"
                       size="small"
-                      error={touched.status && Boolean(errors.status)}
+                      error={
+                        touched.employmentStatus &&
+                        Boolean(errors.employmentStatus)
+                      }
                     >
                       <InputLabel id="employee-status-select-label">
                         Employee Status
@@ -359,26 +472,26 @@ function AddEmployee({
                         label="Employee Status"
                         as={Select}
                       >
-                        <MenuItem value={EmployeeStatusEnum.TRAINEE}>
+                        <MenuItem value={EmploymentStatusEnum.TRAINEE}>
                           Trainee
                         </MenuItem>
-                        <MenuItem value={EmployeeStatusEnum.PROBAATION}>
+                        <MenuItem value={EmploymentStatusEnum.PROBAATION}>
                           Probation
                         </MenuItem>
-                        <MenuItem value={EmployeeStatusEnum.CONTRACT}>
+                        <MenuItem value={EmploymentStatusEnum.CONTRACT}>
                           Contract
                         </MenuItem>
-                        <MenuItem value={EmployeeStatusEnum.CONFIRMED}>
+                        <MenuItem value={EmploymentStatusEnum.CONFIRMED}>
                           Confirmed
                         </MenuItem>
                       </Field>
                       <FormHelperText>
-                        {touched.status && errors.status}
+                        {/* {touched.employmentStatus && errors.employmentStatus} */}
                       </FormHelperText>
                     </FormControl>
 
                     {/* data of confirmation date picker */}
-                    <FormControl margin="dense" fullWidth size="small">
+                    {/* <FormControl margin="dense" fullWidth size="small">
                       <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DesktopDatePicker
                           label="Confirmation Date"
@@ -388,92 +501,15 @@ function AddEmployee({
                           renderInput={(params) => <TextField {...params} />}
                         />
                       </LocalizationProvider>
-                    </FormControl>
-
-                    {/* Father Name */}
-                    <Field
-                      name="fatherName"
-                      margin="dense"
-                      fullWidth
-                      label="Father Name"
-                      size="small"
-                      as={TextField}
-                      error={touched.fatherName && Boolean(errors.fatherName)}
-                      helperText={touched.fatherName && errors.fatherName}
-                    />
-
-                    {/* Spouse Name */}
-                    <Field
-                      name="spouseName"
-                      margin="dense"
-                      fullWidth
-                      label="Spouse Namekkkkkkkk"
-                      size="small"
-                      as={TextField}
-                      error={touched.spouseName && Boolean(errors.spouseName)}
-                      helperText={touched.spouseName && errors.spouseName}
-                    />
-
-                    {/* Emergency Contact Name */}
-                    <Field
-                      name="emergencyContactName"
-                      margin="dense"
-                      fullWidth
-                      label="Emergency Contact Name"
-                      size="small"
-                      as={TextField}
-                      error={
-                        touched.emergencyContactName &&
-                        Boolean(errors.emergencyContactName)
-                      }
-                      helperText={
-                        touched.emergencyContactName &&
-                        errors.emergencyContactName
-                      }
-                    />
-
-                    {/* Emergency Contact Number */}
-                    <Field
-                      name="emergencyContactNumber"
-                      margin="dense"
-                      fullWidth
-                      label="Emergency Contact Number"
-                      size="small"
-                      as={TextField}
-                      error={
-                        touched.emergencyContactNumber &&
-                        Boolean(errors.emergencyContactNumber)
-                      }
-                      helperText={
-                        touched.emergencyContactNumber &&
-                        errors.emergencyContactNumber
-                      }
-                    />
+                    </FormControl> */}
                   </Grid>
 
                   <Grid item xs={12} md={8} lg={5}>
                     <Box sx={{ my: 5 }}>
                       <Typography variant="h5" component="h5">
-                        Step 2. <span>Payment Method:</span>
+                        Step 2. <span>Bank Account & TIN Number Details:</span>
                       </Typography>
                     </Box>
-
-                    {/* Payment Methods */}
-                    <FormControl fullWidth margin="dense" size="small">
-                      <InputLabel id="payment-methods-select-label">
-                        Payment Methods
-                      </InputLabel>
-                      <Select
-                        labelId="payment-methods-select-label"
-                        id="payment-method"
-                        // value={status}
-                        label="Payment Method"
-                        // onChange={handleChange}
-                      >
-                        <MenuItem value={10}>Bank Transfer</MenuItem>
-                        <MenuItem value={20}>Cash</MenuItem>
-                      </Select>
-                    </FormControl>
 
                     {/* Account Number */}
                     <Field
@@ -491,14 +527,20 @@ function AddEmployee({
                       helperText={touched.accountNumber && errors.accountNumber}
                     />
 
-                    <TextField
-                      type="number"
+                    {/* TIM Number */}
+                    <Field
+                      name="tinNumber"
+                      type="text"
+                      label="TIN Number"
                       margin="dense"
                       size="small"
-                      fullWidth
-                      label="TIN Number"
                       placeholder="TIN Number"
+                      fullWidth
+                      as={TextField}
+                      error={touched.tinNumber && Boolean(errors.tinNumber)}
+                      helperText={touched.tinNumber && errors.tinNumber}
                     />
+
                     <Button
                       type="submit"
                       disabled={isSubmitting}
@@ -509,12 +551,6 @@ function AddEmployee({
                     </Button>
                   </Grid>
                 </Grid>
-                {/* <div>
-                  <pre>{JSON.stringify(values, null, 2)}</pre>
-                </div>
-                <div>
-                  <pre>{JSON.stringify(errors, null, 2)}</pre>
-                </div> */}
               </Box>
             )}
           </Formik>

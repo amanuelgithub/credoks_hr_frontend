@@ -22,6 +22,7 @@ import AdminRoutesProtector from "./components/RouteProtector/AdminRoutesProtect
 import HrRoutesProtector from "./components/RouteProtector/HrRoutesProtector";
 import ManagerRoutesProtector from "./components/RouteProtector/ManagerRoutesProtector";
 import EmployeeRoutesProtector from "./components/RouteProtector/EmployeeRoutesProtector";
+import CompanyEmployees from "./pages/HR/CompanyEmployees/CompanyEmployees";
 
 function Router() {
   const token = useAppSelector((state) => state.auth.access_token);
@@ -63,7 +64,9 @@ function Router() {
 
       {/* HR Routes */}
       <Route element={<HrRoutesProtector />}>
-        <Route path="hr-dashboard" element={<HrDashboard />} />
+        <Route path="hr-dashboard" element={<HrDashboard />}>
+          <Route path="employees" element={<CompanyEmployees />} />
+        </Route>
       </Route>
 
       {/* Manager Routes */}

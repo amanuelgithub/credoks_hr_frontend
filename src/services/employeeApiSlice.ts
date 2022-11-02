@@ -3,8 +3,22 @@ import { IEmployee } from "../models/IEmployee";
 
 export const employeeApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
+    /**
+     * returns all employees all the companies.
+     */
     getEmployees: builder.query<any[], void>({
       query: () => ({ url: "/employees" }),
+      providesTags: [{ type: "Employee", id: "LIST" }],
+      keepUnusedDataFor: 10,
+    }),
+
+    /**
+     * returns all employees of the specified company.
+     */
+    getEmployeesByCompany: builder.query<any[], any>({
+      query: (companyId: string) => ({
+        url: `/employees/company/${companyId}`,
+      }),
       providesTags: [{ type: "Employee", id: "LIST" }],
       keepUnusedDataFor: 10,
     }),
@@ -15,8 +29,14 @@ export const employeeApiSlice = apiSlice.injectEndpoints({
     }),
 
     addEmployee: builder.mutation({
-      query: (employee: IEmployee) => ({
-        url: "/employees",
+      query: ({
+        companyId,
+        employee,
+      }: {
+        companyId: string;
+        employee: IEmployee;
+      }) => ({
+        url: `/employees/company/${companyId}`,
         method: "POST",
         body: employee,
       }),
@@ -44,6 +64,7 @@ export const employeeApiSlice = apiSlice.injectEndpoints({
 
 export const {
   useGetEmployeesQuery,
+  useGetEmployeesByCompanyQuery,
   useGetEmployeeQuery,
   useAddEmployeeMutation,
   useDeleteEmployeeMutation,

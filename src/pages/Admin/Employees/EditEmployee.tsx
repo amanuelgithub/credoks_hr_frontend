@@ -22,8 +22,10 @@ import { Field, Formik } from "formik";
 import Modal from "@mui/material/Modal";
 import { ToastContainer } from "react-toastify";
 import {
-  EmployeeStatusEnum,
+  EmploymentStatusEnum,
+  GenderEnum,
   IEmployee,
+  MaritalStatusEnum,
   UserTypeEnum,
 } from "../../../models/IEmployee";
 import * as yup from "yup";
@@ -37,34 +39,43 @@ import { errorToast, successToast } from "../../../utils/toastify";
 
 const validationSchema = yup.object({
   firstName: yup.string().required(),
-  lastName: yup.string().required(),
+  fatherName: yup.string().required(),
+  grandFatherName: yup.string().required(),
+  gender: yup.mixed().oneOf([GenderEnum.FEMALE, GenderEnum.MALE]),
+  dateOfBirth: yup.date(),
+  type: yup
+    .mixed()
+    .oneOf([
+      UserTypeEnum.EMPLOYEE,
+      UserTypeEnum.MANAGER,
+      UserTypeEnum.HR,
+      UserTypeEnum.ADMIN,
+    ])
+    .required(),
   email: yup.string().required().email(),
   phone: yup.string().required(),
   password: yup.string().required(),
-  type: yup
-    .mixed()
-    .oneOf([UserTypeEnum.EMPLOYEE, UserTypeEnum.MANAGER, UserTypeEnum.HR])
-    .required(),
-  dateOfBirth: yup.string(),
-  gender: yup.string().required(),
-  status: yup
+  employmentStatus: yup
     .mixed()
     .oneOf([
-      EmployeeStatusEnum.PROBAATION,
-      EmployeeStatusEnum.TRAINEE,
-      EmployeeStatusEnum.CONTRACT,
-      EmployeeStatusEnum.CONFIRMED,
+      EmploymentStatusEnum.PROBAATION,
+      EmploymentStatusEnum.TRAINEE,
+      EmploymentStatusEnum.CONTRACT,
+      EmploymentStatusEnum.CONFIRMED,
     ])
     .required(),
-  dateOfJoining: yup.string(),
-  confirmationDate: yup.string(),
-  emergencyContactName: yup.string().required(),
-  emergencyContactNumber: yup.string().required(),
-  fatherName: yup.string().required(),
-  spouseName: yup.string().required(),
+  maritalStatus: yup
+    .mixed()
+    .oneOf([
+      MaritalStatusEnum.SINGLE,
+      MaritalStatusEnum.DIVORCED,
+      MaritalStatusEnum.MARRIED,
+    ])
+    .required(),
+  dateOfJoining: yup.date(),
+  tinNumber: yup.string().required(),
   accountNumber: yup.string().required(),
 });
-
 // style applied to the modals container
 const style = {
   position: "absolute",
@@ -95,9 +106,6 @@ function EditEmployee({
   const [dateOfJoiningValue, setDateOfJoiningValue] = useState(
     dayjs("2014-08-18T21:11:54")
   );
-  const [dateOfConfirmationValue, setDateOfConfirmationValue] = useState(
-    dayjs("2014-08-18T21:11:54")
-  );
 
   const { data } = useGetEmployeeQuery(id);
 
@@ -108,9 +116,6 @@ function EditEmployee({
   };
   const handleDateOfJoiningChange = (newValue: any) => {
     setDateOfJoiningValue(newValue);
-  };
-  const handleDateOfConfirmationChange = (newValue: any) => {
-    setDateOfConfirmationValue(newValue);
   };
 
   const handleSubmit = async (values: IEmployee) => {
@@ -217,17 +222,37 @@ function EditEmployee({
                           helperText={touched.firstName && errors.firstName}
                         />
 
-                        {/* Last Name */}
+                        {/* Father Name */}
                         <Field
-                          name="lastName"
+                          name="fatherName"
                           margin="dense"
                           fullWidth
-                          label="Last Name"
+                          label="Father Name"
                           size="small"
                           type="text"
                           as={TextField}
-                          error={touched.lastName && Boolean(errors.lastName)}
-                          helperText={touched.lastName && errors.lastName}
+                          error={
+                            touched.fatherName && Boolean(errors.fatherName)
+                          }
+                          helperText={touched.fatherName && errors.fatherName}
+                        />
+
+                        {/* Grand Father Name */}
+                        <Field
+                          name="grandFatherName"
+                          margin="dense"
+                          fullWidth
+                          label="Grand Father Name"
+                          size="small"
+                          type="text"
+                          as={TextField}
+                          error={
+                            touched.grandFatherName &&
+                            Boolean(errors.grandFatherName)
+                          }
+                          helperText={
+                            touched.grandFatherName && errors.grandFatherName
+                          }
                         />
 
                         {/* Email */}
@@ -314,7 +339,10 @@ function EditEmployee({
                           fullWidth
                           margin="normal"
                           size="small"
-                          error={touched.status && Boolean(errors.status)}
+                          error={
+                            touched.employmentStatus &&
+                            Boolean(errors.employmentStatus)
+                          }
                         >
                           <InputLabel id="employee-status-select-label">
                             Employee Status
@@ -325,37 +353,22 @@ function EditEmployee({
                             label="Employee Status"
                             as={Select}
                           >
-                            <MenuItem value={EmployeeStatusEnum.TRAINEE}>
+                            <MenuItem value={EmploymentStatusEnum.TRAINEE}>
                               Trainee
                             </MenuItem>
-                            <MenuItem value={EmployeeStatusEnum.PROBAATION}>
+                            <MenuItem value={EmploymentStatusEnum.PROBAATION}>
                               Probation
                             </MenuItem>
-                            <MenuItem value={EmployeeStatusEnum.CONTRACT}>
+                            <MenuItem value={EmploymentStatusEnum.CONTRACT}>
                               Contract
                             </MenuItem>
-                            <MenuItem value={EmployeeStatusEnum.CONFIRMED}>
+                            <MenuItem value={EmploymentStatusEnum.CONFIRMED}>
                               Confirmed
                             </MenuItem>
                           </Field>
                           <FormHelperText>
                             {/* {touched.status && errors.status} */}
                           </FormHelperText>
-                        </FormControl>
-
-                        {/* data of confirmation date picker */}
-                        <FormControl margin="dense" fullWidth size="small">
-                          <LocalizationProvider dateAdapter={AdapterDayjs}>
-                            <DesktopDatePicker
-                              label="Confirmation Date"
-                              inputFormat="MM/DD/YYYY"
-                              value={dateOfConfirmationValue}
-                              onChange={handleDateOfConfirmationChange}
-                              renderInput={(params) => (
-                                <TextField {...params} />
-                              )}
-                            />
-                          </LocalizationProvider>
                         </FormControl>
 
                         {/* Father Name */}
@@ -370,56 +383,6 @@ function EditEmployee({
                             touched.fatherName && Boolean(errors.fatherName)
                           }
                           helperText={touched.fatherName && errors.fatherName}
-                        />
-
-                        {/* Spouse Name */}
-                        <Field
-                          name="spouseName"
-                          margin="dense"
-                          fullWidth
-                          label="Spouse Namekkkkkkkk"
-                          size="small"
-                          as={TextField}
-                          error={
-                            touched.spouseName && Boolean(errors.spouseName)
-                          }
-                          helperText={touched.spouseName && errors.spouseName}
-                        />
-
-                        {/* Emergency Contact Name */}
-                        <Field
-                          name="emergencyContactName"
-                          margin="dense"
-                          fullWidth
-                          label="Emergency Contact Name"
-                          size="small"
-                          as={TextField}
-                          error={
-                            touched.emergencyContactName &&
-                            Boolean(errors.emergencyContactName)
-                          }
-                          helperText={
-                            touched.emergencyContactName &&
-                            errors.emergencyContactName
-                          }
-                        />
-
-                        {/* Emergency Contact Number */}
-                        <Field
-                          name="emergencyContactNumber"
-                          margin="dense"
-                          fullWidth
-                          label="Emergency Contact Number"
-                          size="small"
-                          as={TextField}
-                          error={
-                            touched.emergencyContactNumber &&
-                            Boolean(errors.emergencyContactNumber)
-                          }
-                          helperText={
-                            touched.emergencyContactNumber &&
-                            errors.emergencyContactNumber
-                          }
                         />
                       </Grid>
 

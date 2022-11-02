@@ -24,11 +24,12 @@ import { errorToast, successToast } from "../../../utils/toastify";
 
 const validationSchema = yup.object({
   name: yup.string().required(),
-  summary: yup.string().required(),
-  status: yup
+  companyStatus: yup
     .mixed()
-    .oneOf([CompanyStatusEnum.ACTIVE, CompanyStatusEnum.INACTIVE], "some")
+    .oneOf([CompanyStatusEnum.ACTIVE, CompanyStatusEnum.INACTIVE])
     .required(),
+  // bussinessType: yup.string(),
+  summary: yup.string().required(),
 });
 
 function EditCompany() {
@@ -109,7 +110,9 @@ function EditCompany() {
                     fullWidth
                     margin="dense"
                     size="small"
-                    error={touched.status && Boolean(errors.status)}
+                    error={
+                      touched.companyStatus && Boolean(errors.companyStatus)
+                    }
                   >
                     <InputLabel id="company-status-select-label">
                       Company Status

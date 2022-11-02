@@ -52,12 +52,13 @@ function Login() {
           firstName: user.firstName ?? "",
           lastName: user.lastName ?? "",
           email: user.email ?? "",
-          userType: user.userType ?? "",
+          type: user.type ?? "",
+          companyId: user.companyId ?? "",
         })
       );
 
-      user.userType !== undefined && user.userType !== ""
-        ? dashboardRedirector(user.userType)
+      user.type !== undefined && user.type !== ""
+        ? dashboardRedirector(user.type)
         : console.log(
             "Error: could not login because user type is not specified"
           );
