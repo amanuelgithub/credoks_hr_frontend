@@ -239,7 +239,7 @@ function AddEmployee({
             {({ values, errors, touched, handleSubmit, isSubmitting }) => (
               <Box component="form" onSubmit={handleSubmit}>
                 <Grid container spacing={6} justifyContent="center">
-                  <Grid item xs={12} md={4} lg={5}>
+                  <Grid item xs={12} md={5} lg={5}>
                     <Box sx={{ my: 5 }}>
                       <Typography variant="h5" component="h5">
                         Step 1. <span>Basic Informations:</span>
@@ -402,26 +402,18 @@ function AddEmployee({
                     />
 
                     {/* password */}
-                    <div className="my-4">
-                      <Field
-                        name="password"
-                        margin="dense"
-                        fullWidth
-                        type="password"
-                        label="Password"
-                        placeholder="password"
-                        size="small"
-                        as={TextField}
-                        error={touched.password && Boolean(errors.password)}
-                        helperText={touched.password && errors.password}
-                      />
-                      <div className="flex justify-between">
-                        <Button size="small" variant="contained">
-                          Generate Password
-                        </Button>
-                        <p>afka24343!@#4</p>
-                      </div>
-                    </div>
+                    <Field
+                      name="password"
+                      margin="dense"
+                      fullWidth
+                      type="password"
+                      label="Password"
+                      placeholder="password"
+                      size="small"
+                      as={TextField}
+                      error={touched.password && Boolean(errors.password)}
+                      helperText={touched.password && errors.password}
+                    />
 
                     {/* data of Birth */}
                     <FormControl margin="dense" fullWidth size="small">
@@ -537,7 +529,7 @@ function AddEmployee({
                     </FormControl> */}
                   </Grid>
 
-                  <Grid item xs={12} md={8} lg={5}>
+                  <Grid item xs={12} md={5} lg={5}>
                     <Box sx={{ my: 5 }}>
                       <Typography variant="h5" component="h5">
                         Step 2. <span>Bank Account & TIN Number Details:</span>
@@ -584,7 +576,7 @@ function AddEmployee({
                     </Button>
                   </Grid>
                 </Grid>
-                <pre>{JSON.stringify(values, null, 2)}</pre>
+                {/* <pre>{JSON.stringify(values, null, 2)}</pre> */}
               </Box>
             )}
           </Formik>
