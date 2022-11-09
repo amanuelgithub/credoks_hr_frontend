@@ -125,9 +125,11 @@ function AddEmployee({
   openModal: boolean;
   handleCloseModal: () => void;
 }) {
-  const [dateOfBirthValue, setDateOfBirthValue] = useState(dayjs("2014-08-18"));
+  const [dateOfBirthValue, setDateOfBirthValue] = useState(
+    dayjs("2014-08-18T21:11:54")
+  );
   const [dateOfJoiningValue, setDateOfJoiningValue] = useState(
-    dayjs("2014-08-18")
+    dayjs("2014-08-18T21:11:54")
   );
 
   const { data: companies } = useGetCompaniesQuery();
@@ -259,9 +261,7 @@ function AddEmployee({
                         type="select"
                         label="User Type"
                         as={Select}
-                        helperText={
-                          touched.employmentStatus && errors.employmentStatus
-                        }
+                        helperText={touched.type && errors.type}
                       >
                         <MenuItem value={UserTypeEnum.ADMIN}>Admin</MenuItem>
                         <MenuItem value={UserTypeEnum.EMPLOYEE}>
@@ -467,7 +467,7 @@ function AddEmployee({
                         Employee Status
                       </InputLabel>
                       <Field
-                        name="status"
+                        name="employmentStatus"
                         type="select"
                         label="Employee Status"
                         as={Select}
@@ -488,6 +488,39 @@ function AddEmployee({
                       <FormHelperText>
                         {/* {touched.employmentStatus && errors.employmentStatus} */}
                       </FormHelperText>
+                    </FormControl>
+
+                    {/* Marital Status */}
+                    <FormControl
+                      fullWidth
+                      margin="normal"
+                      size="small"
+                      error={
+                        touched.maritalStatus && Boolean(errors.maritalStatus)
+                      }
+                    >
+                      <InputLabel id="marital-status-select-label">
+                        Marital Status
+                      </InputLabel>
+                      <Field
+                        name="maritalStatus"
+                        type="select"
+                        label="Marital Status"
+                        as={Select}
+                      >
+                        <MenuItem value={MaritalStatusEnum.DIVORCED}>
+                          Divorced
+                        </MenuItem>
+                        <MenuItem value={MaritalStatusEnum.MARRIED}>
+                          Married
+                        </MenuItem>
+                        <MenuItem value={MaritalStatusEnum.SINGLE}>
+                          Single
+                        </MenuItem>
+                      </Field>
+                      {/* <FormHelperText>
+                        {touched.maritalStatus && errors.maritalStatus}
+                      </FormHelperText> */}
                     </FormControl>
 
                     {/* data of confirmation date picker */}
@@ -551,6 +584,7 @@ function AddEmployee({
                     </Button>
                   </Grid>
                 </Grid>
+                <pre>{JSON.stringify(values, null, 2)}</pre>
               </Box>
             )}
           </Formik>

@@ -128,6 +128,13 @@ function EditEmployee({
   };
 
   useEffect(() => {
+    setDateOfBirthValue(dayjs(data?.dateOfBirth ?? ""));
+    setDateOfJoiningValue(dayjs(data?.dateOfJoining ?? ""));
+
+    console.log("edit emp data: ", data);
+  }, [data]);
+
+  useEffect(() => {
     if (isSuccess) successToast("Successfuly Updated Employee.");
     else if (isError) errorToast("Error Creating Employee.");
   }, [isSuccess, isError]);
@@ -348,7 +355,7 @@ function EditEmployee({
                             Employee Status
                           </InputLabel>
                           <Field
-                            name="status"
+                            name="employmentStatus"
                             type="select"
                             label="Employee Status"
                             as={Select}
@@ -371,19 +378,39 @@ function EditEmployee({
                           </FormHelperText>
                         </FormControl>
 
-                        {/* Father Name */}
-                        <Field
-                          name="fatherName"
-                          margin="dense"
+                        {/* Marital Status */}
+                        <FormControl
                           fullWidth
-                          label="Father Name"
+                          margin="normal"
                           size="small"
-                          as={TextField}
                           error={
-                            touched.fatherName && Boolean(errors.fatherName)
+                            touched.maritalStatus &&
+                            Boolean(errors.maritalStatus)
                           }
-                          helperText={touched.fatherName && errors.fatherName}
-                        />
+                        >
+                          <InputLabel id="marital-status-select-label">
+                            Marital Status
+                          </InputLabel>
+                          <Field
+                            name="maritalStatus"
+                            type="select"
+                            label="Marital Status"
+                            as={Select}
+                          >
+                            <MenuItem value={MaritalStatusEnum.DIVORCED}>
+                              Divorced
+                            </MenuItem>
+                            <MenuItem value={MaritalStatusEnum.MARRIED}>
+                              Married
+                            </MenuItem>
+                            <MenuItem value={MaritalStatusEnum.SINGLE}>
+                              Single
+                            </MenuItem>
+                          </Field>
+                          {/* <FormHelperText>
+                        {touched.maritalStatus && errors.maritalStatus}
+                      </FormHelperText> */}
+                        </FormControl>
                       </Grid>
 
                       <Grid item xs={12} md={8} lg={5}>
@@ -412,14 +439,20 @@ function EditEmployee({
                           }
                         />
 
-                        <TextField
-                          type="number"
+                        {/* TIM Number */}
+                        <Field
+                          name="tinNumber"
+                          type="text"
+                          label="TIN Number"
                           margin="dense"
                           size="small"
-                          fullWidth
-                          label="TIN Number"
                           placeholder="TIN Number"
+                          fullWidth
+                          as={TextField}
+                          error={touched.tinNumber && Boolean(errors.tinNumber)}
+                          helperText={touched.tinNumber && errors.tinNumber}
                         />
+
                         <Button
                           type="submit"
                           disabled={isSubmitting}
