@@ -1,4 +1,5 @@
 import { apiSlice } from "../app/api/apiSlice";
+import { ICompanyEmployeeReport } from "../models/ICompanyEmployeeReport";
 import { IEmployee } from "../models/IEmployee";
 
 export const employeeApiSlice = apiSlice.injectEndpoints({
@@ -59,6 +60,10 @@ export const employeeApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: [{ type: "Employee", id: "LIST" }],
     }),
+
+    getCompaniesEmployeesReport: builder.query<ICompanyEmployeeReport[], void>({
+      query: () => ({ url: "/employees/report/company-employees-report" }),
+    }),
   }),
 });
 
@@ -69,4 +74,6 @@ export const {
   useAddEmployeeMutation,
   useDeleteEmployeeMutation,
   useUpdateEmployeeMutation,
+  // reportting
+  useGetCompaniesEmployeesReportQuery,
 } = employeeApiSlice;
