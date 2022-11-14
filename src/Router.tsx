@@ -16,18 +16,12 @@ import DetailEmployee from "./pages/Admin/Employees/DetailEmployee";
 import Positions from "./pages/Admin/Positions/Positions";
 import HrDashboard from "./pages/HR/HrDashboard";
 import ManagerDashboard from "./pages/Manager/ManagerDashboard";
-import EmployeeDashboard from "./pages/Employee/EmployeeDashboard";
-import Profile from "./pages/Employee/Profile/Profile";
 import AdminRoutesProtector from "./components/RouteProtector/AdminRoutesProtector";
 import HrRoutesProtector from "./components/RouteProtector/HrRoutesProtector";
 import ManagerRoutesProtector from "./components/RouteProtector/ManagerRoutesProtector";
-import EmployeeRoutesProtector from "./components/RouteProtector/EmployeeRoutesProtector";
 import CompanyEmployees from "./pages/HR/CompanyEmployees/CompanyEmployees";
 import AdminDashboardContent from "./pages/Admin/AdminDashboardContent";
 import AddCompanyEmployee from "./pages/HR/CompanyEmployees/AddCompanyEmployee";
-import HRLeaves from "./pages/HR/Leaves/HRLeaves";
-import EmployeeLeaves from "./pages/Employee/Leaves/EmployeeLeaves";
-import CreateLeave from "./pages/Employee/Leaves/CreateLeave";
 
 function Router() {
   const token = useAppSelector((state) => state.auth.access_token);
@@ -75,27 +69,12 @@ function Router() {
             <Route index element={<CompanyEmployees />} />
             <Route path="add" element={<AddCompanyEmployee />} />
           </Route>
-
-          <Route path="leaves">
-            <Route index element={<HRLeaves />} />
-          </Route>
         </Route>
       </Route>
 
       {/* Manager Routes */}
       <Route element={<ManagerRoutesProtector />}>
         <Route path="manager-dashboard" element={<ManagerDashboard />} />
-      </Route>
-
-      {/* Employee Routes */}
-      <Route element={<EmployeeRoutesProtector />}>
-        <Route path="employee-dashboard" element={<EmployeeDashboard />}>
-          <Route path="profile" element={<Profile />} />
-          <Route path="leaves">
-            <Route index element={<EmployeeLeaves />} />
-            {/* <Route path="create" element={<CreateLeave />} /> */}
-          </Route>
-        </Route>
       </Route>
 
       <Route path="*" element={<PageNotFound />} />
