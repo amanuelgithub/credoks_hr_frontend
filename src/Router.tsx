@@ -24,6 +24,10 @@ import ManagerRoutesProtector from "./components/RouteProtector/ManagerRoutesPro
 import EmployeeRoutesProtector from "./components/RouteProtector/EmployeeRoutesProtector";
 import CompanyEmployees from "./pages/HR/CompanyEmployees/CompanyEmployees";
 import AdminDashboardContent from "./pages/Admin/AdminDashboardContent";
+import AddCompanyEmployee from "./pages/HR/CompanyEmployees/AddCompanyEmployee";
+import HRLeaves from "./pages/HR/Leaves/HRLeaves";
+import EmployeeLeaves from "./pages/Employee/Leaves/EmployeeLeaves";
+import CreateLeave from "./pages/Employee/Leaves/CreateLeave";
 
 function Router() {
   const token = useAppSelector((state) => state.auth.access_token);
@@ -67,7 +71,14 @@ function Router() {
       {/* HR Routes */}
       <Route element={<HrRoutesProtector />}>
         <Route path="hr-dashboard" element={<HrDashboard />}>
-          <Route path="employees" element={<CompanyEmployees />} />
+          <Route path="employees">
+            <Route index element={<CompanyEmployees />} />
+            <Route path="add" element={<AddCompanyEmployee />} />
+          </Route>
+
+          <Route path="leaves">
+            <Route index element={<HRLeaves />} />
+          </Route>
         </Route>
       </Route>
 
@@ -80,6 +91,10 @@ function Router() {
       <Route element={<EmployeeRoutesProtector />}>
         <Route path="employee-dashboard" element={<EmployeeDashboard />}>
           <Route path="profile" element={<Profile />} />
+          <Route path="leaves">
+            <Route index element={<EmployeeLeaves />} />
+            {/* <Route path="create" element={<CreateLeave />} /> */}
+          </Route>
         </Route>
       </Route>
 

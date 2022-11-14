@@ -40,7 +40,8 @@ import { useGetCompaniesQuery } from "../../../services/companyApiSlice";
 // when submitting the fileds to the createEmployee method
 // of the RTK hook function
 
-const employeeInitials: IEmployee = {
+const initialValues: IEmployee = {
+  companyId: "",
   firstName: "",
   fatherName: "",
   grandFatherName: "",
@@ -55,11 +56,6 @@ const employeeInitials: IEmployee = {
   // dateOfJoining: undefined,
   tinNumber: "",
   accountNumber: "",
-};
-
-const initialValues: any = {
-  companyId: "",
-  ...employeeInitials,
 };
 
 const validationSchema = yup.object({
@@ -147,48 +143,18 @@ function AddEmployee({
     console.log("Date of birth", dateOfBirthValue.format("DD/MM/YYYY"));
   }, [dateOfBirthValue]);
 
-  const handleSubmit = async (values: any) => {
+  const handleSubmit = async (values: IEmployee) => {
     try {
       console.log("employee data:", values);
-      const {
-        companyId,
-        // employee information
-        firstName,
-        fatherName,
-        grandFatherName,
-        gender,
-        // dateOfBirth,
-        type,
-        email,
-        phone,
-        password,
-        employmentStatus,
-        maritalStatus,
-        // dateOfJoining,
-        tinNumber,
-        accountNumber,
-      } = values;
+      const { companyId } = values;
 
       const employee: IEmployee = {
-        firstName,
-        fatherName,
-        grandFatherName,
-        gender,
-        // adding date of birth to the request object
+        ...values,
         dateOfBirth: dateOfBirthValue.format("DD/MM/YYYY"),
-        type,
-        email,
-        phone,
-        password,
-        employmentStatus,
-        maritalStatus,
-        // adding date of confirmation to the request object
         dateOfJoining: dateOfJoiningValue.format("DD/MM/YYYY"),
-        tinNumber,
-        accountNumber,
       };
 
-      await createEmployee({ companyId, employee }).unwrap();
+      await createEmployee({ companyId: companyId ?? "", employee }).unwrap();
 
       handleCloseModal();
     } catch (err: any) {
@@ -225,10 +191,7 @@ function AddEmployee({
           <Formik
             initialValues={initialValues}
             validationSchema={validationSchema}
-            onSubmit={(
-              values: { companyId: string; employee: IEmployee },
-              { setSubmitting }
-            ) => {
+            onSubmit={(values: IEmployee, { setSubmitting }) => {
               setSubmitting(true);
 
               handleSubmit(values);

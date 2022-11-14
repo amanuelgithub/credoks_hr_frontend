@@ -1,5 +1,6 @@
 export interface IPosition {
   id?: string;
   title?: string;
-  qualification?: string;
+  salary?: number;
+  departmentId?: string;
 }

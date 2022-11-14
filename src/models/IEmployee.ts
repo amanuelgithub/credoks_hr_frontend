@@ -1,5 +1,6 @@
 export interface IEmployee {
   id?: string;
+  companyId?: string;
   firstName?: string;
   fatherName?: string;
   grandFatherName?: string;

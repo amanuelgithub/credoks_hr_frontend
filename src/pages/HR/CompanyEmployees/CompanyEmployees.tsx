@@ -20,8 +20,9 @@ import MoreIcon from "@mui/icons-material/More";
 import DeleteModal from "../../../components/DeleteModal/DeleteModal";
 import { ToastContainer } from "react-toastify";
 // import EditEmployee from "./EditEmployee";
-import { useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAppSelector } from "../../../app/hooks";
+import { successToast } from "../../../utils/toastify";
 
 function CustomToolbar() {
   return (
@@ -44,18 +45,41 @@ function CompanyEmployees() {
 
   const { data } = useGetEmployeesByCompanyQuery(companyId);
 
-  // add employee modal state controller
-  const [openAddEmployeeModal, setOpenAddEmployeeModal] = useState(false);
-  const handleOpenAddEmployeeModal = () => setOpenAddEmployeeModal(true);
-  const handleCloseAddEmployeeModal = () => setOpenAddEmployeeModal(false);
+  const [showEmployeeAddedMsg, setShowEmployeeAddedMsg] = useState(false);
 
-  // edit employee modal state controller
-  const [idToBeEdited, setIdToBeEdited] = useState("");
-  const [openEditEmployeeModal, setOpenEditEmployeeModal] = useState(false);
-  const handleOpenEditEmployeeModal = () => setOpenEditEmployeeModal(true);
-  const handleCloseEditEmployeeModal = () => setOpenEditEmployeeModal(false);
-
+  const location = useLocation();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const message: string | undefined | null = location.state?.message;
+
+    if (message) {
+      setShowEmployeeAddedMsg(true);
+    }
+    return () => {
+      setShowEmployeeAddedMsg(false);
+    };
+  }, [location.state]);
+
+  useEffect(() => {
+    if (showEmployeeAddedMsg) {
+      successToast("Employee added successfully");
+    }
+    return () => {
+      setShowEmployeeAddedMsg(false);
+    };
+  }, [showEmployeeAddedMsg]);
+
+  useEffect(() => {
+    if (data !== undefined) {
+      let fetchedEmployees = data !== undefined ? data : [];
+      setEmployees(fetchedEmployees);
+    }
+
+    return () => {
+      setEmployees(initialEmployees);
+    };
+  }, [data]);
 
   useEffect(() => {
     if (data !== undefined) {
@@ -75,24 +99,22 @@ function CompanyEmployees() {
     []
   );
 
-  const handleEditEmployeeFieldAction = React.useCallback(
-    (id: GridRowId) => () => {
-      handleOpenEditEmployeeModal();
-      setIdToBeEdited(id.toString());
-    },
-    []
-  );
-
   const columns = React.useMemo<GridColumns<Row>>(
     () => [
       { field: "id", headerName: "ID", width: 80 },
-      { field: "firstName", headerName: "firstName", width: 140 },
-      { field: "lastName", headerName: "LastName", width: 140 },
-      { field: "phone", headerName: "phone", width: 140 },
-      { field: "email", headerName: "email", width: 140 },
-      { field: "type", headerName: "type", width: 140 },
-      { field: "gender", headerName: "gender", width: 140 },
-      { field: "status", headerName: "status", width: 140 },
+      { field: "firstName", headerName: "First Name", width: 140 },
+      { field: "fatherName", headerName: "Father Name", width: 140 },
+      { field: "grandFatherName", headerName: "Grand Father Name", width: 140 },
+      { field: "phone", headerName: "Phone", width: 140 },
+      { field: "email", headerName: "Email", width: 140 },
+      { field: "type", headerName: "User Type", width: 140 },
+      { field: "gender", headerName: "Gender", width: 140 },
+      {
+        field: "employmentStatus",
+        headerName: "Employment Status",
+        width: 140,
+      },
+      { field: "maritalStatus", headerName: "Marital Status", width: 140 },
       {
         field: "actions",
         type: "actions",
@@ -103,44 +125,21 @@ function CompanyEmployees() {
             label="Detail"
             onClick={handleMoreEmployeeFieldAction(params.id)}
           />,
-          <GridActionsCellItem
-            icon={<EditIcon />}
-            label="Edit"
-            onClick={handleEditEmployeeFieldAction(params.id)}
-          />,
         ],
       },
     ],
-    [handleMoreEmployeeFieldAction, handleEditEmployeeFieldAction]
+    [handleMoreEmployeeFieldAction]
   );
 
   return (
     <div style={{ height: "100vh", width: "100%" }}>
-      {/* react-toastifiy container */}
       <ToastContainer />
 
-      {/* 
-      <AddEmployee
-        openModal={openAddEmployeeModal}
-        handleCloseModal={handleCloseAddEmployeeModal}
-      />
-
-      {idToBeEdited && (
-        <EditEmployee
-          key={idToBeEdited}
-          id={idToBeEdited}
-          openModal={openEditEmployeeModal}
-          handleCloseModal={handleCloseEditEmployeeModal}
-        />
-      )} */}
-
-      <Button
-        sx={{ my: 2 }}
-        variant="outlined"
-        onClick={handleOpenAddEmployeeModal}
-      >
-        + Add Employee
-      </Button>
+      <Link to="/hr-dashboard/employees/add">
+        <Button sx={{ my: 2 }} variant="outlined">
+          + Add Employee
+        </Button>
+      </Link>
 
       <DataGrid
         rows={employees}

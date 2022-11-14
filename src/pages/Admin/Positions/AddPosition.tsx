@@ -14,15 +14,23 @@ import { IDepartment } from "../../../models/IDepartment";
 import Button from "@mui/material/Button";
 import { IPosition } from "../../../models/IPosition";
 import { useAddPositionMutation } from "../../../services/positionApiSlice";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormHelperText from "@mui/material/FormHelperText";
+import { useGetDepartmentsQuery } from "../../../services/departmentApiSlice";
+import Select from "@mui/material/Select";
 
 const initialValues: IPosition = {
   title: "",
-  qualification: "",
+  salary: 0,
+  departmentId: "",
 };
 
 const validationSchema = yup.object({
   title: yup.string().required(),
-  qualification: yup.string().required(),
+  salary: yup.number().required(),
+  departmentId: yup.string().required(),
 });
 
 // style applied to the modals container
@@ -48,6 +56,8 @@ function AddPosition({
   handleCloseModal: () => void;
 }) {
   const [createPosition, { isSuccess, isError }] = useAddPositionMutation();
+
+  const { data: departments } = useGetDepartmentsQuery();
 
   const handleSubmit = async (values: IDepartment) => {
     try {
@@ -111,22 +121,46 @@ function AddPosition({
                     helperText={touched.title && errors.title}
                   />
 
-                  {/* Position Qualification */}
+                  {/* Salary Title */}
                   <Field
-                    name="qualification"
+                    name="salary"
                     margin="dense"
                     fullWidth
-                    multiline
-                    rows={3}
-                    label="Qualification"
+                    label="Salary"
+                    type="number"
                     size="small"
-                    type="text"
                     as={TextField}
-                    error={
-                      touched.qualification && Boolean(errors.qualification)
-                    }
-                    helperText={touched.qualification && errors.qualification}
+                    error={touched.salary && Boolean(errors.salary)}
+                    helperText={touched.salary && errors.salary}
                   />
+
+                  {/* Department Name */}
+                  <FormControl
+                    fullWidth
+                    margin="normal"
+                    size="small"
+                    error={touched.departmentId && Boolean(errors.departmentId)}
+                  >
+                    <InputLabel id="user-type-select-label">
+                      Department
+                    </InputLabel>
+                    <Field
+                      name="departmentId"
+                      type="select"
+                      label="User Type"
+                      as={Select}
+                      helperText={touched.departmentId && errors.departmentId}
+                    >
+                      {departments?.map((department) => (
+                        <MenuItem key={department.id} value={department.id}>
+                          {department.name}
+                        </MenuItem>
+                      ))}
+                    </Field>
+                    <FormHelperText>
+                      select the department to add the position to
+                    </FormHelperText>
+                  </FormControl>
 
                   <Button
                     type="submit"
