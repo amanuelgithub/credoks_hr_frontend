@@ -69,7 +69,7 @@ function Login() {
 
   const dashboardRedirector = (userType: UserTypeEnum) => {
     if (userType === UserTypeEnum.ADMIN) navigate("/admin-dashboard");
-    if (userType === UserTypeEnum.EMPLOYEE) navigate("/employee-dashboard");
+    // if (userType === UserTypeEnum.EMPLOYEE) navigate("/employee-dashboard");
     if (userType === UserTypeEnum.HR) navigate("/hr-dashboard");
     if (userType === UserTypeEnum.MANAGER) navigate("/manager-dashboard");
   };

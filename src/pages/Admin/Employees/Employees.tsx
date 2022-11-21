@@ -24,6 +24,9 @@ import DeleteModal from "../../../components/DeleteModal/DeleteModal";
 import { ToastContainer } from "react-toastify";
 import EditEmployee from "./EditEmployee";
 import { useNavigate } from "react-router-dom";
+import AddIcon from "@mui/icons-material/Add";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
 
 function CustomToolbar() {
   return (
@@ -116,17 +119,17 @@ function Employees() {
         width: 200,
         getActions: (params) => [
           <GridActionsCellItem
-            icon={<MoreIcon />}
+            icon={<MoreIcon color="info" />}
             label="Detail"
             onClick={handleMoreEmployeeFieldAction(params.id)}
           />,
           <GridActionsCellItem
-            icon={<EditIcon />}
+            icon={<EditIcon color="success" />}
             label="Edit"
             onClick={handleEditEmployeeFieldAction(params.id)}
           />,
           <GridActionsCellItem
-            icon={<DeleteIcon />}
+            icon={<DeleteIcon color="warning" />}
             label="Delete"
             onClick={handleDeleteEmployeeFieldAction(params.id)}
           />,
@@ -176,13 +179,22 @@ function Employees() {
         />
       )}
 
-      <Button
-        sx={{ my: 2 }}
-        variant="outlined"
-        onClick={handleOpenAddEmployeeModal}
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        marginY="16px"
       >
-        + Add Employee
-      </Button>
+        <Typography variant="h4"> Employees</Typography>
+        <Button
+          sx={{ my: 2, borderRadius: 8 }}
+          variant="contained"
+          onClick={handleOpenAddEmployeeModal}
+          startIcon={<AddIcon />}
+        >
+          Add Employee
+        </Button>
+      </Box>
 
       <DataGrid
         rows={employees}

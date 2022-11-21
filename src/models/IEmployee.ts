@@ -5,7 +5,7 @@ export interface IEmployee {
   fatherName?: string;
   grandFatherName?: string;
   gender?: GenderEnum;
-  dateOfBirth?: string;
+  dateOfBirth?: Date | null;
   type?: UserTypeEnum;
   email?: string;
   phone?: string;

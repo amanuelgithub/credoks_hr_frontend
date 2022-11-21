@@ -10,19 +10,17 @@ import {
   GridColumns,
   GridRowId,
 } from "@mui/x-data-grid";
-import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from "@mui/icons-material/Edit";
 import { IEmployee } from "../../../models/IEmployee";
 import { useGetEmployeesByCompanyQuery } from "../../../services/employeeApiSlice";
 import Button from "@mui/material/Button";
 import MoreIcon from "@mui/icons-material/More";
 // import AddEmployee from "./AddEmployee";
-import DeleteModal from "../../../components/DeleteModal/DeleteModal";
 import { ToastContainer } from "react-toastify";
 // import EditEmployee from "./EditEmployee";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAppSelector } from "../../../app/hooks";
 import { successToast } from "../../../utils/toastify";
+import AddIcon from "@mui/icons-material/Add";
 
 function CustomToolbar() {
   return (
@@ -136,8 +134,12 @@ function CompanyEmployees() {
       <ToastContainer />
 
       <Link to="/hr-dashboard/employees/add">
-        <Button sx={{ my: 2 }} variant="outlined">
-          + Add Employee
+        <Button
+          sx={{ my: 2, borderRadius: 8 }}
+          variant="contained"
+          startIcon={<AddIcon />}
+        >
+          Add Employee
         </Button>
       </Link>
 

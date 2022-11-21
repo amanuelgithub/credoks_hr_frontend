@@ -34,6 +34,7 @@ import { ToastContainer } from "react-toastify";
 import Divider from "@mui/material/Divider";
 import { errorToast, successToast } from "../../../utils/toastify";
 import { useGetCompaniesQuery } from "../../../services/companyApiSlice";
+import { CustomRadio } from "../../../components/form/CustomRadio";
 
 // Note: dateOfBirth and dateOfJoining are not validated
 // by Formik they are keept in the state and are included
@@ -140,7 +141,7 @@ function AddEmployee({
   };
 
   useEffect(() => {
-    console.log("Date of birth", dateOfBirthValue.format("DD/MM/YYYY"));
+    console.log("Date of birth", dateOfBirthValue);
   }, [dateOfBirthValue]);
 
   const handleSubmit = async (values: IEmployee) => {
@@ -150,7 +151,7 @@ function AddEmployee({
 
       const employee: IEmployee = {
         ...values,
-        dateOfBirth: dateOfBirthValue.format("DD/MM/YYYY"),
+        dateOfBirth: dateOfBirthValue.toDate(),
         dateOfJoining: dateOfJoiningValue.format("DD/MM/YYYY"),
       };
 
@@ -178,15 +179,14 @@ function AddEmployee({
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <Box className="flex justify-end">
-            <IconButton size="small" onClick={handleCloseModal}>
-              <CloseIcon sx={{ fontSize: "36px", color: "gray" }} />
-            </IconButton>
-          </Box>
-          <Box className="flex flex-col items-center my-6">
-            <Typography variant="h4" component="h4" className="underline">
+          <Box className="flex justify-between mb-10">
+            <Box />
+            <Typography variant="h5" className="underline">
               Add Employee
             </Typography>
+            <IconButton size="small" onClick={handleCloseModal}>
+              <CloseIcon sx={{ color: "gray" }} />
+            </IconButton>
           </Box>
           <Formik
             initialValues={initialValues}
@@ -201,344 +201,335 @@ function AddEmployee({
           >
             {({ values, errors, touched, handleSubmit, isSubmitting }) => (
               <Box component="form" onSubmit={handleSubmit}>
-                <Grid container spacing={6} justifyContent="center">
-                  <Grid item xs={12} md={5} lg={5}>
-                    <Box sx={{ my: 5 }}>
-                      <Typography variant="h5" component="h5">
-                        Step 1. <span>Basic Informations:</span>
-                      </Typography>
+                <Box marginY={2}>
+                  <Typography>
+                    Step 1. <span>Basic Personal Informations:</span>
+                  </Typography>
+                  <Divider />
+                </Box>
+
+                <Box display="flex" gap={3}>
+                  {/* User Type */}
+                  <FormControl
+                    fullWidth
+                    margin="normal"
+                    size="small"
+                    error={touched.type && Boolean(errors.type)}
+                  >
+                    <InputLabel id="user-type-select-label">
+                      User Type
+                    </InputLabel>
+                    <Field
+                      name="type"
+                      type="select"
+                      label="User Type"
+                      as={Select}
+                      helperText={touched.type && errors.type}
+                    >
+                      <MenuItem value={UserTypeEnum.ADMIN}>Admin</MenuItem>
+                      <MenuItem value={UserTypeEnum.EMPLOYEE}>
+                        Employee
+                      </MenuItem>
+                      <MenuItem value={UserTypeEnum.MANAGER}>Manager</MenuItem>
+                      <MenuItem value={UserTypeEnum.HR}>HR</MenuItem>
+                    </Field>
+                    <FormHelperText>
+                      first select the type of user to create
+                      {/* {touched.employmentStatus && errors.employmentStatus} */}
+                    </FormHelperText>
+                  </FormControl>
+
+                  {/* Company Name */}
+                  <FormControl
+                    fullWidth
+                    margin="normal"
+                    size="small"
+                    error={touched.companyId && Boolean(errors.companyId)}
+                  >
+                    <InputLabel id="user-type-select-label">Company</InputLabel>
+                    <Field
+                      name="companyId"
+                      type="select"
+                      label="User Type"
+                      as={Select}
+                      helperText={touched.companyId && errors.companyId}
+                    >
+                      {companies?.map((company) => (
+                        <MenuItem key={company.id} value={company.id}>
+                          {company.name}
+                        </MenuItem>
+                      ))}
+                    </Field>
+                    <FormHelperText>
+                      select the company you want to register this
+                      {/* {touched.companyId && errors.companyId} */}
+                    </FormHelperText>
+                  </FormControl>
+                </Box>
+
+                <Divider sx={{ my: 3 }} />
+
+                <Box marginY={2} display="flex" gap={2}>
+                  {/* First Name */}
+                  <Field
+                    name="firstName"
+                    margin="dense"
+                    fullWidth
+                    label="First Name"
+                    type="text"
+                    size="small"
+                    as={TextField}
+                    error={touched.firstName && Boolean(errors.firstName)}
+                    helperText={touched.firstName && errors.firstName}
+                  />
+
+                  {/* Father Name */}
+                  <Field
+                    name="fatherName"
+                    margin="dense"
+                    fullWidth
+                    label="Father Name"
+                    size="small"
+                    type="text"
+                    as={TextField}
+                    error={touched.fatherName && Boolean(errors.fatherName)}
+                    helperText={touched.fatherName && errors.fatherName}
+                  />
+
+                  {/* Grand Father Name */}
+                  <Field
+                    name="grandFatherName"
+                    margin="dense"
+                    fullWidth
+                    label="Grand Father Name"
+                    size="small"
+                    as={TextField}
+                    error={
+                      touched.grandFatherName && Boolean(errors.grandFatherName)
+                    }
+                    helperText={
+                      touched.grandFatherName && errors.grandFatherName
+                    }
+                  />
+                </Box>
+
+                {/* gender */}
+                <FormControl fullWidth margin="dense" size="small">
+                  <FormLabel id="demo-radio-buttons-group-label">
+                    Gender
+                  </FormLabel>
+                  <RadioGroup
+                    aria-labelledby="demo-radio-buttons-group-label"
+                    defaultValue={GenderEnum.MALE}
+                    name="gender"
+                  >
+                    <Box display="flex">
+                      <CustomRadio
+                        name="gender"
+                        type="radio"
+                        value={GenderEnum.MALE}
+                        label="Male"
+                      />
+                      <CustomRadio
+                        name="gender"
+                        type="radio"
+                        value={GenderEnum.FEMALE}
+                        label="Female"
+                      />
                     </Box>
+                  </RadioGroup>
+                </FormControl>
 
-                    {/* User Type */}
-                    <FormControl
-                      fullWidth
-                      margin="normal"
-                      size="small"
-                      error={touched.type && Boolean(errors.type)}
+                <Box marginY={2} display="flex" gap={1}>
+                  {/* Email */}
+                  <Field
+                    name="email"
+                    margin="dense"
+                    fullWidth
+                    label="Email"
+                    size="small"
+                    type="text"
+                    as={TextField}
+                    error={touched.email && Boolean(errors.email)}
+                    helperText={touched.email && errors.email}
+                  />
+
+                  {/* Phone */}
+                  <Field
+                    name="phone"
+                    margin="dense"
+                    fullWidth
+                    label="Phone"
+                    size="small"
+                    type="text"
+                    as={TextField}
+                    error={touched.phone && Boolean(errors.phone)}
+                    helperText={touched.phone && errors.phone}
+                  />
+
+                  {/* password */}
+                  <Field
+                    name="password"
+                    margin="dense"
+                    fullWidth
+                    type="password"
+                    label="Password"
+                    placeholder="password"
+                    size="small"
+                    as={TextField}
+                    error={touched.password && Boolean(errors.password)}
+                    helperText={touched.password && errors.password}
+                  />
+                </Box>
+
+                <Box marginY={2} display="flex" gap={3}>
+                  {/* data of Birth */}
+                  <FormControl margin="dense" fullWidth size="small">
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <DesktopDatePicker
+                        label="Date of Birth"
+                        inputFormat="MM/DD/YYYY"
+                        value={dateOfBirthValue}
+                        onChange={handleDateOfBirthChange}
+                        renderInput={(params: any) => <TextField {...params} />}
+                      />
+                    </LocalizationProvider>
+                  </FormControl>
+
+                  {/* data of joining date picker */}
+                  <FormControl margin="dense" fullWidth size="small">
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <DesktopDatePicker
+                        label="Joining Date"
+                        inputFormat="MM/DD/YYYY"
+                        value={dateOfJoiningValue}
+                        onChange={handleDateOfJoiningChange}
+                        renderInput={(params: any) => <TextField {...params} />}
+                      />
+                    </LocalizationProvider>
+                  </FormControl>
+                </Box>
+
+                <Box marginY={2} display="flex" gap={3}>
+                  {/* Employee Status */}
+                  <FormControl
+                    fullWidth
+                    margin="normal"
+                    size="small"
+                    error={
+                      touched.employmentStatus &&
+                      Boolean(errors.employmentStatus)
+                    }
+                  >
+                    <InputLabel id="employee-status-select-label">
+                      Employee Status
+                    </InputLabel>
+                    <Field
+                      name="employmentStatus"
+                      type="select"
+                      label="Employee Status"
+                      as={Select}
                     >
-                      <InputLabel id="user-type-select-label">
-                        User Type
-                      </InputLabel>
-                      <Field
-                        name="type"
-                        type="select"
-                        label="User Type"
-                        as={Select}
-                        helperText={touched.type && errors.type}
-                      >
-                        <MenuItem value={UserTypeEnum.ADMIN}>Admin</MenuItem>
-                        <MenuItem value={UserTypeEnum.EMPLOYEE}>
-                          Employee
-                        </MenuItem>
-                        <MenuItem value={UserTypeEnum.MANAGER}>
-                          Manager
-                        </MenuItem>
-                        <MenuItem value={UserTypeEnum.HR}>HR</MenuItem>
-                      </Field>
-                      <FormHelperText>
-                        first select the type of user to create
-                        {/* {touched.employmentStatus && errors.employmentStatus} */}
-                      </FormHelperText>
-                    </FormControl>
+                      <MenuItem value={EmploymentStatusEnum.TRAINEE}>
+                        Trainee
+                      </MenuItem>
+                      <MenuItem value={EmploymentStatusEnum.PROBAATION}>
+                        Probation
+                      </MenuItem>
+                      <MenuItem value={EmploymentStatusEnum.CONTRACT}>
+                        Contract
+                      </MenuItem>
+                      <MenuItem value={EmploymentStatusEnum.CONFIRMED}>
+                        Confirmed
+                      </MenuItem>
+                    </Field>
+                    <FormHelperText>
+                      {/* {touched.employmentStatus && errors.employmentStatus} */}
+                    </FormHelperText>
+                  </FormControl>
 
-                    {/* Company Name */}
-                    <FormControl
-                      fullWidth
-                      margin="normal"
-                      size="small"
-                      error={touched.companyId && Boolean(errors.companyId)}
+                  {/* Marital Status */}
+                  <FormControl
+                    fullWidth
+                    margin="normal"
+                    size="small"
+                    error={
+                      touched.maritalStatus && Boolean(errors.maritalStatus)
+                    }
+                  >
+                    <InputLabel id="marital-status-select-label">
+                      Marital Status
+                    </InputLabel>
+                    <Field
+                      name="maritalStatus"
+                      type="select"
+                      label="Marital Status"
+                      as={Select}
                     >
-                      <InputLabel id="user-type-select-label">
-                        Company
-                      </InputLabel>
-                      <Field
-                        name="companyId"
-                        type="select"
-                        label="User Type"
-                        as={Select}
-                        helperText={touched.companyId && errors.companyId}
-                      >
-                        {companies?.map((company) => (
-                          <MenuItem key={company.id} value={company.id}>
-                            {company.name}
-                          </MenuItem>
-                        ))}
-                      </Field>
-                      <FormHelperText>
-                        select the company you want to register this
-                        {/* {touched.companyId && errors.companyId} */}
-                      </FormHelperText>
-                    </FormControl>
-
-                    <Divider sx={{ my: 3 }} />
-
-                    {/* First Name */}
-                    <Field
-                      name="firstName"
-                      margin="dense"
-                      fullWidth
-                      label="First Name"
-                      type="text"
-                      size="small"
-                      as={TextField}
-                      error={touched.firstName && Boolean(errors.firstName)}
-                      helperText={touched.firstName && errors.firstName}
-                    />
-
-                    {/* Father Name */}
-                    <Field
-                      name="fatherName"
-                      margin="dense"
-                      fullWidth
-                      label="Father Name"
-                      size="small"
-                      type="text"
-                      as={TextField}
-                      error={touched.fatherName && Boolean(errors.fatherName)}
-                      helperText={touched.fatherName && errors.fatherName}
-                    />
-
-                    {/* Grand Father Name */}
-                    <Field
-                      name="grandFatherName"
-                      margin="dense"
-                      fullWidth
-                      label="Grand Father Name"
-                      size="small"
-                      as={TextField}
-                      error={
-                        touched.grandFatherName &&
-                        Boolean(errors.grandFatherName)
-                      }
-                      helperText={
-                        touched.grandFatherName && errors.grandFatherName
-                      }
-                    />
-
-                    {/* gender */}
-                    <FormControl fullWidth margin="dense" size="small">
-                      <FormLabel id="demo-radio-buttons-group-label">
-                        Gender
-                      </FormLabel>
-                      <RadioGroup
-                        aria-labelledby="demo-radio-buttons-group-label"
-                        defaultValue="male"
-                        name="radio-buttons-group"
-                      >
-                        <FormControlLabel
-                          value={GenderEnum.MALE}
-                          control={<Radio />}
-                          label="Male"
-                        />
-                        <FormControlLabel
-                          value={GenderEnum.FEMALE}
-                          control={<Radio />}
-                          label="Female"
-                        />
-                      </RadioGroup>
-                    </FormControl>
-
-                    {/* Email */}
-                    <Field
-                      name="email"
-                      margin="dense"
-                      fullWidth
-                      label="Email"
-                      size="small"
-                      type="text"
-                      as={TextField}
-                      error={touched.email && Boolean(errors.email)}
-                      helperText={touched.email && errors.email}
-                    />
-
-                    {/* Phone */}
-                    <Field
-                      name="phone"
-                      margin="dense"
-                      fullWidth
-                      label="Phone"
-                      size="small"
-                      type="text"
-                      as={TextField}
-                      error={touched.phone && Boolean(errors.phone)}
-                      helperText={touched.phone && errors.phone}
-                    />
-
-                    {/* password */}
-                    <Field
-                      name="password"
-                      margin="dense"
-                      fullWidth
-                      type="password"
-                      label="Password"
-                      placeholder="password"
-                      size="small"
-                      as={TextField}
-                      error={touched.password && Boolean(errors.password)}
-                      helperText={touched.password && errors.password}
-                    />
-
-                    {/* data of Birth */}
-                    <FormControl margin="dense" fullWidth size="small">
-                      <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <DesktopDatePicker
-                          label="Date of Birth"
-                          inputFormat="MM/DD/YYYY"
-                          value={dateOfBirthValue}
-                          onChange={handleDateOfBirthChange}
-                          renderInput={(params: any) => (
-                            <TextField {...params} />
-                          )}
-                        />
-                      </LocalizationProvider>
-                    </FormControl>
-
-                    {/* data of joining date picker */}
-                    <FormControl margin="dense" fullWidth size="small">
-                      <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <DesktopDatePicker
-                          label="Joining Date"
-                          inputFormat="MM/DD/YYYY"
-                          value={dateOfJoiningValue}
-                          onChange={handleDateOfJoiningChange}
-                          renderInput={(params: any) => (
-                            <TextField {...params} />
-                          )}
-                        />
-                      </LocalizationProvider>
-                    </FormControl>
-
-                    {/* Employee Status */}
-                    <FormControl
-                      fullWidth
-                      margin="normal"
-                      size="small"
-                      error={
-                        touched.employmentStatus &&
-                        Boolean(errors.employmentStatus)
-                      }
-                    >
-                      <InputLabel id="employee-status-select-label">
-                        Employee Status
-                      </InputLabel>
-                      <Field
-                        name="employmentStatus"
-                        type="select"
-                        label="Employee Status"
-                        as={Select}
-                      >
-                        <MenuItem value={EmploymentStatusEnum.TRAINEE}>
-                          Trainee
-                        </MenuItem>
-                        <MenuItem value={EmploymentStatusEnum.PROBAATION}>
-                          Probation
-                        </MenuItem>
-                        <MenuItem value={EmploymentStatusEnum.CONTRACT}>
-                          Contract
-                        </MenuItem>
-                        <MenuItem value={EmploymentStatusEnum.CONFIRMED}>
-                          Confirmed
-                        </MenuItem>
-                      </Field>
-                      <FormHelperText>
-                        {/* {touched.employmentStatus && errors.employmentStatus} */}
-                      </FormHelperText>
-                    </FormControl>
-
-                    {/* Marital Status */}
-                    <FormControl
-                      fullWidth
-                      margin="normal"
-                      size="small"
-                      error={
-                        touched.maritalStatus && Boolean(errors.maritalStatus)
-                      }
-                    >
-                      <InputLabel id="marital-status-select-label">
-                        Marital Status
-                      </InputLabel>
-                      <Field
-                        name="maritalStatus"
-                        type="select"
-                        label="Marital Status"
-                        as={Select}
-                      >
-                        <MenuItem value={MaritalStatusEnum.DIVORCED}>
-                          Divorced
-                        </MenuItem>
-                        <MenuItem value={MaritalStatusEnum.MARRIED}>
-                          Married
-                        </MenuItem>
-                        <MenuItem value={MaritalStatusEnum.SINGLE}>
-                          Single
-                        </MenuItem>
-                      </Field>
-                      {/* <FormHelperText>
+                      <MenuItem value={MaritalStatusEnum.DIVORCED}>
+                        Divorced
+                      </MenuItem>
+                      <MenuItem value={MaritalStatusEnum.MARRIED}>
+                        Married
+                      </MenuItem>
+                      <MenuItem value={MaritalStatusEnum.SINGLE}>
+                        Single
+                      </MenuItem>
+                    </Field>
+                    {/* <FormHelperText>
                         {touched.maritalStatus && errors.maritalStatus}
                       </FormHelperText> */}
-                    </FormControl>
+                  </FormControl>
+                </Box>
 
-                    {/* data of confirmation date picker */}
-                    {/* <FormControl margin="dense" fullWidth size="small">
-                      <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <DesktopDatePicker
-                          label="Confirmation Date"
-                          inputFormat="MM/DD/YYYY"
-                          value={dateOfConfirmationValue}
-                          onChange={handleDateOfConfirmationChange}
-                          renderInput={(params) => <TextField {...params} />}
-                        />
-                      </LocalizationProvider>
-                    </FormControl> */}
-                  </Grid>
+                <Box marginY={2}>
+                  <Typography>
+                    Step 2. <span>Bank Account & TIN Number Details:</span>
+                  </Typography>
+                  <Divider />
+                </Box>
 
-                  <Grid item xs={12} md={5} lg={5}>
-                    <Box sx={{ my: 5 }}>
-                      <Typography variant="h5" component="h5">
-                        Step 2. <span>Bank Account & TIN Number Details:</span>
-                      </Typography>
-                    </Box>
+                {/* Account Number */}
+                <Box display="flex" gap={3} marginY={2}>
+                  <Field
+                    name="accountNumber"
+                    type="text"
+                    label="Accound Number"
+                    margin="dense"
+                    size="small"
+                    placeholder="Accound Number"
+                    fullWidth
+                    as={TextField}
+                    error={
+                      touched.accountNumber && Boolean(errors.accountNumber)
+                    }
+                    helperText={touched.accountNumber && errors.accountNumber}
+                  />
 
-                    {/* Account Number */}
-                    <Field
-                      name="accountNumber"
-                      type="text"
-                      label="Accound Number"
-                      margin="dense"
-                      size="small"
-                      placeholder="Accound Number"
-                      fullWidth
-                      as={TextField}
-                      error={
-                        touched.accountNumber && Boolean(errors.accountNumber)
-                      }
-                      helperText={touched.accountNumber && errors.accountNumber}
-                    />
+                  {/* TIM Number */}
+                  <Field
+                    name="tinNumber"
+                    type="text"
+                    label="TIN Number"
+                    margin="dense"
+                    size="small"
+                    placeholder="TIN Number"
+                    fullWidth
+                    as={TextField}
+                    error={touched.tinNumber && Boolean(errors.tinNumber)}
+                    helperText={touched.tinNumber && errors.tinNumber}
+                  />
+                </Box>
 
-                    {/* TIM Number */}
-                    <Field
-                      name="tinNumber"
-                      type="text"
-                      label="TIN Number"
-                      margin="dense"
-                      size="small"
-                      placeholder="TIN Number"
-                      fullWidth
-                      as={TextField}
-                      error={touched.tinNumber && Boolean(errors.tinNumber)}
-                      helperText={touched.tinNumber && errors.tinNumber}
-                    />
-
-                    <Button
-                      type="submit"
-                      disabled={isSubmitting}
-                      variant="contained"
-                      size="small"
-                    >
-                      Add Employee
-                    </Button>
-                  </Grid>
-                </Grid>
+                <Button
+                  type="submit"
+                  disabled={isSubmitting}
+                  variant="contained"
+                  size="small"
+                  sx={{ borderRadius: 8 }}
+                >
+                  Add Employee
+                </Button>
                 {/* <pre>{JSON.stringify(values, null, 2)}</pre> */}
               </Box>
             )}
@@ -548,5 +539,5 @@ function AddEmployee({
     </>
   );
 }
-
+``;
 export default AddEmployee;

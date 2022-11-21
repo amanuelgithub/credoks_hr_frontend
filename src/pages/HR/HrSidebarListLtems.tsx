@@ -6,7 +6,6 @@ import PeopleIcon from "@mui/icons-material/People";
 import AddIcon from "@mui/icons-material/Add";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ListSubheader from "@mui/material/ListSubheader";
-import ContentPasteGoIcon from "@mui/icons-material/ContentPasteGo";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import { Link } from "react-router-dom";
 import Accordion from "@mui/material/Accordion";
@@ -32,14 +31,6 @@ const hrsSidebarEmployeesListItems = [
     to: "/hr-dashboard/employees",
     label: "Employees",
     icon: <PeopleIcon />,
-  },
-];
-
-const hrsSidebarLeaveListItems = [
-  {
-    to: "/hr-dashboard/leaves",
-    label: "Leaves",
-    icon: <ContentPasteGoIcon />,
   },
 ];
 
@@ -78,30 +69,6 @@ export const HrSidebarMainListItems = () => {
         </AccordionSummary>
         <AccordionDetails>
           {hrsSidebarEmployeesListItems.map((item) => (
-            <Link to={item.to}>
-              <ListItemButton>
-                <ListItemIcon>{item.icon}</ListItemIcon>
-                <ListItemText primary={item.label} />
-              </ListItemButton>
-            </Link>
-          ))}
-        </AccordionDetails>
-      </Accordion>
-
-      {/* Leaves */}
-      <Accordion
-        expanded={expanded === "panel2"}
-        onChange={handleAccordionChange("panel2")}
-      >
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel1bh-content"
-          id="panel1bh-header"
-        >
-          <Typography sx={{ width: "33%", flexShrink: 0 }}>Leaves</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          {hrsSidebarLeaveListItems.map((item) => (
             <Link to={item.to}>
               <ListItemButton>
                 <ListItemIcon>{item.icon}</ListItemIcon>
