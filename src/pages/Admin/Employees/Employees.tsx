@@ -9,6 +9,7 @@ import {
   GridActionsCellItem,
   GridColumns,
   GridRowId,
+  gridClasses,
 } from "@mui/x-data-grid";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
@@ -23,10 +24,47 @@ import AddEmployee from "./AddEmployee";
 import DeleteModal from "../../../components/DeleteModal/DeleteModal";
 import { ToastContainer } from "react-toastify";
 import EditEmployee from "./EditEmployee";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import AddIcon from "@mui/icons-material/Add";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import Avatar from "@mui/material/Avatar";
+import { alpha, styled } from "@mui/material/styles";
+
+const ODD_OPACITY = 0.2;
+
+const StripedDataGrid = styled(DataGrid)(({ theme }) => ({
+  [`& .${gridClasses.row}.even`]: {
+    backgroundColor: theme.palette.grey[200],
+    "&:hover, &.Mui-hovered": {
+      backgroundColor: alpha(theme.palette.primary.main, ODD_OPACITY),
+      "@media (hover: none)": {
+        backgroundColor: "transparent",
+      },
+    },
+    "&.Mui-selected": {
+      backgroundColor: alpha(
+        theme.palette.primary.main,
+        ODD_OPACITY + theme.palette.action.selectedOpacity
+      ),
+      "&:hover, &.Mui-hovered": {
+        backgroundColor: alpha(
+          theme.palette.primary.main,
+          ODD_OPACITY +
+            theme.palette.action.selectedOpacity +
+            theme.palette.action.hoverOpacity
+        ),
+        // Reset on touch devices, it doesn't add specificity
+        "@media (hover: none)": {
+          backgroundColor: alpha(
+            theme.palette.primary.main,
+            ODD_OPACITY + theme.palette.action.selectedOpacity
+          ),
+        },
+      },
+    },
+  },
+}));
 
 function CustomToolbar() {
   return (
@@ -103,14 +141,57 @@ function Employees() {
 
   const columns = React.useMemo<GridColumns<Row>>(
     () => [
-      { field: "id", headerName: "ID", width: 80 },
-      { field: "firstName", headerName: "First Name", width: 140 },
+      { field: "id", headerName: "#ID", width: 60 },
+      {
+        field: "profileImage",
+        renderCell: (params) => {
+          return (
+            <Avatar
+              alt={`${params.row.firstName} ${params.row.fatherName}`}
+              src="/static/images/avatar/2.jpg"
+              sx={{ bgcolor: "secondary.main" }}
+            />
+          );
+        },
+      },
+      {
+        field: "firstName",
+        headerName: "First Name",
+        width: 140,
+        renderCell: (params) => {
+          return (
+            <Link
+              to={`/admin-dashboard/employees/detail/${params.row.id}`}
+              className="hover:underline text-blue-400"
+            >
+              {params.row.firstName}
+            </Link>
+          );
+        },
+      },
       { field: "fatherName", headerName: "Father Name", width: 140 },
       { field: "grandFatherName", headerName: "Grand Father Name", width: 140 },
       { field: "phone", headerName: "Phone", width: 140 },
-      { field: "email", headerName: "Email", width: 140 },
+      {
+        field: "email",
+        headerName: "Email",
+        width: 140,
+        renderCell: (params) => {
+          return (
+            <Typography variant="body2" sx={{ textDecoration: "underline" }}>
+              {params.row.email}
+            </Typography>
+          );
+        },
+      },
       { field: "type", headerName: "type", width: 140 },
-      { field: "accountNumber", headerName: "Account Number", width: 140 },
+      { field: "bankName", headerName: "Bank Name", width: 140 },
+      {
+        field: "bankAccountNumber",
+        headerName: "Bank Account Number",
+        width: 140,
+      },
+      { field: "tinNumber", headerName: "TIN Number", width: 200 },
       { field: "gender", headerName: "gender", width: 140 },
       { field: "employmentStatus", headerName: "status", width: 140 },
       {
@@ -124,7 +205,7 @@ function Employees() {
             onClick={handleMoreEmployeeFieldAction(params.id)}
           />,
           <GridActionsCellItem
-            icon={<EditIcon color="success" />}
+            icon={<EditIcon sx={{ color: "secondary.main" }} />}
             label="Edit"
             onClick={handleEditEmployeeFieldAction(params.id)}
           />,
@@ -196,7 +277,7 @@ function Employees() {
         </Button>
       </Box>
 
-      <DataGrid
+      <StripedDataGrid
         rows={employees}
         columns={columns}
         pageSize={10}
@@ -204,9 +285,13 @@ function Employees() {
         autoHeight
         loading={false}
         error={undefined}
+        isRowSelectable={(_params) => false}
         components={{
           Toolbar: CustomToolbar,
         }}
+        getRowClassName={(params) =>
+          params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd"
+        }
       />
     </div>
   );

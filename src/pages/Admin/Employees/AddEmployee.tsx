@@ -8,15 +8,12 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import RadioGroup from "@mui/material/RadioGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
-import Radio from "@mui/material/Radio";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import Select from "@mui/material/Select";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import Grid from "@mui/material/Grid";
 import Modal from "@mui/material/Modal";
 import CloseIcon from "@mui/icons-material/Close";
 import {
@@ -539,5 +536,5 @@ function AddEmployee({
     </>
   );
 }
-``;
+
 export default AddEmployee;
