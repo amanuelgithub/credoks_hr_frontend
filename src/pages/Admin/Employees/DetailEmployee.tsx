@@ -71,6 +71,12 @@ const experiences = [
     from: "2015",
     to: "2022",
   },
+  {
+    jobTitle: "Software Engieer",
+    companyName: "Credoks Digital",
+    from: "2015",
+    to: "2022",
+  },
 ];
 
 export default function DetailEmployee() {
@@ -266,7 +272,7 @@ export default function DetailEmployee() {
               <Grid container spacing={2} fontSize={14} paddingY={0.5}>
                 <Grid
                   item
-                  xs={12}
+                  xs={6}
                   md={6}
                   lg={6}
                   sx={{ color: "#5e798d", fontWeight: "bold" }}
@@ -281,7 +287,7 @@ export default function DetailEmployee() {
               <Grid container spacing={2} fontSize={14} paddingY={0.5}>
                 <Grid
                   item
-                  xs={12}
+                  xs={6}
                   md={6}
                   lg={6}
                   sx={{ color: "#5e798d", fontWeight: "bold" }}
@@ -296,7 +302,7 @@ export default function DetailEmployee() {
               <Grid container spacing={2} fontSize={14} paddingY={0.5}>
                 <Grid
                   item
-                  xs={12}
+                  xs={6}
                   md={6}
                   lg={6}
                   sx={{ color: "#5e798d", fontWeight: "bold" }}
@@ -311,7 +317,7 @@ export default function DetailEmployee() {
               <Grid container spacing={2} fontSize={14} paddingY={0.5}>
                 <Grid
                   item
-                  xs={12}
+                  xs={6}
                   md={6}
                   lg={6}
                   sx={{ color: "#5e798d", fontWeight: "bold" }}
@@ -326,7 +332,7 @@ export default function DetailEmployee() {
               <Grid container spacing={2} fontSize={14} paddingY={0.5}>
                 <Grid
                   item
-                  xs={12}
+                  xs={6}
                   md={6}
                   lg={6}
                   sx={{ color: "#5e798d", fontWeight: "bold" }}
@@ -341,7 +347,7 @@ export default function DetailEmployee() {
               <Grid container spacing={2} fontSize={14} paddingY={0.5}>
                 <Grid
                   item
-                  xs={12}
+                  xs={6}
                   md={6}
                   lg={6}
                   sx={{ color: "#5e798d", fontWeight: "bold" }}
@@ -356,7 +362,7 @@ export default function DetailEmployee() {
               <Grid container spacing={2} fontSize={14} paddingY={0.5}>
                 <Grid
                   item
-                  xs={12}
+                  xs={6}
                   md={6}
                   lg={6}
                   sx={{ color: "#5e798d", fontWeight: "bold" }}
@@ -395,20 +401,14 @@ export default function DetailEmployee() {
                     <Grid container spacing={2} fontSize={14} paddingY={0.5}>
                       <Grid
                         item
-                        xs={12}
+                        xs={6}
                         md={6}
                         lg={6}
                         sx={{ color: "#5e798d", fontWeight: "bold" }}
                       >
                         First Name :
                       </Grid>
-                      <Grid
-                        item
-                        xs={12}
-                        md={6}
-                        lg={6}
-                        sx={{ color: "#8e8e8e" }}
-                      >
+                      <Grid item xs={6} md={6} lg={6} sx={{ color: "#8e8e8e" }}>
                         {emergencyContact.firstName}
                       </Grid>
                     </Grid>
@@ -416,20 +416,14 @@ export default function DetailEmployee() {
                     <Grid container spacing={2} fontSize={14} paddingY={0.5}>
                       <Grid
                         item
-                        xs={12}
+                        xs={6}
                         md={6}
                         lg={6}
                         sx={{ color: "#5e798d", fontWeight: "bold" }}
                       >
                         Last Name :
                       </Grid>
-                      <Grid
-                        item
-                        xs={12}
-                        md={6}
-                        lg={6}
-                        sx={{ color: "#8e8e8e" }}
-                      >
+                      <Grid item xs={6} md={6} lg={6} sx={{ color: "#8e8e8e" }}>
                         {emergencyContact.lastName}
                       </Grid>
                     </Grid>
@@ -437,20 +431,14 @@ export default function DetailEmployee() {
                     <Grid container spacing={2} fontSize={14} paddingY={0.5}>
                       <Grid
                         item
-                        xs={12}
+                        xs={6}
                         md={6}
                         lg={6}
                         sx={{ color: "#5e798d", fontWeight: "bold" }}
                       >
                         Phone :
                       </Grid>
-                      <Grid
-                        item
-                        xs={12}
-                        md={6}
-                        lg={6}
-                        sx={{ color: "#8e8e8e" }}
-                      >
+                      <Grid item xs={6} md={6} lg={6} sx={{ color: "#8e8e8e" }}>
                         {emergencyContact.phone}
                       </Grid>
                     </Grid>
@@ -458,20 +446,14 @@ export default function DetailEmployee() {
                     <Grid container spacing={2} fontSize={14} paddingY={0.5}>
                       <Grid
                         item
-                        xs={12}
+                        xs={6}
                         md={6}
                         lg={6}
                         sx={{ color: "#5e798d", fontWeight: "bold" }}
                       >
                         Relation :
                       </Grid>
-                      <Grid
-                        item
-                        xs={12}
-                        md={6}
-                        lg={6}
-                        sx={{ color: "#8e8e8e" }}
-                      >
+                      <Grid item xs={6} md={6} lg={6} sx={{ color: "#8e8e8e" }}>
                         {emergencyContact.relation}
                       </Grid>
                     </Grid>
@@ -489,6 +471,171 @@ export default function DetailEmployee() {
                 );
               })}
             </Box>
+
+            <Box position="absolute" top={6} right={6}>
+              <IconButton>
+                <EditIcon sx={{ color: "#8e8e8e" }} />
+              </IconButton>
+            </Box>
+          </Paper>
+        </Grid>
+      </Grid>
+
+      {/* Bank & Family Informations */}
+      <Grid container spacing={2}>
+        {/* Bank Informations */}
+        <Grid item xs={12} md={6} lg={6}>
+          <Paper sx={{ marginY: 6, padding: 1, position: "relative" }}>
+            <Box sx={{ marginBottom: 2 }}>
+              <Typography
+                variant="h5"
+                sx={{ fontWeight: "light", color: "gray" }}
+                className="text-center md:text-start"
+              >
+                Education Information
+              </Typography>
+            </Box>
+            {qualifications.map((qualification, index) => {
+              return (
+                <Box
+                  sx={{
+                    borderLeft: "2px solid #dddddd",
+                    position: "relative",
+                    paddingX: 2,
+                    paddingBottom: 2,
+                  }}
+                >
+                  <Typography sx={{ fontWeight: "bold", color: "#5e798d" }}>
+                    {qualification.school}
+                  </Typography>
+
+                  <Typography
+                    sx={{
+                      fontSize: 14,
+                      fontWeight: "normal",
+                      color: "#8e8e8e",
+                    }}
+                  >
+                    {qualification.education}
+                  </Typography>
+
+                  <Typography
+                    sx={{
+                      fontSize: 13,
+                      fontWeight: "normal",
+                      color: "#8e8e8e",
+                    }}
+                  >
+                    location : {qualification.country}
+                  </Typography>
+
+                  <Box sx={{ display: "flex", alignItems: "center" }}>
+                    <Typography
+                      sx={{
+                        fontSize: 12,
+                        fontWeight: "normal",
+                        color: "#8e8e8e",
+                      }}
+                    >
+                      {qualification.educationStartedYear}
+                    </Typography>
+                    {" - "}
+                    <Typography
+                      sx={{
+                        fontSize: 12,
+                        fontWeight: "normal",
+                        color: "#8e8e8e",
+                      }}
+                    >
+                      {qualification.educationEndedYear}
+                    </Typography>
+                  </Box>
+
+                  <Box
+                    sx={{
+                      position: "absolute",
+                      top: 0,
+                      left: "-6px",
+                      width: "10px",
+                      height: "10px",
+                      backgroundColor: "#dddddd",
+                      borderRadius: 8,
+                    }}
+                  />
+                </Box>
+              );
+            })}
+
+            <Box position="absolute" top={6} right={6}>
+              <IconButton>
+                <EditIcon sx={{ color: "#8e8e8e" }} />
+              </IconButton>
+            </Box>
+          </Paper>
+        </Grid>
+        {/* Experiences */}
+        <Grid item xs={12} md={6} lg={6}>
+          <Paper sx={{ marginY: 6, padding: 1, position: "relative" }}>
+            <Box>
+              <Typography
+                variant="h5"
+                sx={{ fontWeight: "light", color: "gray" }}
+                className="text-center md:text-start"
+              >
+                Experiences
+              </Typography>
+            </Box>
+
+            {experiences.map((experience, index) => {
+              return (
+                <Box
+                  sx={{
+                    borderLeft: "2px solid #dddddd",
+                    position: "relative",
+                    paddingX: 2,
+                    paddingBottom: 2,
+                  }}
+                >
+                  <Typography sx={{ fontWeight: "bold", color: "#5e798d" }}>
+                    {experience.jobTitle} at {experience.companyName}
+                  </Typography>
+
+                  <Box sx={{ display: "flex", alignItems: "center" }}>
+                    <Typography
+                      sx={{
+                        fontSize: 12,
+                        fontWeight: "normal",
+                        color: "#8e8e8e",
+                      }}
+                    >
+                      {experience.from}
+                    </Typography>
+                    {" - "}
+                    <Typography
+                      sx={{
+                        fontSize: 12,
+                        fontWeight: "normal",
+                        color: "#8e8e8e",
+                      }}
+                    >
+                      {experience.to}
+                    </Typography>
+                  </Box>
+
+                  <Box
+                    sx={{
+                      position: "absolute",
+                      top: 0,
+                      left: "-6px",
+                      width: "10px",
+                      height: "10px",
+                      backgroundColor: "#dddddd",
+                      borderRadius: 8,
+                    }}
+                  />
+                </Box>
+              );
+            })}
 
             <Box position="absolute" top={6} right={6}>
               <IconButton>
