@@ -66,6 +66,7 @@ export const apiSlice = createApi({
   tagTypes: [
     "Company",
     "Employee",
+    "Qualification",
     "Department",
     "Location",
     "Position",

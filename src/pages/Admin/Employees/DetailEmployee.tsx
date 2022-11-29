@@ -6,8 +6,13 @@ import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Divider } from "@mui/material";
+import { useGetQualificationsByEmployeeIdQuery } from "../../../services/qualificationApiSlice";
+import { useParams } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import AddQualification from "./AddQualification";
+import AddIcon from "@mui/icons-material/Add";
 
 const employee = {
   id: "9876klkafa3",
@@ -47,22 +52,22 @@ const emergencyContacts = [
   },
 ];
 
-const qualifications = [
-  {
-    education: "BSc in Computer Science and Engineering",
-    school: "Adama Science and Technology University",
-    country: "Ethiopia",
-    educationStartedYear: "2018",
-    educationEndedYear: "2023",
-  },
-  {
-    education: "MSc in AI",
-    school: "Adama Science and Technology University",
-    country: "Ethiopia",
-    educationStartedYear: "2023",
-    educationEndedYear: "2025",
-  },
-];
+// const qualifications = [
+//   {
+//     education: "BSc in Computer Science and Engineering",
+//     school: "Adama Science and Technology University",
+//     country: "Ethiopia",
+//     educationStartedYear: "2018",
+//     educationEndedYear: "2023",
+//   },
+//   {
+//     education: "MSc in AI",
+//     school: "Adama Science and Technology University",
+//     country: "Ethiopia",
+//     educationStartedYear: "2023",
+//     educationEndedYear: "2025",
+//   },
+// ];
 
 const experiences = [
   {
@@ -80,573 +85,403 @@ const experiences = [
 ];
 
 export default function DetailEmployee() {
-  const personalInfoObjKeys = Object.keys(personalInfo);
+  const { id: employeeId } = useParams();
+  const { data: qualifications } =
+    useGetQualificationsByEmployeeIdQuery(employeeId);
 
-  useEffect(() => {
-    console.log("personalInfo", personalInfoObjKeys);
-  }, []);
+  const [openAddQualificationModal, setOpenAddQualificationModal] =
+    useState(false);
+  const handleOpenAddQualificationModal = () =>
+    setOpenAddQualificationModal(true);
+  const handleCloseAddQualificationModal = () =>
+    setOpenAddQualificationModal(false);
+
+  const FieldRow = ({ title, value }: { title: any; value: any }) => (
+    <Grid container spacing={2} fontSize={14} paddingY={0.5}>
+      <Grid
+        item
+        xs={6}
+        md={6}
+        lg={6}
+        sx={{ color: "#5e798d", fontWeight: "bold" }}
+      >
+        {title} :
+      </Grid>
+      <Grid item xs={6} md={6} lg={6} sx={{ color: "#8e8e8e" }}>
+        {value}
+      </Grid>
+    </Grid>
+  );
 
   return (
-    <Box>
+    <>
+      <ToastContainer />
+      {/* modals */}
+      <AddQualification
+        employeeId={employeeId ?? ""}
+        openModal={openAddQualificationModal}
+        handleCloseModal={handleCloseAddQualificationModal}
+      />
+
       <Box>
-        <Typography variant="h5" sx={{ fontWeight: "bold" }}>
-          Profile
-        </Typography>
-      </Box>
+        <Box>
+          <Typography variant="h5" sx={{ fontWeight: "bold" }}>
+            Profile
+          </Typography>
+        </Box>
 
-      {/* first profile section start*/}
-      <Paper sx={{ marginY: 6, position: "relative" }}>
-        <Grid container>
-          <Grid
-            item
-            xs={12}
-            md={1.5}
-            lg={1.5}
-            sx={{ padding: 1 }}
-            display="flex"
-            justifyContent="center"
-          >
-            <Avatar
-              sx={{ width: 100, height: 100 }}
-              alt="Amanuel Girma"
-              src="https://appdevzone.com/frontend/images/dpage/t3.jpg"
-            />
-          </Grid>
-          <Grid
-            item
-            xs={12}
-            md={4}
-            lg={4}
-            sx={{
-              padding: 1,
-              borderRight: "2px dashed #8e8e8e",
-            }}
-          >
-            <Box>
-              <Typography
-                variant="h5"
-                sx={{ fontWeight: "bold" }}
-                className="text-center md:text-start"
-              >
-                {employee.firstName} {employee.fatherName}
-              </Typography>
-              <Typography
-                variant="body2"
-                sx={{ color: "#8e8e8e" }}
-                className="text-center md:text-start"
-              >
-                {employee.position}
-              </Typography>
-
-              <Box marginY={2}>
+        {/* first profile section start*/}
+        <Paper sx={{ marginY: 6, position: "relative" }}>
+          <Grid container>
+            <Grid
+              item
+              xs={12}
+              md={1.5}
+              lg={1.5}
+              sx={{ padding: 1 }}
+              display="flex"
+              justifyContent="center"
+            >
+              <Avatar
+                sx={{ width: 100, height: 100 }}
+                alt="Amanuel Girma"
+                src="https://appdevzone.com/frontend/images/dpage/t3.jpg"
+              />
+            </Grid>
+            <Grid
+              item
+              xs={12}
+              md={4}
+              lg={4}
+              sx={{
+                padding: 1,
+                borderRight: "2px dashed #8e8e8e",
+              }}
+            >
+              <Box>
                 <Typography
-                  variant="body2"
+                  variant="h5"
                   sx={{ fontWeight: "bold" }}
                   className="text-center md:text-start"
                 >
-                  Employee ID : {employee.id}
+                  {employee.firstName} {employee.fatherName}
                 </Typography>
                 <Typography
                   variant="body2"
                   sx={{ color: "#8e8e8e" }}
                   className="text-center md:text-start"
                 >
-                  {employee.dateOfJoining}
+                  {employee.position}
+                </Typography>
+
+                <Box marginY={2}>
+                  <Typography
+                    variant="body2"
+                    sx={{ fontWeight: "bold" }}
+                    className="text-center md:text-start"
+                  >
+                    Employee ID : {employee.id}
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    sx={{ color: "#8e8e8e" }}
+                    className="text-center md:text-start"
+                  >
+                    {employee.dateOfJoining}
+                  </Typography>
+                </Box>
+
+                <Box marginY={3} className="flex justify-center sm:block">
+                  <Button variant="contained" color="secondary">
+                    Send Message
+                  </Button>
+                </Box>
+              </Box>
+            </Grid>
+            <Grid item xs={12} md={6} lg={6} sx={{ padding: 1 }}>
+              <Box marginY={4}>
+                <FieldRow title="Phone" value={employee.phone} />
+                <FieldRow title="Email" value={employee.email} />
+                <FieldRow title="Birthday" value={employee.dateOfBirth} />
+                <FieldRow title="Gender" value={employee.gender} />
+                <FieldRow title="Reports To" value={employee.reportsTo} />
+              </Box>
+            </Grid>
+          </Grid>
+
+          <Box position="absolute" top={6} right={6}>
+            <IconButton>
+              <EditIcon sx={{ color: "#8e8e8e" }} />
+            </IconButton>
+          </Box>
+        </Paper>
+        {/* first profile section end*/}
+
+        {/* peronal information & Emergeny conteact information section start*/}
+        <Grid container spacing={2}>
+          <Grid item xs={12} md={6} lg={6}>
+            <Paper sx={{ marginY: 6, padding: 1, position: "relative" }}>
+              <Box>
+                <Typography
+                  variant="h5"
+                  sx={{ fontWeight: "light", color: "gray" }}
+                  className="text-center md:text-start"
+                >
+                  Personal Information
                 </Typography>
               </Box>
 
-              <Box marginY={3} className="flex justify-center sm:block">
-                <Button variant="contained" color="secondary">
-                  Send Message
-                </Button>
+              <Box marginY={3}>
+                <FieldRow
+                  title="Passport No"
+                  value={personalInfo.passportNumber}
+                />
+                <FieldRow
+                  title="Passport Expiration Date"
+                  value={personalInfo.passportExpDate}
+                />
+                <FieldRow title="Telephone" value={personalInfo.tel} />
+                <FieldRow
+                  title="Nationality"
+                  value={personalInfo.nationality}
+                />
+                <FieldRow title="Religion" value={personalInfo.religion} />
+                <FieldRow
+                  title="Number of children"
+                  value={personalInfo.maritalStatus}
+                />
+                <FieldRow
+                  title="Passport Expiration Date"
+                  value={personalInfo.numberOfChildren}
+                />
               </Box>
-            </Box>
+
+              <Box position="absolute" top={6} right={6}>
+                <IconButton>
+                  <EditIcon sx={{ color: "#8e8e8e" }} />
+                </IconButton>
+              </Box>
+            </Paper>
           </Grid>
-          <Grid item xs={12} md={6} lg={6} sx={{ padding: 1 }}>
-            <Grid
-              container
-              spacing={1}
-              display="flex"
-              justifyContent="start"
-              marginY={1}
-            >
-              <Grid
-                item
-                lg={3}
-                md={3}
-                sm={3}
-                sx={{ color: "#5e798d", fontWeight: "bold" }}
-              >
-                Phone:
-              </Grid>
-              <Grid item lg={5} md={5} sm={5} sx={{ color: "#8e8e8e" }}>
-                {employee.phone}
-              </Grid>
-            </Grid>
+          <Grid item xs={12} md={6} lg={6}>
+            <Paper sx={{ marginY: 6, padding: 1, position: "relative" }}>
+              <Box>
+                <Typography
+                  variant="h5"
+                  sx={{ fontWeight: "light", color: "gray" }}
+                  className="text-center md:text-start"
+                >
+                  Emergency Contacts
+                </Typography>
+              </Box>
 
-            <Grid container display="flex" justifyContent="start" marginY={1}>
-              <Grid
-                item
-                sm={3}
-                md={3}
-                lg={3}
-                sx={{ color: "#5e798d", fontWeight: "bold" }}
-              >
-                Email:
-              </Grid>
-              <Grid item sm={5} md={5} lg={5} sx={{ color: "#8e8e8e" }}>
-                {employee.email}
-              </Grid>
-            </Grid>
+              <Box marginY={3}>
+                {emergencyContacts.map((emergencyContact, index) => {
+                  return (
+                    <Box>
+                      <FieldRow
+                        title="First Name"
+                        value={emergencyContact.firstName}
+                      />
+                      <FieldRow
+                        title="Last Name"
+                        value={emergencyContact.lastName}
+                      />
+                      <FieldRow title="Phone" value={emergencyContact.phone} />
+                      <FieldRow
+                        title="Relation"
+                        value={emergencyContact.relation}
+                      />
 
-            <Grid container display="flex" justifyContent="start" marginY={1}>
-              <Grid
-                item
-                sm={3}
-                md={3}
-                lg={3}
-                sx={{ color: "#5e798d", fontWeight: "bold" }}
-              >
-                Birthday:
-              </Grid>
-              <Grid item sm={5} md={5} lg={5} sx={{ color: "#8e8e8e" }}>
-                {employee.dateOfBirth}
-              </Grid>
-            </Grid>
+                      <Divider
+                        sx={{
+                          display: `${
+                            index === emergencyContacts.length - 1
+                              ? "none"
+                              : "hidden"
+                          }`,
+                        }}
+                      />
+                    </Box>
+                  );
+                })}
+              </Box>
 
-            <Grid container display="flex" justifyContent="start" marginY={1}>
-              <Grid
-                item
-                sm={3}
-                md={3}
-                lg={3}
-                sx={{ color: "#5e798d", fontWeight: "bold" }}
-              >
-                Gender:
-              </Grid>
-              <Grid item sm={5} md={5} lg={5} sx={{ color: "#8e8e8e" }}>
-                {employee.gender}
-              </Grid>
-            </Grid>
-
-            <Grid container display="flex" justifyContent="start" marginY={1}>
-              <Grid
-                item
-                sm={3}
-                md={3}
-                lg={3}
-                sx={{ color: "#5e798d", fontWeight: "bold" }}
-              >
-                Reports To:
-              </Grid>
-              <Grid item sm={5} md={5} lg={5} sx={{ color: "#8e8e8e" }}>
-                {employee.reportsTo}
-              </Grid>
-            </Grid>
+              <Box position="absolute" top={6} right={6}>
+                <IconButton>
+                  <EditIcon sx={{ color: "#8e8e8e" }} />
+                </IconButton>
+              </Box>
+            </Paper>
           </Grid>
         </Grid>
 
-        <Box position="absolute" top={6} right={6}>
-          <IconButton>
-            <EditIcon sx={{ color: "#8e8e8e" }} />
-          </IconButton>
-        </Box>
-      </Paper>
-      {/* first profile section end*/}
-
-      {/* peronal information & Emergeny conteact information section start*/}
-      <Grid container spacing={2}>
-        <Grid item xs={12} md={6} lg={6}>
-          <Paper sx={{ marginY: 6, padding: 1, position: "relative" }}>
-            <Box>
-              <Typography
-                variant="h5"
-                sx={{ fontWeight: "light", color: "gray" }}
-                className="text-center md:text-start"
-              >
-                Personal Information
-              </Typography>
-            </Box>
-
-            <Box marginY={3}>
-              <Grid container spacing={2} fontSize={14} paddingY={0.5}>
-                <Grid
-                  item
-                  xs={6}
-                  md={6}
-                  lg={6}
-                  sx={{ color: "#5e798d", fontWeight: "bold" }}
+        {/* Education & Experience section */}
+        <Grid container spacing={2}>
+          {/* Education Information */}
+          <Grid item xs={12} md={6} lg={6}>
+            <Paper sx={{ marginY: 6, padding: 1, position: "relative" }}>
+              <Box sx={{ marginBottom: 2 }}>
+                <Typography
+                  variant="h5"
+                  sx={{ fontWeight: "light", color: "gray" }}
+                  className="text-center md:text-start"
                 >
-                  Passport No.
-                </Grid>
-                <Grid item xs={12} md={6} lg={6} sx={{ color: "#8e8e8e" }}>
-                  {personalInfo.passportNumber}
-                </Grid>
-              </Grid>
-
-              <Grid container spacing={2} fontSize={14} paddingY={0.5}>
-                <Grid
-                  item
-                  xs={6}
-                  md={6}
-                  lg={6}
-                  sx={{ color: "#5e798d", fontWeight: "bold" }}
-                >
-                  Passport Expiration Date
-                </Grid>
-                <Grid item xs={12} md={6} lg={6} sx={{ color: "#8e8e8e" }}>
-                  {personalInfo.passportExpDate}
-                </Grid>
-              </Grid>
-
-              <Grid container spacing={2} fontSize={14} paddingY={0.5}>
-                <Grid
-                  item
-                  xs={6}
-                  md={6}
-                  lg={6}
-                  sx={{ color: "#5e798d", fontWeight: "bold" }}
-                >
-                  Telephone
-                </Grid>
-                <Grid item xs={12} md={6} lg={6} sx={{ color: "#8e8e8e" }}>
-                  {personalInfo.tel}
-                </Grid>
-              </Grid>
-
-              <Grid container spacing={2} fontSize={14} paddingY={0.5}>
-                <Grid
-                  item
-                  xs={6}
-                  md={6}
-                  lg={6}
-                  sx={{ color: "#5e798d", fontWeight: "bold" }}
-                >
-                  Nationality
-                </Grid>
-                <Grid item xs={12} md={6} lg={6} sx={{ color: "#8e8e8e" }}>
-                  {personalInfo.nationality}
-                </Grid>
-              </Grid>
-
-              <Grid container spacing={2} fontSize={14} paddingY={0.5}>
-                <Grid
-                  item
-                  xs={6}
-                  md={6}
-                  lg={6}
-                  sx={{ color: "#5e798d", fontWeight: "bold" }}
-                >
-                  Religion
-                </Grid>
-                <Grid item xs={12} md={6} lg={6} sx={{ color: "#8e8e8e" }}>
-                  {personalInfo.religion}
-                </Grid>
-              </Grid>
-
-              <Grid container spacing={2} fontSize={14} paddingY={0.5}>
-                <Grid
-                  item
-                  xs={6}
-                  md={6}
-                  lg={6}
-                  sx={{ color: "#5e798d", fontWeight: "bold" }}
-                >
-                  Marital Status
-                </Grid>
-                <Grid item xs={12} md={6} lg={6} sx={{ color: "#8e8e8e" }}>
-                  {personalInfo.maritalStatus}
-                </Grid>
-              </Grid>
-
-              <Grid container spacing={2} fontSize={14} paddingY={0.5}>
-                <Grid
-                  item
-                  xs={6}
-                  md={6}
-                  lg={6}
-                  sx={{ color: "#5e798d", fontWeight: "bold" }}
-                >
-                  Number of children
-                </Grid>
-                <Grid item xs={12} md={6} lg={6} sx={{ color: "#8e8e8e" }}>
-                  {personalInfo.numberOfChildren}
-                </Grid>
-              </Grid>
-            </Box>
-
-            <Box position="absolute" top={6} right={6}>
-              <IconButton>
-                <EditIcon sx={{ color: "#8e8e8e" }} />
-              </IconButton>
-            </Box>
-          </Paper>
-        </Grid>
-        <Grid item xs={12} md={6} lg={6}>
-          <Paper sx={{ marginY: 6, padding: 1, position: "relative" }}>
-            <Box>
-              <Typography
-                variant="h5"
-                sx={{ fontWeight: "light", color: "gray" }}
-                className="text-center md:text-start"
-              >
-                Emergency Contacts
-              </Typography>
-            </Box>
-
-            <Box marginY={3}>
-              {emergencyContacts.map((emergencyContact, index) => {
+                  Education Information
+                </Typography>
+              </Box>
+              {qualifications?.map((qualification, index) => {
                 return (
-                  <Box>
-                    <Grid container spacing={2} fontSize={14} paddingY={0.5}>
-                      <Grid
-                        item
-                        xs={6}
-                        md={6}
-                        lg={6}
-                        sx={{ color: "#5e798d", fontWeight: "bold" }}
-                      >
-                        First Name :
-                      </Grid>
-                      <Grid item xs={6} md={6} lg={6} sx={{ color: "#8e8e8e" }}>
-                        {emergencyContact.firstName}
-                      </Grid>
-                    </Grid>
+                  <Box
+                    key={qualification.id}
+                    sx={{
+                      borderLeft: "2px solid #dddddd",
+                      position: "relative",
+                      paddingX: 2,
+                      paddingBottom: 2,
+                    }}
+                  >
+                    <Typography sx={{ fontWeight: "bold", color: "#5e798d" }}>
+                      {qualification.school}
+                    </Typography>
 
-                    <Grid container spacing={2} fontSize={14} paddingY={0.5}>
-                      <Grid
-                        item
-                        xs={6}
-                        md={6}
-                        lg={6}
-                        sx={{ color: "#5e798d", fontWeight: "bold" }}
-                      >
-                        Last Name :
-                      </Grid>
-                      <Grid item xs={6} md={6} lg={6} sx={{ color: "#8e8e8e" }}>
-                        {emergencyContact.lastName}
-                      </Grid>
-                    </Grid>
-
-                    <Grid container spacing={2} fontSize={14} paddingY={0.5}>
-                      <Grid
-                        item
-                        xs={6}
-                        md={6}
-                        lg={6}
-                        sx={{ color: "#5e798d", fontWeight: "bold" }}
-                      >
-                        Phone :
-                      </Grid>
-                      <Grid item xs={6} md={6} lg={6} sx={{ color: "#8e8e8e" }}>
-                        {emergencyContact.phone}
-                      </Grid>
-                    </Grid>
-
-                    <Grid container spacing={2} fontSize={14} paddingY={0.5}>
-                      <Grid
-                        item
-                        xs={6}
-                        md={6}
-                        lg={6}
-                        sx={{ color: "#5e798d", fontWeight: "bold" }}
-                      >
-                        Relation :
-                      </Grid>
-                      <Grid item xs={6} md={6} lg={6} sx={{ color: "#8e8e8e" }}>
-                        {emergencyContact.relation}
-                      </Grid>
-                    </Grid>
-
-                    <Divider
+                    <Typography
                       sx={{
-                        display: `${
-                          index === emergencyContacts.length - 1
-                            ? "none"
-                            : "hidden"
-                        }`,
+                        fontSize: 14,
+                        fontWeight: "normal",
+                        color: "#8e8e8e",
+                      }}
+                    >
+                      {qualification.education}
+                    </Typography>
+
+                    <Typography
+                      sx={{
+                        fontSize: 13,
+                        fontWeight: "normal",
+                        color: "#8e8e8e",
+                      }}
+                    >
+                      location : Ethiopia
+                    </Typography>
+
+                    <Box sx={{ display: "flex", alignItems: "center" }}>
+                      <Typography
+                        sx={{
+                          fontSize: 12,
+                          fontWeight: "normal",
+                          color: "#8e8e8e",
+                        }}
+                      >
+                        {qualification.educationStartedYear}
+                      </Typography>
+                      {" - "}
+                      <Typography
+                        sx={{
+                          fontSize: 12,
+                          fontWeight: "normal",
+                          color: "#8e8e8e",
+                        }}
+                      >
+                        {qualification.educationEndedYear}
+                      </Typography>
+                    </Box>
+
+                    <Box
+                      sx={{
+                        position: "absolute",
+                        top: 0,
+                        left: "-6px",
+                        width: "10px",
+                        height: "10px",
+                        backgroundColor: "#dddddd",
+                        borderRadius: 8,
                       }}
                     />
                   </Box>
                 );
               })}
-            </Box>
 
-            <Box position="absolute" top={6} right={6}>
-              <IconButton>
-                <EditIcon sx={{ color: "#8e8e8e" }} />
-              </IconButton>
-            </Box>
-          </Paper>
-        </Grid>
-      </Grid>
-
-      {/* Bank & Family Informations */}
-      <Grid container spacing={2}>
-        {/* Bank Informations */}
-        <Grid item xs={12} md={6} lg={6}>
-          <Paper sx={{ marginY: 6, padding: 1, position: "relative" }}>
-            <Box sx={{ marginBottom: 2 }}>
-              <Typography
-                variant="h5"
-                sx={{ fontWeight: "light", color: "gray" }}
-                className="text-center md:text-start"
-              >
-                Education Information
-              </Typography>
-            </Box>
-            {qualifications.map((qualification, index) => {
-              return (
-                <Box
-                  sx={{
-                    borderLeft: "2px solid #dddddd",
-                    position: "relative",
-                    paddingX: 2,
-                    paddingBottom: 2,
-                  }}
+              <Box position="absolute" top={6} right={6}>
+                <IconButton onClick={handleOpenAddQualificationModal}>
+                  <AddIcon sx={{ color: "#8e8e8e" }} />
+                </IconButton>
+              </Box>
+            </Paper>
+          </Grid>
+          {/* Experiences */}
+          <Grid item xs={12} md={6} lg={6}>
+            <Paper sx={{ marginY: 6, padding: 1, position: "relative" }}>
+              <Box>
+                <Typography
+                  variant="h5"
+                  sx={{ fontWeight: "light", color: "gray" }}
+                  className="text-center md:text-start"
                 >
-                  <Typography sx={{ fontWeight: "bold", color: "#5e798d" }}>
-                    {qualification.school}
-                  </Typography>
+                  Experiences
+                </Typography>
+              </Box>
 
-                  <Typography
-                    sx={{
-                      fontSize: 14,
-                      fontWeight: "normal",
-                      color: "#8e8e8e",
-                    }}
-                  >
-                    {qualification.education}
-                  </Typography>
-
-                  <Typography
-                    sx={{
-                      fontSize: 13,
-                      fontWeight: "normal",
-                      color: "#8e8e8e",
-                    }}
-                  >
-                    location : {qualification.country}
-                  </Typography>
-
-                  <Box sx={{ display: "flex", alignItems: "center" }}>
-                    <Typography
-                      sx={{
-                        fontSize: 12,
-                        fontWeight: "normal",
-                        color: "#8e8e8e",
-                      }}
-                    >
-                      {qualification.educationStartedYear}
-                    </Typography>
-                    {" - "}
-                    <Typography
-                      sx={{
-                        fontSize: 12,
-                        fontWeight: "normal",
-                        color: "#8e8e8e",
-                      }}
-                    >
-                      {qualification.educationEndedYear}
-                    </Typography>
-                  </Box>
-
+              {experiences.map((experience, index) => {
+                return (
                   <Box
                     sx={{
-                      position: "absolute",
-                      top: 0,
-                      left: "-6px",
-                      width: "10px",
-                      height: "10px",
-                      backgroundColor: "#dddddd",
-                      borderRadius: 8,
+                      borderLeft: "2px solid #dddddd",
+                      position: "relative",
+                      paddingX: 2,
+                      paddingBottom: 2,
                     }}
-                  />
-                </Box>
-              );
-            })}
-
-            <Box position="absolute" top={6} right={6}>
-              <IconButton>
-                <EditIcon sx={{ color: "#8e8e8e" }} />
-              </IconButton>
-            </Box>
-          </Paper>
-        </Grid>
-        {/* Experiences */}
-        <Grid item xs={12} md={6} lg={6}>
-          <Paper sx={{ marginY: 6, padding: 1, position: "relative" }}>
-            <Box>
-              <Typography
-                variant="h5"
-                sx={{ fontWeight: "light", color: "gray" }}
-                className="text-center md:text-start"
-              >
-                Experiences
-              </Typography>
-            </Box>
-
-            {experiences.map((experience, index) => {
-              return (
-                <Box
-                  sx={{
-                    borderLeft: "2px solid #dddddd",
-                    position: "relative",
-                    paddingX: 2,
-                    paddingBottom: 2,
-                  }}
-                >
-                  <Typography sx={{ fontWeight: "bold", color: "#5e798d" }}>
-                    {experience.jobTitle} at {experience.companyName}
-                  </Typography>
-
-                  <Box sx={{ display: "flex", alignItems: "center" }}>
-                    <Typography
-                      sx={{
-                        fontSize: 12,
-                        fontWeight: "normal",
-                        color: "#8e8e8e",
-                      }}
-                    >
-                      {experience.from}
+                  >
+                    <Typography sx={{ fontWeight: "bold", color: "#5e798d" }}>
+                      {experience.jobTitle} at {experience.companyName}
                     </Typography>
-                    {" - "}
-                    <Typography
+
+                    <Box sx={{ display: "flex", alignItems: "center" }}>
+                      <Typography
+                        sx={{
+                          fontSize: 12,
+                          fontWeight: "normal",
+                          color: "#8e8e8e",
+                        }}
+                      >
+                        {experience.from}
+                      </Typography>
+                      {" - "}
+                      <Typography
+                        sx={{
+                          fontSize: 12,
+                          fontWeight: "normal",
+                          color: "#8e8e8e",
+                        }}
+                      >
+                        {experience.to}
+                      </Typography>
+                    </Box>
+
+                    <Box
                       sx={{
-                        fontSize: 12,
-                        fontWeight: "normal",
-                        color: "#8e8e8e",
+                        position: "absolute",
+                        top: 0,
+                        left: "-6px",
+                        width: "10px",
+                        height: "10px",
+                        backgroundColor: "#dddddd",
+                        borderRadius: 8,
                       }}
-                    >
-                      {experience.to}
-                    </Typography>
+                    />
                   </Box>
+                );
+              })}
 
-                  <Box
-                    sx={{
-                      position: "absolute",
-                      top: 0,
-                      left: "-6px",
-                      width: "10px",
-                      height: "10px",
-                      backgroundColor: "#dddddd",
-                      borderRadius: 8,
-                    }}
-                  />
-                </Box>
-              );
-            })}
-
-            <Box position="absolute" top={6} right={6}>
-              <IconButton>
-                <EditIcon sx={{ color: "#8e8e8e" }} />
-              </IconButton>
-            </Box>
-          </Paper>
+              <Box position="absolute" top={6} right={6}>
+                <IconButton>
+                  <EditIcon sx={{ color: "#8e8e8e" }} />
+                </IconButton>
+              </Box>
+            </Paper>
+          </Grid>
         </Grid>
-      </Grid>
-
-      {/* peronal information & Emergeny conteact information section end*/}
-    </Box>
+      </Box>
+    </>
   );
 }
