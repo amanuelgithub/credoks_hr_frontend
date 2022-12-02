@@ -12,7 +12,6 @@ import DetailLocation from "./pages/Admin/Locations/DetailLocation";
 import Locations from "./pages/Admin/Locations/Locations";
 import Login from "./pages/Login";
 import { useAppSelector } from "../src/app/hooks";
-import DetailEmployee from "./pages/Admin/Employees/DetailEmployee";
 import Positions from "./pages/Admin/Positions/Positions";
 import HrDashboard from "./pages/HR/HrDashboard";
 import ManagerDashboard from "./pages/Manager/ManagerDashboard";
@@ -22,6 +21,7 @@ import ManagerRoutesProtector from "./components/RouteProtector/ManagerRoutesPro
 import CompanyEmployees from "./pages/HR/CompanyEmployees/CompanyEmployees";
 import AdminDashboardContent from "./pages/Admin/AdminDashboardContent";
 import AddCompanyEmployee from "./pages/HR/CompanyEmployees/AddCompanyEmployee";
+import DetailEmployee from "./pages/Admin/Employees/DetailEmployee/DetailEmployee";
 
 function Router() {
   const token = useAppSelector((state) => state.auth.access_token);

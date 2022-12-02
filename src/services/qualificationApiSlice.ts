@@ -3,7 +3,7 @@ import { IQualification } from "../models/IQualification";
 
 export const qualificationApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    getQualificationsByEmployeeId: builder.query<any[], any>({
+    getQualificationsByEmployeeId: builder.query<IQualification[], any>({
       query: (employeeId: string) => ({
         url: `/qualifications/employee/${employeeId}`,
       }),

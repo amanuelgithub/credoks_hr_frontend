@@ -67,6 +67,8 @@ export const apiSlice = createApi({
     "Company",
     "Employee",
     "Qualification",
+    "EmergencyContact",
+    "Experience",
     "Department",
     "Location",
     "Position",

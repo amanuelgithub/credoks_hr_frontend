@@ -4,18 +4,15 @@ import Modal from "@mui/material/Modal";
 import Typography from "@mui/material/Typography";
 import { ToastContainer } from "react-toastify";
 import CloseIcon from "@mui/icons-material/Close";
-import { IQualification } from "../../../models/IQualification";
 import { Field, Formik } from "formik";
 import * as yup from "yup";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
 import { useState } from "react";
-import FormControl from "@mui/material/FormControl";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import { useAddQaualificationMutation } from "../../../services/qualificationApiSlice";
+import { IExperience } from "../../../../models/IExperience";
+import { useAddExperienceMutation } from "../../../../services/experienceApiSlice";
+import Grid from "@mui/material/Grid";
 
 // style applied to the modals container
 const style = {
@@ -32,20 +29,21 @@ const style = {
   overflowY: "scroll",
 };
 
-const initialValues: IQualification = {
-  employeeId: "",
-  education: "",
-  school: "",
-  educationStartedYear: new Date(Date.now()),
-  educationEndedYear: new Date(Date.now()),
+const initialValues: IExperience = {
+  jobTitle: "",
+  companyName: "",
+  from: "",
+  to: "",
 };
 
 const validationSchema = yup.object({
-  education: yup.string().required(),
-  school: yup.string().required(),
+  jobTitle: yup.string().required(),
+  companyName: yup.string().required(),
+  from: yup.string().required(),
+  to: yup.string().required(),
 });
 
-function AddQualification({
+function AddExperience({
   employeeId,
   openModal,
   handleCloseModal,
@@ -61,8 +59,7 @@ function AddQualification({
     dayjs(new Date(Date.now()).toString())
   );
 
-  const [createQualification, { isSuccess, isError }] =
-    useAddQaualificationMutation();
+  const [createExperience, { isSuccess, isError }] = useAddExperienceMutation();
 
   const handleStartingDateChange = (newValue: any) => {
     setStartingDate(newValue);
@@ -72,21 +69,18 @@ function AddQualification({
     setEndingDate(newValue);
   };
 
-  const handleSubmit = async (values: IQualification) => {
+  const handleSubmit = async (values: IExperience) => {
     console.log("submitting....");
     try {
-      console.log("qualification data: ", values);
+      console.log("experience data: ", values);
 
-      const qualification: IQualification = {
+      const experience: IExperience = {
         ...values,
-        employeeId,
-        educationStartedYear: startingDate.toDate(),
-        educationEndedYear: endingDate.toDate(),
       };
 
-      await createQualification({
+      await createExperience({
         employeeId,
-        qualification,
+        experience,
       }).unwrap();
 
       handleCloseModal();
@@ -107,7 +101,7 @@ function AddQualification({
           <Box className="flex justify-between mb-10">
             <Box />
             <Typography variant="h5" className="underline">
-              Add Qualification
+              Add Experience
             </Typography>
             <IconButton size="small" onClick={handleCloseModal}>
               <CloseIcon sx={{ color: "gray" }} />
@@ -118,7 +112,7 @@ function AddQualification({
           <Formik
             initialValues={initialValues}
             validationSchema={validationSchema}
-            onSubmit={(values: IQualification, { setSubmitting }) => {
+            onSubmit={(values: IExperience, { setSubmitting }) => {
               setSubmitting(true);
 
               handleSubmit(values);
@@ -128,57 +122,66 @@ function AddQualification({
           >
             {({ values, errors, touched, handleSubmit, isSubmitting }) => (
               <Box component="form" onSubmit={handleSubmit}>
-                {/* eduction */}
+                {/* jobTitle */}
                 <Field
-                  name="education"
+                  name="jobTitle"
                   margin="dense"
                   fullWidth
-                  label="Education"
-                  placeholder="Computer Science and Engineering"
+                  label="Job Title"
+                  placeholder="Eg. Sr. Software Developer"
                   size="small"
                   as={TextField}
-                  error={touched.education && Boolean(errors.education)}
-                  helperText={touched.education && errors.education}
+                  error={touched.jobTitle && Boolean(errors.jobTitle)}
+                  helperText={touched.jobTitle && errors.jobTitle}
                 />
 
-                {/* school */}
+                {/* Company Name */}
                 <Field
-                  name="school"
+                  name="companyName"
                   margin="dense"
                   fullWidth
-                  label="School"
-                  placeholder="Eg. Adama Science and Technology University"
+                  label="Company Name"
+                  placeholder="Eg. Credoks Digital"
                   size="small"
                   as={TextField}
-                  error={touched.school && Boolean(errors.school)}
-                  helperText={touched.school && errors.school}
+                  error={touched.companyName && Boolean(errors.companyName)}
+                  helperText={touched.companyName && errors.companyName}
                 />
 
-                {/* starting date */}
-                <FormControl margin="dense" fullWidth size="small">
-                  <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DesktopDatePicker
+                <Grid
+                  container
+                  spacing={2}
+                  sx={{ display: "flex", justifyContent: "space-between" }}
+                >
+                  <Grid item sm={5} md={5} lg={5}>
+                    {/* From */}
+                    <Field
+                      name="from"
+                      margin="dense"
+                      fullWidth
                       label="From"
-                      inputFormat="MM/DD/YYYY"
-                      value={startingDate}
-                      onChange={handleStartingDateChange}
-                      renderInput={(params: any) => <TextField {...params} />}
+                      placeholder="Eg. 2017"
+                      size="small"
+                      as={TextField}
+                      error={touched.from && Boolean(errors.from)}
+                      helperText={touched.from && errors.from}
                     />
-                  </LocalizationProvider>
-                </FormControl>
-
-                {/* ednding date */}
-                <FormControl margin="dense" fullWidth size="small">
-                  <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DesktopDatePicker
+                  </Grid>
+                  <Grid item sm={5} md={5} lg={5}>
+                    {/* Company Name */}
+                    <Field
+                      name="to"
+                      margin="dense"
+                      fullWidth
                       label="To"
-                      inputFormat="MM/DD/YYYY"
-                      value={endingDate}
-                      onChange={handleEndingDateChange}
-                      renderInput={(params: any) => <TextField {...params} />}
+                      placeholder="Eg. 2022"
+                      size="small"
+                      as={TextField}
+                      error={touched.to && Boolean(errors.to)}
+                      helperText={touched.to && errors.to}
                     />
-                  </LocalizationProvider>
-                </FormControl>
+                  </Grid>
+                </Grid>
 
                 <Button
                   type="submit"
@@ -187,7 +190,7 @@ function AddQualification({
                   size="small"
                   sx={{ borderRadius: 8, marginY: 3 }}
                 >
-                  Add Qualification
+                  Add Experience
                 </Button>
               </Box>
             )}
@@ -198,4 +201,4 @@ function AddQualification({
   );
 }
 
-export default AddQualification;
+export default AddExperience;
