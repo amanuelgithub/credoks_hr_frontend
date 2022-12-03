@@ -6,9 +6,8 @@ import Typography from "@mui/material/Typography";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
+import CloseIcon from "@mui/icons-material/Close";
 import Select from "@mui/material/Select";
-import Grid from "@mui/material/Grid";
-import Container from "@mui/material/Container";
 import AttachFiles from "../../../components/AttachFiles/AttachFiles";
 import { CompanyStatusEnum } from "../../../models/ICompany";
 import { useAddCompanyMutation } from "../../../services/companyApiSlice";
@@ -16,8 +15,23 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Formik, Field } from "formik";
 import * as yup from "yup";
-import { FormHelperText } from "@mui/material";
+import { FormHelperText, IconButton, Modal } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+
+// style applied to the modals container
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 600,
+  height: "70%",
+  bgcolor: "background.paper",
+  border: "2px solid #000",
+  boxShadow: 24,
+  p: 4,
+  overflowY: "scroll",
+};
 
 interface FormValues {
   name: string;
@@ -45,7 +59,13 @@ const validationSchema = yup.object({
   summary: yup.string().required(),
 });
 
-function AddCompany() {
+function AddCompany({
+  openModal,
+  handleCloseModal,
+}: {
+  openModal: boolean;
+  handleCloseModal: () => void;
+}) {
   const [createCompany, { isSuccess, isError }] = useAddCompanyMutation();
 
   const navigate = useNavigate();
@@ -53,6 +73,8 @@ function AddCompany() {
   const handleSubmit = async (values: FormValues) => {
     try {
       await createCompany(values).unwrap();
+
+      handleCloseModal();
     } catch (err: any) {
       console.log("Error: ", err);
     }
@@ -73,29 +95,37 @@ function AddCompany() {
       });
   }, [isSuccess, isError]);
 
+  // <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
   return (
-    <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+    <>
       <ToastContainer />
-
-      <Box className="flex flex-col items-center my-6">
-        <Typography variant="h4" component="h4" className="underline">
-          Add Company
-        </Typography>
-      </Box>
-
-      <Formik
-        initialValues={initialValues}
-        validationSchema={validationSchema}
-        onSubmit={(values: FormValues, { setSubmitting }) => {
-          setSubmitting(true);
-          handleSubmit({ ...values });
-          setSubmitting(false);
-        }}
+      <Modal
+        open={openModal}
+        onClose={handleCloseModal}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
       >
-        {({ errors, touched, handleSubmit, isSubmitting }) => (
-          <Box component="form" onSubmit={handleSubmit}>
-            <Grid container spacing={5} justifyContent="center">
-              <Grid item xs={12} md={4} lg={5}>
+        <Box sx={style}>
+          <Box className="flex justify-between mb-10">
+            <Box />
+            <Typography variant="h5" className="underline">
+              Add Company
+            </Typography>
+            <IconButton size="small" onClick={handleCloseModal}>
+              <CloseIcon sx={{ color: "gray" }} />
+            </IconButton>
+          </Box>
+          <Formik
+            initialValues={initialValues}
+            validationSchema={validationSchema}
+            onSubmit={(values: FormValues, { setSubmitting }) => {
+              setSubmitting(true);
+              handleSubmit({ ...values });
+              setSubmitting(false);
+            }}
+          >
+            {({ errors, touched, handleSubmit, isSubmitting }) => (
+              <Box component="form" onSubmit={handleSubmit}>
                 {/* Name */}
                 <Field
                   margin="dense"
@@ -149,34 +179,31 @@ function AddCompany() {
                     {touched.companyStatus && errors.companyStatus}
                   </FormHelperText>
                 </FormControl>
-              </Grid>
 
-              <Grid item xs={12} md={8} lg={5}>
                 <AttachFiles />
-              </Grid>
-            </Grid>
-            <Box
-              sx={{
-                width: "100%",
-                display: "flex",
-                px: 12,
-                justifyContent: "start",
-              }}
-            >
-              <Button
-                type="submit"
-                sx={{ my: 2 }}
-                size="small"
-                disabled={isSubmitting}
-                variant="contained"
-              >
-                Create Company
-              </Button>
-            </Box>
-          </Box>
-        )}
-      </Formik>
-    </Container>
+                <Box
+                  sx={{
+                    width: "100%",
+                    display: "flex",
+                    justifyContent: "start",
+                  }}
+                >
+                  <Button
+                    type="submit"
+                    sx={{ my: 2 }}
+                    size="small"
+                    disabled={isSubmitting}
+                    variant="contained"
+                  >
+                    Create Company
+                  </Button>
+                </Box>
+              </Box>
+            )}
+          </Formik>
+        </Box>
+      </Modal>
+    </>
   );
 }
 

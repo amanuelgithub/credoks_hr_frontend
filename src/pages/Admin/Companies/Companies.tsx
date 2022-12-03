@@ -5,7 +5,6 @@ import {
   GridColumns,
   GridRowId,
 } from "@mui/x-data-grid";
-import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import Button from "@mui/material/Button";
 import { ICompany } from "../../../models/ICompany";
@@ -13,11 +12,13 @@ import {
   useGetCompaniesQuery,
   useDeleteCompanyMutation,
 } from "../../../services/companyApiSlice";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import AddIcon from "@mui/icons-material/Add";
 import { ToastContainer } from "react-toastify";
-import DeleteModal from "../../../components/DeleteModal/DeleteModal";
 import { errorToast, successToast } from "../../../utils/toastify";
 import Loading from "../../../components/Loading";
+import AddCompany from "./AddCompany";
+import EditCompany from "./EditCompany";
 
 type Row = ICompany;
 
@@ -29,6 +30,17 @@ function Companies() {
   const handleOpenModal = () => setOpenDeleteModal(true);
   const handleCloseModal = () => setOpenDeleteModal(false);
 
+  // add company modal state conroller
+  const [openAddCompanyModal, setOpenAddCompanyModal] = useState(false);
+  const handleOpenAddCompanyModal = () => setOpenAddCompanyModal(true);
+  const handleCloseAddCompanyModal = () => setOpenAddCompanyModal(false);
+
+  // edit company modal state conroller
+  const [idToBeEdited, setIdToBeEdited] = useState("");
+  const [openEditCompanyModal, setOpenEditCompanyModal] = useState(false);
+  const handleOpenEditCompanyModal = () => setOpenEditCompanyModal(true);
+  const handleCloseEditCompanyModal = () => setOpenEditCompanyModal(false);
+
   const [companies, setCompanies] = useState(initialCompanies);
   const { data, isLoading: isLoadingCompanies } = useGetCompaniesQuery();
   const [
@@ -36,15 +48,12 @@ function Companies() {
     { isSuccess: isDeletedCompany, isError: isErrorDeleteCompany },
   ] = useDeleteCompanyMutation();
 
-  const navigate = useNavigate();
-
   // a function to delete a company
-  const handleDeleteCompany = (id: string) => {
-    handleCloseModal();
-    deleteCompany(id);
-  };
+  // const handleDeleteCompany = (id: string) => {
+  //   handleCloseModal();
+  //   deleteCompany(id);
+  // };
 
-  // used by the mui DataGrid action field
   const handleDeleteCompanyFieldAction = React.useCallback(
     (id: GridRowId) => () => {
       handleOpenModal();
@@ -52,10 +61,10 @@ function Companies() {
     },
     []
   );
-  // used by the mui DataGrid action field
   const handleEditCompanyFieldAction = React.useCallback(
     (id: GridRowId) => () => {
-      navigate(`/admin-dashboard/companies/edit/${id}`, { state: { id } });
+      setIdToBeEdited(id.toString());
+      handleOpenEditCompanyModal();
     },
     []
   );
@@ -79,10 +88,10 @@ function Companies() {
   const columns = React.useMemo<GridColumns<Row>>(
     () => [
       { field: "id", headerName: "ID", width: 80 },
-      { field: "name", headerName: "name", width: 140 },
-      { field: "summary", headerName: "summary", width: 140 },
-      { field: "status", headerName: "status", width: 140 },
-      { field: "companyLogo", headerName: "companyLogo", width: 140 },
+      { field: "name", headerName: "Name", width: 140 },
+      { field: "summary", headerName: "Summary", width: 300 },
+      { field: "companyStatus", headerName: "Status", width: 140 },
+      { field: "logo", headerName: "Company Logo", width: 140 },
       {
         field: "actions",
         type: "actions",
@@ -93,11 +102,11 @@ function Companies() {
             label="Edit"
             onClick={handleEditCompanyFieldAction(params.id)}
           />,
-          <GridActionsCellItem
-            icon={<DeleteIcon />}
-            label="Delete"
-            onClick={handleDeleteCompanyFieldAction(params.id)}
-          />,
+          // <GridActionsCellItem
+          //   icon={<DeleteIcon />}
+          //   label="Delete"
+          //   onClick={handleDeleteCompanyFieldAction(params.id)}
+          // />,
         ],
       },
     ],
@@ -110,16 +119,35 @@ function Companies() {
 
       {isLoadingCompanies ? <Loading /> : null}
 
-      <DeleteModal
+      <AddCompany
+        openModal={openAddCompanyModal}
+        handleCloseModal={handleCloseAddCompanyModal}
+      />
+
+      {idToBeEdited && (
+        <EditCompany
+          key={idToBeEdited}
+          id={idToBeEdited}
+          openModal={openEditCompanyModal}
+          handleCloseModal={handleCloseEditCompanyModal}
+        />
+      )}
+
+      {/* <DeleteModal
         id={idToBeDeleted}
         message={"Are you sure you want to delete this company?"}
         openModal={openDeleteModal}
         handleCloseModal={handleCloseModal}
         handleDelete={handleDeleteCompany}
-      />
+      /> */}
 
-      <Button variant="outlined" sx={{ my: 2 }}>
-        <Link to="/admin-dashboard/companies/add">+ Add Company</Link>
+      <Button
+        variant="contained"
+        sx={{ my: 2 }}
+        onClick={handleOpenAddCompanyModal}
+      >
+        <AddIcon sx={{ mr: 1 }} />
+        Add Company
       </Button>
 
       <DataGrid

@@ -15,6 +15,8 @@ import {
 } from "../../../../models/IEmergencyContact";
 import { FormControl, InputLabel, MenuItem } from "@mui/material";
 import { useAddEmergencyContactMutation } from "../../../../services/emergencyContactApiSlice";
+import { useEffect } from "react";
+import { errorToast, successToast } from "../../../../utils/toastify";
 
 // style applied to the modals container
 const style = {
@@ -77,6 +79,16 @@ function AddEmergencyContact({
       handleCloseModal();
     } catch (err: any) {}
   };
+
+  useEffect(() => {
+    if (isSuccess) {
+      successToast("Emergency Contact Added Successfully!");
+    }
+
+    if (isError) {
+      errorToast("Can Not Adde Emergency Contact!");
+    }
+  }, [isSuccess, isError]);
 
   return (
     <>
@@ -178,7 +190,7 @@ function AddEmergencyContact({
                   disabled={isSubmitting}
                   variant="contained"
                   size="small"
-                  sx={{ borderRadius: 8, marginY: 3 }}
+                  sx={{ marginY: 3 }}
                 >
                   Add Emergency Contact
                 </Button>

@@ -4,39 +4,12 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardHeader from "@mui/material/CardHeader";
 import Divider from "@mui/material/Divider";
-import { useGetCompaniesEmployeesReportQuery } from "../../services/employeeApiSlice";
-import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
+import { useGetCompaniesEmployeesReportQuery } from "../../../services/employeeApiSlice";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-// export const chartData = {
-//   labels: ["Credoks Digital", "Teleprot", "Startups Technology"],
-//   datasets: [
-//     {
-//       label: "# of Votes",
-//       data: [12, 19, 3],
-//       backgroundColor: ["#E14D2A", "#3E6D9C", "#3F0071"],
-//       borderColor: ["#E14D2A", "#3E6D9C", "#3F0071"],
-//       borderWidth: 1,
-//     },
-//   ],
-// };
-
-// let chartData = {
-//   labels: [],
-//   datasets: [
-//     {
-//       label: "# of Votes",
-//       data: [12, 19, 3],
-//       backgroundColor: ["#E14D2A", "#3E6D9C", "#3F0071"],
-//       borderColor: ["#E14D2A", "#3E6D9C", "#3F0071"],
-//       borderWidth: 1,
-//     },
-//   ],
-// };
-
-function AdminDashboardContent() {
+function EmployeeChart() {
   const { data } = useGetCompaniesEmployeesReportQuery();
 
   let companyEmpStatusArrayChartData: any[] = [];
@@ -85,24 +58,22 @@ function AdminDashboardContent() {
     ],
   };
 
-  //
-
   return (
-    <div style={{ height: "100vh", width: "100%" }}>
-      <Card sx={{ width: "fit-content" }}>
+    <>
+      {/* <Card sx={{ width: "fit-content" }}>
         <CardHeader title="Companies Total Employees" />
         <Divider />
 
         <CardContent>
           <Pie data={totalEmpCharData} />
         </CardContent>
-      </Card>
+      </Card> */}
       <Box sx={{ display: "flex", my: 2, gap: 4 }}>
         {companyEmpStatusArrayChartData.map((companyEmpStatusData) => (
           <Card sx={{ width: "fit-content", mb: 2 }}>
             <CardHeader
               title={companyEmpStatusData.name}
-              subheader="all employee types"
+              subheader="employee types"
             />
             <Divider />
 
@@ -112,8 +83,8 @@ function AdminDashboardContent() {
           </Card>
         ))}
       </Box>
-    </div>
+    </>
   );
 }
 
-export default AdminDashboardContent;
+export default EmployeeChart;

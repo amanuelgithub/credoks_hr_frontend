@@ -1,7 +1,6 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import PageNotFound from "./components/PageNotFound";
-import AdminDashboard from "./pages/Admin/AdminDashboard";
-import AddCompany from "./pages/Admin/Companies/AddCompany";
+import AdminDashboard from "./pages/Admin/Dashboard/AdminDashboard";
 import Companies from "./pages/Admin/Companies/Companies";
 import DetailCompany from "./pages/Admin/Companies/DetailCompany";
 import EditCompany from "./pages/Admin/Companies/EditCompany";
@@ -19,9 +18,9 @@ import AdminRoutesProtector from "./components/RouteProtector/AdminRoutesProtect
 import HrRoutesProtector from "./components/RouteProtector/HrRoutesProtector";
 import ManagerRoutesProtector from "./components/RouteProtector/ManagerRoutesProtector";
 import CompanyEmployees from "./pages/HR/CompanyEmployees/CompanyEmployees";
-import AdminDashboardContent from "./pages/Admin/AdminDashboardContent";
 import AddCompanyEmployee from "./pages/HR/CompanyEmployees/AddCompanyEmployee";
 import DetailEmployee from "./pages/Admin/Employees/DetailEmployee/DetailEmployee";
+import AdminDashboardContent from "./pages/Admin/Dashboard/AdminDashboardContent";
 
 function Router() {
   const token = useAppSelector((state) => state.auth.access_token);
@@ -44,8 +43,6 @@ function Router() {
           </Route>
           <Route path="companies">
             <Route index element={<Companies />} />
-            <Route path="add" element={<AddCompany />} />
-            <Route path="edit/:id" element={<EditCompany />} />
             <Route path="detail/:id" element={<DetailCompany />} />
           </Route>
           <Route path="departments">

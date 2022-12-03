@@ -268,7 +268,7 @@ function Employees() {
       >
         <Typography variant="h4"> Employees</Typography>
         <Button
-          sx={{ my: 2, borderRadius: 8 }}
+          sx={{ my: 2 }}
           variant="contained"
           onClick={handleOpenAddEmployeeModal}
           startIcon={<AddIcon />}

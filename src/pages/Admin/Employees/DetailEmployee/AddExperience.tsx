@@ -6,13 +6,13 @@ import { ToastContainer } from "react-toastify";
 import CloseIcon from "@mui/icons-material/Close";
 import { Field, Formik } from "formik";
 import * as yup from "yup";
-import dayjs from "dayjs";
-import { useState } from "react";
+import { useEffect } from "react";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { IExperience } from "../../../../models/IExperience";
 import { useAddExperienceMutation } from "../../../../services/experienceApiSlice";
 import Grid from "@mui/material/Grid";
+import { errorToast, successToast } from "../../../../utils/toastify";
 
 // style applied to the modals container
 const style = {
@@ -52,22 +52,7 @@ function AddExperience({
   openModal: boolean;
   handleCloseModal: () => void;
 }) {
-  const [startingDate, setStartingDate] = useState(
-    dayjs(new Date(Date.now()).toString())
-  );
-  const [endingDate, setEndingDate] = useState(
-    dayjs(new Date(Date.now()).toString())
-  );
-
   const [createExperience, { isSuccess, isError }] = useAddExperienceMutation();
-
-  const handleStartingDateChange = (newValue: any) => {
-    setStartingDate(newValue);
-  };
-
-  const handleEndingDateChange = (newValue: any) => {
-    setEndingDate(newValue);
-  };
 
   const handleSubmit = async (values: IExperience) => {
     console.log("submitting....");
@@ -86,6 +71,16 @@ function AddExperience({
       handleCloseModal();
     } catch (err: any) {}
   };
+
+  useEffect(() => {
+    if (isSuccess) {
+      successToast("Experience Added Successfully!");
+    }
+
+    if (isError) {
+      errorToast("Experience Added Emergency Contact!");
+    }
+  }, [isSuccess, isError]);
 
   return (
     <>
@@ -188,7 +183,7 @@ function AddExperience({
                   disabled={isSubmitting}
                   variant="contained"
                   size="small"
-                  sx={{ borderRadius: 8, marginY: 3 }}
+                  sx={{ marginY: 3 }}
                 >
                   Add Experience
                 </Button>

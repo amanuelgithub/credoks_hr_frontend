@@ -11,11 +11,12 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import FormControl from "@mui/material/FormControl";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { useAddQaualificationMutation } from "../../../../services/qualificationApiSlice";
+import { errorToast, successToast } from "../../../../utils/toastify";
 
 // style applied to the modals container
 const style = {
@@ -92,6 +93,16 @@ function AddQualification({
       handleCloseModal();
     } catch (err: any) {}
   };
+
+  useEffect(() => {
+    if (isSuccess) {
+      successToast("Qualification Added Successfully!");
+    }
+
+    if (isError) {
+      errorToast("Qualification  Added Emergency Contact!");
+    }
+  }, [isSuccess, isError]);
 
   return (
     <>
@@ -185,7 +196,7 @@ function AddQualification({
                   disabled={isSubmitting}
                   variant="contained"
                   size="small"
-                  sx={{ borderRadius: 8, marginY: 3 }}
+                  sx={{ marginY: 3 }}
                 >
                   Add Qualification
                 </Button>
