@@ -239,7 +239,7 @@ function Employees() {
       {idToBeDeleted && (
         <DeleteModal
           id={idToBeDeleted}
-          message={"Are you sure you want to delete this employee?"}
+          name="Employee"
           openModal={openDeleteModal}
           handleCloseModal={handleCloseDeleteModal}
           handleDelete={handleDeleteEmployee}

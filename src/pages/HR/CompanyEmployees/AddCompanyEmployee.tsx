@@ -4,7 +4,6 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import RadioGroup from "@mui/material/RadioGroup";
@@ -27,9 +26,6 @@ import FormHelperText from "@mui/material/FormHelperText";
 import { useAddEmployeeMutation } from "../../../services/employeeApiSlice";
 import { ToastContainer } from "react-toastify";
 import { errorToast, successToast } from "../../../utils/toastify";
-import Accordion from "@mui/material/Accordion";
-import AccordionSummary from "@mui/material/AccordionSummary";
-import AccordionDetails from "@mui/material/AccordionDetails";
 import { useAppSelector } from "../../../app/hooks";
 import { useNavigate } from "react-router-dom";
 import { CustomRadio } from "../../../components/form/CustomRadio";
@@ -94,14 +90,6 @@ const validationSchema = yup.object({
   accountNumber: yup.string().required("Account number is a required field"),
 });
 
-// custom radio to use along with formik
-// type CustomRadioProps = { label: string } & FieldAttributes<{}>;
-
-// const CustomRadio: React.FC<CustomRadioProps> = ({ label, ...props }) => {
-//   const [field] = useField<{}>(props);
-//   return <FormControlLabel {...field} control={<Radio />} label={label} />;
-// };
-
 function AddCompanyEmployee() {
   const companyId = useAppSelector((state) => state.auth.companyId);
 
@@ -114,8 +102,6 @@ function AddCompanyEmployee() {
     dayjs("2014-08-18T21:11:54")
   );
 
-  const [expanded, setExpanded] = useState<string | false>("panel1");
-
   const [createEmployee, { isSuccess, isError }] = useAddEmployeeMutation();
 
   const handleDateOfBirthChange = (newValue: any) => {
@@ -124,11 +110,6 @@ function AddCompanyEmployee() {
   const handleDateOfJoiningChange = (newValue: any) => {
     setDateOfJoiningValue(newValue);
   };
-
-  const handleAccordionChange =
-    (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
-      setExpanded(isExpanded ? panel : false);
-    };
 
   useEffect(() => {
     console.log("Date of birth", dateOfBirthValue);
@@ -186,304 +167,267 @@ function AddCompanyEmployee() {
       >
         {({ values, errors, touched, handleSubmit, isSubmitting }) => (
           <Box component="form" onSubmit={handleSubmit} sx={{ mx: "15%" }}>
-            <Accordion
-              expanded={expanded === "panel1"}
-              onChange={handleAccordionChange("panel1")}
+            <Typography sx={{ width: "33%", flexShrink: 0 }}>
+              Basic Informations
+            </Typography>
+
+            <FormControl
+              fullWidth
+              margin="normal"
+              size="small"
+              error={touched.type && Boolean(errors.type)}
             >
-              <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
-                aria-controls="panel1bh-content"
-                id="panel1bh-header"
+              <InputLabel id="user-type-select-label">User Type</InputLabel>
+              <Field
+                name="type"
+                type="select"
+                label="User Type"
+                as={Select}
+                helperText={touched.type && errors.type}
               >
-                <Typography sx={{ width: "33%", flexShrink: 0 }}>
-                  Basic Informations
-                </Typography>
-              </AccordionSummary>
-              <AccordionDetails>
-                {/* User Type */}
-                <FormControl
-                  fullWidth
-                  margin="normal"
-                  size="small"
-                  error={touched.type && Boolean(errors.type)}
-                >
-                  <InputLabel id="user-type-select-label">User Type</InputLabel>
-                  <Field
-                    name="type"
-                    type="select"
-                    label="User Type"
-                    as={Select}
-                    helperText={touched.type && errors.type}
-                  >
-                    <MenuItem value={UserTypeEnum.ADMIN}>Admin</MenuItem>
-                    <MenuItem value={UserTypeEnum.EMPLOYEE}>Employee</MenuItem>
-                    <MenuItem value={UserTypeEnum.MANAGER}>Manager</MenuItem>
-                    <MenuItem value={UserTypeEnum.HR}>HR</MenuItem>
-                  </Field>
-                  <FormHelperText>
-                    first select the type of user to create
-                    {/* {touched.employmentStatus && errors.employmentStatus} */}
-                  </FormHelperText>
-                </FormControl>
+                <MenuItem value={UserTypeEnum.ADMIN}>Admin</MenuItem>
+                <MenuItem value={UserTypeEnum.EMPLOYEE}>Employee</MenuItem>
+                <MenuItem value={UserTypeEnum.MANAGER}>Manager</MenuItem>
+                <MenuItem value={UserTypeEnum.HR}>HR</MenuItem>
+              </Field>
+              <FormHelperText>
+                first select the type of user to create
+                {/* {touched.employmentStatus && errors.employmentStatus} */}
+              </FormHelperText>
+            </FormControl>
 
-                <Box display="flex" gap={3}>
-                  {/* First Name */}
-                  <Field
-                    name="firstName"
-                    margin="dense"
-                    fullWidth
-                    label="First Name"
-                    type="text"
-                    size="small"
-                    as={TextField}
-                    error={touched.firstName && Boolean(errors.firstName)}
-                    helperText={touched.firstName && errors.firstName}
-                  />
+            <Box display="flex" gap={3}>
+              {/* First Name */}
+              <Field
+                name="firstName"
+                margin="dense"
+                fullWidth
+                label="First Name"
+                type="text"
+                size="small"
+                as={TextField}
+                error={touched.firstName && Boolean(errors.firstName)}
+                helperText={touched.firstName && errors.firstName}
+              />
 
-                  {/* Father Name */}
-                  <Field
-                    name="fatherName"
-                    margin="dense"
-                    fullWidth
-                    label="Father Name"
-                    size="small"
-                    type="text"
-                    as={TextField}
-                    error={touched.fatherName && Boolean(errors.fatherName)}
-                    helperText={touched.fatherName && errors.fatherName}
-                  />
+              {/* Father Name */}
+              <Field
+                name="fatherName"
+                margin="dense"
+                fullWidth
+                label="Father Name"
+                size="small"
+                type="text"
+                as={TextField}
+                error={touched.fatherName && Boolean(errors.fatherName)}
+                helperText={touched.fatherName && errors.fatherName}
+              />
 
-                  {/* Grand Father Name */}
-                  <Field
-                    name="grandFatherName"
-                    margin="dense"
-                    fullWidth
-                    label="Grand Father Name"
-                    size="small"
-                    as={TextField}
-                    error={
-                      touched.grandFatherName && Boolean(errors.grandFatherName)
-                    }
-                    helperText={
-                      touched.grandFatherName && errors.grandFatherName
-                    }
-                  />
-                </Box>
+              {/* Grand Father Name */}
+              <Field
+                name="grandFatherName"
+                margin="dense"
+                fullWidth
+                label="Grand Father Name"
+                size="small"
+                as={TextField}
+                error={
+                  touched.grandFatherName && Boolean(errors.grandFatherName)
+                }
+                helperText={touched.grandFatherName && errors.grandFatherName}
+              />
+            </Box>
 
-                {/* gender */}
-                <FormControl fullWidth margin="dense" size="small">
-                  <FormLabel id="demo-radio-buttons-group-label">
-                    Gender
-                  </FormLabel>
-                  <RadioGroup
-                    aria-labelledby="demo-radio-buttons-group-label"
-                    defaultValue={GenderEnum.MALE}
+            {/* gender */}
+            <FormControl fullWidth margin="dense" size="small">
+              <FormLabel id="demo-radio-buttons-group-label">Gender</FormLabel>
+              <RadioGroup
+                aria-labelledby="demo-radio-buttons-group-label"
+                defaultValue={GenderEnum.MALE}
+                name="gender"
+              >
+                <Box display="flex">
+                  <CustomRadio
                     name="gender"
-                  >
-                    <Box display="flex">
-                      <CustomRadio
-                        name="gender"
-                        type="radio"
-                        value={GenderEnum.MALE}
-                        label="Male"
-                      />
-                      <CustomRadio
-                        name="gender"
-                        type="radio"
-                        value={GenderEnum.FEMALE}
-                        label="Female"
-                      />
-                    </Box>
-                  </RadioGroup>
-                </FormControl>
-
-                <Box display="flex" gap={1}>
-                  {/* Email */}
-                  <Field
-                    name="email"
-                    margin="dense"
-                    fullWidth
-                    label="Email"
-                    size="small"
-                    type="text"
-                    as={TextField}
-                    error={touched.email && Boolean(errors.email)}
-                    helperText={touched.email && errors.email}
+                    type="radio"
+                    value={GenderEnum.MALE}
+                    label="Male"
                   />
-
-                  {/* Phone */}
-                  <Field
-                    name="phone"
-                    margin="dense"
-                    fullWidth
-                    label="Phone"
-                    size="small"
-                    type="text"
-                    as={TextField}
-                    error={touched.phone && Boolean(errors.phone)}
-                    helperText={touched.phone && errors.phone}
-                  />
-
-                  {/* password */}
-                  <Field
-                    name="password"
-                    margin="dense"
-                    fullWidth
-                    type="password"
-                    label="Password"
-                    placeholder="password"
-                    size="small"
-                    as={TextField}
-                    error={touched.password && Boolean(errors.password)}
-                    helperText={touched.password && errors.password}
+                  <CustomRadio
+                    name="gender"
+                    type="radio"
+                    value={GenderEnum.FEMALE}
+                    label="Female"
                   />
                 </Box>
+              </RadioGroup>
+            </FormControl>
 
-                <Box display="flex" gap={3}>
-                  {/* data of Birth */}
-                  <FormControl margin="dense" fullWidth size="small">
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                      <DesktopDatePicker
-                        label="Date of Birth"
-                        inputFormat="MM/DD/YYYY"
-                        value={dateOfBirthValue}
-                        onChange={handleDateOfBirthChange}
-                        renderInput={(params: any) => <TextField {...params} />}
-                      />
-                    </LocalizationProvider>
-                  </FormControl>
+            <Box display="flex" gap={1}>
+              {/* Email */}
+              <Field
+                name="email"
+                margin="dense"
+                fullWidth
+                label="Email"
+                size="small"
+                type="text"
+                as={TextField}
+                error={touched.email && Boolean(errors.email)}
+                helperText={touched.email && errors.email}
+              />
 
-                  {/* data of joining date picker */}
-                  <FormControl margin="dense" fullWidth size="small">
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                      <DesktopDatePicker
-                        label="Joining Date"
-                        inputFormat="MM/DD/YYYY"
-                        value={dateOfJoiningValue}
-                        onChange={handleDateOfJoiningChange}
-                        renderInput={(params: any) => <TextField {...params} />}
-                      />
-                    </LocalizationProvider>
-                  </FormControl>
-                </Box>
+              {/* Phone */}
+              <Field
+                name="phone"
+                margin="dense"
+                fullWidth
+                label="Phone"
+                size="small"
+                type="text"
+                as={TextField}
+                error={touched.phone && Boolean(errors.phone)}
+                helperText={touched.phone && errors.phone}
+              />
 
-                <Box display="flex" gap={3}>
-                  {/* Employee Status */}
-                  <FormControl
-                    fullWidth
-                    margin="normal"
-                    size="small"
-                    error={
-                      touched.employmentStatus &&
-                      Boolean(errors.employmentStatus)
-                    }
-                  >
-                    <InputLabel id="employee-status-select-label">
-                      Employee Status
-                    </InputLabel>
-                    <Field
-                      name="employmentStatus"
-                      type="select"
-                      label="Employee Status"
-                      as={Select}
-                    >
-                      <MenuItem value={EmploymentStatusEnum.TRAINEE}>
-                        Trainee
-                      </MenuItem>
-                      <MenuItem value={EmploymentStatusEnum.PROBAATION}>
-                        Probation
-                      </MenuItem>
-                      <MenuItem value={EmploymentStatusEnum.CONTRACT}>
-                        Contract
-                      </MenuItem>
-                      <MenuItem value={EmploymentStatusEnum.CONFIRMED}>
-                        Confirmed
-                      </MenuItem>
-                    </Field>
-                    <FormHelperText>
-                      {/* {touched.employmentStatus && errors.employmentStatus} */}
-                    </FormHelperText>
-                  </FormControl>
+              {/* password */}
+              <Field
+                name="password"
+                margin="dense"
+                fullWidth
+                type="password"
+                label="Password"
+                placeholder="password"
+                size="small"
+                as={TextField}
+                error={touched.password && Boolean(errors.password)}
+                helperText={touched.password && errors.password}
+              />
+            </Box>
 
-                  {/* Marital Status */}
-                  <FormControl
-                    fullWidth
-                    margin="normal"
-                    size="small"
-                    error={
-                      touched.maritalStatus && Boolean(errors.maritalStatus)
-                    }
-                  >
-                    <InputLabel id="marital-status-select-label">
-                      Marital Status
-                    </InputLabel>
-                    <Field
-                      name="maritalStatus"
-                      type="select"
-                      label="Marital Status"
-                      as={Select}
-                    >
-                      <MenuItem value={MaritalStatusEnum.DIVORCED}>
-                        Divorced
-                      </MenuItem>
-                      <MenuItem value={MaritalStatusEnum.MARRIED}>
-                        Married
-                      </MenuItem>
-                      <MenuItem value={MaritalStatusEnum.SINGLE}>
-                        Single
-                      </MenuItem>
-                    </Field>
-                    {/* <FormHelperText>
+            <Box display="flex" gap={3}>
+              {/* data of Birth */}
+              <FormControl margin="dense" fullWidth size="small">
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <DesktopDatePicker
+                    label="Date of Birth"
+                    inputFormat="MM/DD/YYYY"
+                    value={dateOfBirthValue}
+                    onChange={handleDateOfBirthChange}
+                    renderInput={(params: any) => <TextField {...params} />}
+                  />
+                </LocalizationProvider>
+              </FormControl>
+
+              {/* data of joining date picker */}
+              <FormControl margin="dense" fullWidth size="small">
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <DesktopDatePicker
+                    label="Joining Date"
+                    inputFormat="MM/DD/YYYY"
+                    value={dateOfJoiningValue}
+                    onChange={handleDateOfJoiningChange}
+                    renderInput={(params: any) => <TextField {...params} />}
+                  />
+                </LocalizationProvider>
+              </FormControl>
+            </Box>
+
+            <Box display="flex" gap={3}>
+              {/* Employee Status */}
+              <FormControl
+                fullWidth
+                margin="normal"
+                size="small"
+                error={
+                  touched.employmentStatus && Boolean(errors.employmentStatus)
+                }
+              >
+                <InputLabel id="employee-status-select-label">
+                  Employee Status
+                </InputLabel>
+                <Field
+                  name="employmentStatus"
+                  type="select"
+                  label="Employee Status"
+                  as={Select}
+                >
+                  <MenuItem value={EmploymentStatusEnum.TRAINEE}>
+                    Trainee
+                  </MenuItem>
+                  <MenuItem value={EmploymentStatusEnum.PROBAATION}>
+                    Probation
+                  </MenuItem>
+                  <MenuItem value={EmploymentStatusEnum.CONTRACT}>
+                    Contract
+                  </MenuItem>
+                  <MenuItem value={EmploymentStatusEnum.CONFIRMED}>
+                    Confirmed
+                  </MenuItem>
+                </Field>
+                <FormHelperText>
+                  {/* {touched.employmentStatus && errors.employmentStatus} */}
+                </FormHelperText>
+              </FormControl>
+
+              {/* Marital Status */}
+              <FormControl
+                fullWidth
+                margin="normal"
+                size="small"
+                error={touched.maritalStatus && Boolean(errors.maritalStatus)}
+              >
+                <InputLabel id="marital-status-select-label">
+                  Marital Status
+                </InputLabel>
+                <Field
+                  name="maritalStatus"
+                  type="select"
+                  label="Marital Status"
+                  as={Select}
+                >
+                  <MenuItem value={MaritalStatusEnum.DIVORCED}>
+                    Divorced
+                  </MenuItem>
+                  <MenuItem value={MaritalStatusEnum.MARRIED}>Married</MenuItem>
+                  <MenuItem value={MaritalStatusEnum.SINGLE}>Single</MenuItem>
+                </Field>
+                {/* <FormHelperText>
                         {touched.maritalStatus && errors.maritalStatus}
                       </FormHelperText> */}
-                  </FormControl>
-                </Box>
-              </AccordionDetails>
-            </Accordion>
+              </FormControl>
+            </Box>
 
-            <Accordion
-              expanded={expanded === "panel2"}
-              onChange={handleAccordionChange("panel2")}
-            >
-              <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
-                aria-controls="panel1bh-content"
-                id="panel1bh-header"
-              >
-                <Typography sx={{ width: "33%", flexShrink: 0 }}>
-                  Payment Details
-                </Typography>
-              </AccordionSummary>
-              <AccordionDetails>
-                {/* Account Number */}
-                <Field
-                  name="accountNumber"
-                  type="text"
-                  label="Accound Number"
-                  margin="dense"
-                  size="small"
-                  placeholder="Accound Number"
-                  fullWidth
-                  as={TextField}
-                  error={touched.accountNumber && Boolean(errors.accountNumber)}
-                  helperText={touched.accountNumber && errors.accountNumber}
-                />
+            <Typography sx={{ width: "33%", flexShrink: 0 }}>
+              Payment Details
+            </Typography>
+            {/* Account Number */}
+            <Field
+              name="accountNumber"
+              type="text"
+              label="Accound Number"
+              margin="dense"
+              size="small"
+              placeholder="Accound Number"
+              fullWidth
+              as={TextField}
+              error={touched.accountNumber && Boolean(errors.accountNumber)}
+              helperText={touched.accountNumber && errors.accountNumber}
+            />
 
-                {/* TIM Number */}
-                <Field
-                  name="tinNumber"
-                  type="text"
-                  label="TIN Number"
-                  margin="dense"
-                  size="small"
-                  placeholder="TIN Number"
-                  fullWidth
-                  as={TextField}
-                  error={touched.tinNumber && Boolean(errors.tinNumber)}
-                  helperText={touched.tinNumber && errors.tinNumber}
-                />
-              </AccordionDetails>
-            </Accordion>
+            {/* TIM Number */}
+            <Field
+              name="tinNumber"
+              type="text"
+              label="TIN Number"
+              margin="dense"
+              size="small"
+              placeholder="TIN Number"
+              fullWidth
+              as={TextField}
+              error={touched.tinNumber && Boolean(errors.tinNumber)}
+              helperText={touched.tinNumber && errors.tinNumber}
+            />
 
             <Button
               sx={{ my: 2 }}
@@ -494,9 +438,6 @@ function AddCompanyEmployee() {
             >
               Add Employee
             </Button>
-
-            <pre>{JSON.stringify(values, null, 2)}</pre>
-            <pre>{JSON.stringify(errors, null, 2)}</pre>
           </Box>
         )}
       </Formik>

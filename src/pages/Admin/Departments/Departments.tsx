@@ -14,16 +14,16 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import Button from "@mui/material/Button";
 import MoreIcon from "@mui/icons-material/More";
-import DeleteModal from "../../../components/DeleteModal/DeleteModal";
 import { ToastContainer } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { IDepartment } from "../../../models/IDepartment";
+import DeleteModal from "../../../components/DeleteModal/DeleteModal";
+import AddDepartment from "./AddDepartment";
+import EditDepartment from "./EditDepartment";
 import {
   useDeleteDepartmentMutation,
   useGetDepartmentsQuery,
 } from "../../../services/departmentApiSlice";
-import AddDepartment from "./AddDepartment";
-import EditDepartment from "./EditDepartment";
 
 function CustomToolbar() {
   return (
@@ -150,7 +150,7 @@ function Departments() {
       {idToBeDeleted && (
         <DeleteModal
           id={idToBeDeleted}
-          message={"Are you sure you want to delete this Department?"}
+          name="Department"
           openModal={openDeleteModal}
           handleCloseModal={handleCloseDeleteModal}
           handleDelete={handleDeleteDepartment}

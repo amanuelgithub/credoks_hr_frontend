@@ -26,12 +26,6 @@ let initialCompanies: ICompany[] = [];
 const initialValues: IDepartment = {
   name: "",
   description: "",
-  // company: {
-  //   name: "",
-  //   summary: "",
-  //   status: CompanyStatusEnum.INACTIVE,
-  //   companyLogo: "",
-  // },
   companyId: "", // company-id
 };
 
@@ -48,7 +42,7 @@ const style = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: 600,
-  height: "95%",
+  height: "70%",
   bgcolor: "background.paper",
   border: "2px solid #000",
   boxShadow: 24,
@@ -156,12 +150,12 @@ function AddDepartment({
 
                   <Divider sx={{ my: 3 }} />
 
-                  {/* Company Name */}
+                  {/* Department Name */}
                   <Field
                     name="name"
                     margin="dense"
                     fullWidth
-                    label="Company Name"
+                    label="Department Name"
                     type="text"
                     size="small"
                     as={TextField}

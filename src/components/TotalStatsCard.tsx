@@ -2,7 +2,7 @@ import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 
-function StatCard({
+function TotalStatsCard({
   amount,
   text,
   icon,
@@ -15,6 +15,7 @@ function StatCard({
     <Paper
       sx={{
         width: "290px",
+        height: "115px",
         paddingX: 2,
         display: "flex",
         justifyContent: "space-between",
@@ -27,7 +28,7 @@ function StatCard({
       <Box
         sx={{
           paddingY: 1,
-          height: "inherit",
+          // height: "inherit",
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
@@ -47,4 +48,4 @@ function StatCard({
   );
 }
 
-export default StatCard;
+export default TotalStatsCard;

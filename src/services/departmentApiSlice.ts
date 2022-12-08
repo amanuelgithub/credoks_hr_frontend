@@ -8,6 +8,13 @@ export const departmentApiSlice = apiSlice.injectEndpoints({
       providesTags: [{ type: "Department", id: "LIST" }],
     }),
 
+    getDepartmentsOfCompany: builder.query<any[], any>({
+      query: (companyId: string) => ({
+        url: `/departments/company/${companyId}`,
+      }),
+      providesTags: [{ type: "Department", id: "LIST" }],
+    }),
+
     getDepartment: builder.query({
       query: (id: string | undefined) => ({ url: `/departments/${id}` }),
       providesTags: [{ type: "Department", id: "LIST" }],
@@ -47,4 +54,5 @@ export const {
   useGetDepartmentQuery,
   useUpdateDepartmentMutation,
   useGetDepartmentsQuery,
+  useGetDepartmentsOfCompanyQuery,
 } = departmentApiSlice;

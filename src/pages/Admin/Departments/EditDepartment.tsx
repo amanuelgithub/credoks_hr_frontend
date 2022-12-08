@@ -8,15 +8,15 @@ import CloseIcon from "@mui/icons-material/Close";
 import * as yup from "yup";
 import { Field, Formik } from "formik";
 import { ToastContainer } from "react-toastify";
-import { errorToast, successToast } from "../../../utils/toastify";
-import { IDepartment } from "../../../models/IDepartment";
+import Button from "@mui/material/Button";
+import { ICompany } from "../../../models/ICompany";
 import {
   useGetDepartmentQuery,
   useUpdateDepartmentMutation,
 } from "../../../services/departmentApiSlice";
-import Button from "@mui/material/Button";
 import { useGetCompaniesQuery } from "../../../services/companyApiSlice";
-import { ICompany } from "../../../models/ICompany";
+import { IDepartment } from "../../../models/IDepartment";
+import { errorToast, successToast } from "../../../utils/toastify";
 
 let initialCompanies: ICompany[] = [];
 

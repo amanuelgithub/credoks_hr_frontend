@@ -107,7 +107,7 @@ function Positions() {
       {idToBeDeleted && (
         <DeleteModal
           id={idToBeDeleted}
-          message={"Are you sure you want to delete this Position?"}
+          name="Position"
           openModal={openDeleteModal}
           handleCloseModal={handleCloseDeleteModal}
           handleDelete={handleDeletePosition}

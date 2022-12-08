@@ -16,9 +16,8 @@ import Button from "@mui/material/Button";
 import MoreIcon from "@mui/icons-material/More";
 import { ToastContainer } from "react-toastify";
 import Avatar from "@mui/material/Avatar";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAppSelector } from "../../../app/hooks";
-import { successToast } from "../../../utils/toastify";
 import AddIcon from "@mui/icons-material/Add";
 import Typography from "@mui/material/Typography";
 
@@ -43,41 +42,7 @@ function CompanyEmployees() {
 
   const { data } = useGetEmployeesByCompanyQuery(companyId);
 
-  const [showEmployeeAddedMsg, setShowEmployeeAddedMsg] = useState(false);
-
-  const location = useLocation();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const message: string | undefined | null = location.state?.message;
-
-    if (message) {
-      setShowEmployeeAddedMsg(true);
-    }
-    return () => {
-      setShowEmployeeAddedMsg(false);
-    };
-  }, [location.state]);
-
-  useEffect(() => {
-    if (showEmployeeAddedMsg) {
-      successToast("Employee added successfully");
-    }
-    return () => {
-      setShowEmployeeAddedMsg(false);
-    };
-  }, [showEmployeeAddedMsg]);
-
-  useEffect(() => {
-    if (data !== undefined) {
-      let fetchedEmployees = data !== undefined ? data : [];
-      setEmployees(fetchedEmployees);
-    }
-
-    return () => {
-      setEmployees(initialEmployees);
-    };
-  }, [data]);
 
   useEffect(() => {
     if (data !== undefined) {
@@ -171,14 +136,6 @@ function CompanyEmployees() {
 
   return (
     <div style={{ height: "100vh", width: "100%" }}>
-      <ToastContainer />
-
-      <Link to="/hr-dashboard/employees/add">
-        <Button sx={{ my: 2 }} variant="contained" startIcon={<AddIcon />}>
-          Add Employee
-        </Button>
-      </Link>
-
       <DataGrid
         rows={employees}
         columns={columns}

@@ -153,7 +153,7 @@ function Locations() {
       {idToBeDeleted && (
         <DeleteModal
           id={idToBeDeleted}
-          message={"Are you sure you want to delete this Location?"}
+          name="Location"
           openModal={openDeleteModal}
           handleCloseModal={handleCloseDeleteModal}
           handleDelete={handleDeleteLocation}

@@ -1,34 +1,34 @@
 import Box from "@mui/material/Box";
-import StatCard from "./StatsCard";
+import TotalStatsCard from "../../../components/TotalStatsCard";
 import PeopleIcon from "@mui/icons-material/People";
-import { useGetTotalStatsQuery } from "../../../services/reportApiSlice";
+import { useGetCompaniesTotalStatsQuery } from "../../../services/reportApiSlice";
 import GroupsIcon from "@mui/icons-material/Groups";
 import BusinessIcon from "@mui/icons-material/Business";
 import PlaceIcon from "@mui/icons-material/Place";
 import EmployeeChart from "./EmployeeChart";
 
 function AdminDashboardContent() {
-  const { data: totalStats } = useGetTotalStatsQuery();
+  const { data: totalStats } = useGetCompaniesTotalStatsQuery();
 
   return (
     <div style={{ height: "100vh", width: "100%" }}>
       <Box sx={{ display: "flex", gap: 2 }}>
-        <StatCard
+        <TotalStatsCard
           amount={totalStats?.totalCompanies}
           text={"Companies"}
           icon={<BusinessIcon />}
         />
-        <StatCard
+        <TotalStatsCard
           amount={totalStats?.totalDepartments}
           text={"Departments"}
           icon={<GroupsIcon />}
         />
-        <StatCard
+        <TotalStatsCard
           amount={totalStats?.totalEmployees}
           text={"Employees"}
           icon={<PeopleIcon />}
         />
-        <StatCard
+        <TotalStatsCard
           amount={totalStats?.totalLocations}
           text={"Locations"}
           icon={<PlaceIcon />}

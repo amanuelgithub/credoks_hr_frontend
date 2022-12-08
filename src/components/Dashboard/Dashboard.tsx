@@ -122,11 +122,11 @@ function DashboardContent({
             {dashboardName}
           </Typography>
           <Box>
-            <IconButton color="inherit" sx={{ mr: 1.5 }}>
+            {/* <IconButton color="inherit" sx={{ mr: 1.5 }}>
               <Badge badgeContent={4} color="secondary">
                 <NotificationsIcon />
               </Badge>
-            </IconButton>
+            </IconButton> */}
             <IconButton color="inherit" sx={{ mr: 1.5 }} onClick={handleLogout}>
               <LogoutIcon />
             </IconButton>
