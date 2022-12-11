@@ -8,7 +8,8 @@ import DetailLocation from "./pages/Admin/Locations/DetailLocation";
 import Locations from "./pages/Admin/Locations/Locations";
 import Login from "./pages/Login";
 import { useAppSelector } from "../src/app/hooks";
-import Positions from "./pages/Admin/Positions/Positions";
+import AdminPositions from "./pages/Admin/Positions/Positions";
+import ManagerPositions from "./pages/Manager/Positions/Positions";
 import HrDashboard from "./pages/HR/HrDashboard";
 import AdminRoutesProtector from "./components/RouteProtector/AdminRoutesProtector";
 import HrRoutesProtector from "./components/RouteProtector/HrRoutesProtector";
@@ -56,7 +57,7 @@ function Router() {
             <Route path="detail/:id" element={<DetailLocation />} />
           </Route>
           <Route path="positions">
-            <Route index element={<Positions />} />
+            <Route index element={<AdminPositions />} />
           </Route>
         </Route>
       </Route>
@@ -80,6 +81,9 @@ function Router() {
           </Route>
           <Route path="departments">
             <Route index element={<ManagerDepartments />} />
+          </Route>
+          <Route path="positions">
+            <Route index element={<ManagerPositions />} />
           </Route>
         </Route>
       </Route>

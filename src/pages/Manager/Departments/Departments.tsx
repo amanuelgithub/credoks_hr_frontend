@@ -8,11 +8,6 @@ import {
   GridActionsCellItem,
   GridColumns,
   GridRowId,
-  GridToolbarColumnsButton,
-  GridToolbarContainer,
-  GridToolbarDensitySelector,
-  GridToolbarExport,
-  GridToolbarFilterButton,
 } from "@mui/x-data-grid";
 import { IDepartment } from "../../../models/IDepartment";
 import { ToastContainer } from "react-toastify";
@@ -27,21 +22,11 @@ import {
 import { useAppSelector } from "../../../app/hooks";
 import DeleteModal from "../../../components/DeleteModal/DeleteModal";
 import { errorToast, successToast } from "../../../utils/toastify";
+import DataGridToolbar from "../../../components/DataGridToolbar";
 
 type Row = IDepartment;
 
 const initialDepartments: IDepartment[] = [];
-
-function CustomToolbar() {
-  return (
-    <GridToolbarContainer>
-      <GridToolbarColumnsButton />
-      <GridToolbarFilterButton />
-      <GridToolbarDensitySelector />
-      <GridToolbarExport />
-    </GridToolbarContainer>
-  );
-}
 
 function Departments() {
   const companyId = useAppSelector((state) => state.auth.companyId);
@@ -179,7 +164,7 @@ function Departments() {
         rowsPerPageOptions={[5, 10, 15, 20]}
         autoHeight
         loading={!departments}
-        components={{ Toolbar: CustomToolbar }}
+        components={{ Toolbar: DataGridToolbar }}
       />
     </div>
   );

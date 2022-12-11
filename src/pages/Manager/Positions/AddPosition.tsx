@@ -12,24 +12,24 @@ import { ToastContainer } from "react-toastify";
 import Divider from "@mui/material/Divider";
 import { errorToast, successToast } from "../../../utils/toastify";
 import Button from "@mui/material/Button";
-import { IPosition } from "../../../models/IPosition";
 import { useAddPositionMutation } from "../../../services/positionApiSlice";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormHelperText from "@mui/material/FormHelperText";
-import { useGetDepartmentsQuery } from "../../../services/departmentApiSlice";
+import { useGetDepartmentsOfCompanyQuery } from "../../../services/departmentApiSlice";
 import Select from "@mui/material/Select";
+import { IPosition } from "../../../models/IPosition";
+import { useAppSelector } from "../../../app/hooks";
 
 const initialValues: IPosition = {
   title: "",
-  // companyId: "",
+  //   companyId: "",
   departmentId: "",
 };
 
 const validationSchema = yup.object({
   title: yup.string().required("Position's name is a required field"),
-  companyId: yup.string().required("Company's id is a required field"),
   departmentId: yup.string().required("Department's id is a required field"),
 });
 
@@ -53,23 +53,27 @@ function AddPosition({
   openModal: boolean;
   handleCloseModal: () => void;
 }) {
-  const [createPosition, { isSuccess, isError }] = useAddPositionMutation();
-
-  const { data: departments } = useGetDepartmentsQuery();
-
-  const handleSubmit = async (values: IPosition) => {
-    try {
-      await createPosition(values).unwrap();
-      handleCloseModal();
-    } catch (err: any) {
-      console.log("Error: ", err);
-    }
-  };
+  const companyId = useAppSelector((state) => state.auth.companyId);
+  const { data: departments } = useGetDepartmentsOfCompanyQuery(companyId);
+  const [
+    createPosition,
+    { isSuccess: positionCreated, isError: errorCreatingPosition },
+  ] = useAddPositionMutation();
 
   useEffect(() => {
-    if (isSuccess) successToast("Successfully Added Position.");
-    else if (isError) errorToast("Error Creating Positions");
-  }, [isSuccess, isError]);
+    if (positionCreated) successToast("Successfully Added Position.");
+    else if (errorCreatingPosition) errorToast("Error Creating Positions");
+  }, [positionCreated, errorCreatingPosition]);
+
+  const handleSubmit = async (position: IPosition) => {
+    try {
+      position = { ...position, companyId };
+      await createPosition(position).unwrap();
+      handleCloseModal();
+    } catch (error: any) {
+      console.log(`Error creating position: ${error}`);
+    }
+  };
 
   return (
     <>
@@ -78,8 +82,8 @@ function AddPosition({
       <Modal
         open={openModal}
         onClose={handleCloseModal}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
+        // aria-labelledby="modal-modal-title"
+        // aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
           <Box className="flex justify-between mb-10">
@@ -104,7 +108,7 @@ function AddPosition({
             {({ errors, touched, handleSubmit, isSubmitting }) => (
               <Box component="form" onSubmit={handleSubmit}>
                 <Box>
-                  <Divider sx={{ my: 3 }} />
+                  <Divider sx={{ my: 1 }} />
 
                   {/* Position Title */}
                   <Field

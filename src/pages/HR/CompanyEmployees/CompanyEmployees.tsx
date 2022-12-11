@@ -1,11 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
   DataGrid,
-  GridToolbarContainer,
-  GridToolbarColumnsButton,
-  GridToolbarFilterButton,
-  GridToolbarExport,
-  GridToolbarDensitySelector,
   GridActionsCellItem,
   GridColumns,
   GridRowId,
@@ -21,17 +16,7 @@ import { useAppSelector } from "../../../app/hooks";
 import { successToast } from "../../../utils/toastify";
 import AddIcon from "@mui/icons-material/Add";
 import Typography from "@mui/material/Typography";
-
-function CustomToolbar() {
-  return (
-    <GridToolbarContainer>
-      <GridToolbarColumnsButton />
-      <GridToolbarFilterButton />
-      <GridToolbarDensitySelector />
-      <GridToolbarExport />
-    </GridToolbarContainer>
-  );
-}
+import DataGridToolbar from "../../../components/DataGridToolbar";
 
 type Row = IEmployee;
 
@@ -188,7 +173,7 @@ function CompanyEmployees() {
         loading={false}
         error={undefined}
         components={{
-          Toolbar: CustomToolbar,
+          Toolbar: DataGridToolbar,
         }}
       />
     </div>

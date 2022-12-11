@@ -1,11 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
   DataGrid,
-  GridToolbarContainer,
-  GridToolbarColumnsButton,
-  GridToolbarFilterButton,
-  GridToolbarExport,
-  GridToolbarDensitySelector,
   GridActionsCellItem,
   GridColumns,
   GridRowId,
@@ -30,6 +25,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Avatar from "@mui/material/Avatar";
 import { alpha, styled } from "@mui/material/styles";
+import DataGridToolbar from "../../../components/DataGridToolbar";
 
 const ODD_OPACITY = 0.2;
 
@@ -65,17 +61,6 @@ const StripedDataGrid = styled(DataGrid)(({ theme }) => ({
     },
   },
 }));
-
-function CustomToolbar() {
-  return (
-    <GridToolbarContainer>
-      <GridToolbarColumnsButton />
-      <GridToolbarFilterButton />
-      <GridToolbarDensitySelector />
-      <GridToolbarExport />
-    </GridToolbarContainer>
-  );
-}
 
 type Row = IEmployee;
 
@@ -287,7 +272,7 @@ function Employees() {
         error={undefined}
         isRowSelectable={(_params) => false}
         components={{
-          Toolbar: CustomToolbar,
+          Toolbar: DataGridToolbar,
         }}
         getRowClassName={(params) =>
           params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd"

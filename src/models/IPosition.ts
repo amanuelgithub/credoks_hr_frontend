@@ -1,6 +1,6 @@
 export interface IPosition {
   id?: string;
   title?: string;
-  salary?: number;
+  companyId?: string;
   departmentId?: string;
 }

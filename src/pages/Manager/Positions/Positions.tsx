@@ -1,62 +1,65 @@
-import React, { useEffect, useState } from "react";
+import Button from "@mui/material/Button";
 import {
   DataGrid,
   GridActionsCellItem,
   GridColumns,
   GridRowId,
 } from "@mui/x-data-grid";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
-import Button from "@mui/material/Button";
-import DeleteModal from "../../../components/DeleteModal/DeleteModal";
 import { ToastContainer } from "react-toastify";
+import { useAppSelector } from "../../../app/hooks";
+import DataGridToolbar from "../../../components/DataGridToolbar";
+import DeleteModal from "../../../components/DeleteModal/DeleteModal";
 import { IPosition } from "../../../models/IPosition";
 import {
   useDeletePositionMutation,
-  useGetPositionsQuery,
+  useGetPositionsOfCompanyQuery,
 } from "../../../services/positionApiSlice";
+import { errorToast, successToast } from "../../../utils/toastify";
 import AddPosition from "./AddPosition";
-import DataGridToolbar from "../../../components/DataGridToolbar";
 
 type Row = IPosition;
 
 let initialPositions: IPosition[] = [];
 
 function Positions() {
+  const companyId = useAppSelector((state) => state.auth.companyId);
   const [positions, setPositions] = useState(initialPositions);
-  const { data } = useGetPositionsQuery();
-  const [deletePosition] = useDeletePositionMutation();
+  const { data } = useGetPositionsOfCompanyQuery(companyId);
 
-  // add position modal state controller
+  const [
+    deletePosition,
+    { isSuccess: deletedPosition, isError: errorDeletingPosition },
+  ] = useDeletePositionMutation();
+
   const [openAddPositionModal, setOpenAddPositionModal] = useState(false);
-  const handleOpenAddPositionModal = () => setOpenAddPositionModal(true);
-  const handleCloseAddPositionModal = () => setOpenAddPositionModal(false);
 
-  // confirmation dialog/modal state controller
   const [idToBeDeleted, setIdToBeDeleted] = useState("");
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
-  const handleOpenDeleteModal = () => setOpenDeleteModal(true);
-  const handleCloseDeleteModal = () => setOpenDeleteModal(false);
 
   useEffect(() => {
-    if (data !== undefined) {
-      let fetchedPosition = data !== undefined ? data : [];
-      setPositions(fetchedPosition);
-    }
-
-    return () => {
-      setPositions(initialPositions);
-    };
+    setPositions(data ?? []);
   }, [data]);
 
-  const handleDeletePositionFieldAction = React.useCallback(
+  useEffect(() => {
+    if (deletedPosition) {
+      successToast("Positions added successfully");
+    }
+    if (errorDeletingPosition) {
+      errorToast("Error creating position");
+    }
+  }, [deletedPosition, errorDeletingPosition]);
+
+  const handleDeletePositionFieldAction = useCallback(
     (id: GridRowId) => () => {
       setIdToBeDeleted(id.toString());
-      handleOpenDeleteModal();
+      setOpenDeleteModal(true);
     },
     []
   );
 
-  const columns = React.useMemo<GridColumns<Row>>(
+  const columns = useMemo<GridColumns<Row>>(
     () => [
       { field: "id", headerName: "ID", width: 80 },
       { field: "title", headerName: "Title", width: 150 },
@@ -79,8 +82,8 @@ function Positions() {
 
   // hander to delete an position
   const handleDeletePosition = (id: string) => {
-    handleCloseDeleteModal();
     deletePosition(id);
+    setOpenDeleteModal(false);
   };
 
   return (
@@ -94,20 +97,20 @@ function Positions() {
           id={idToBeDeleted}
           name="Position"
           openModal={openDeleteModal}
-          handleCloseModal={handleCloseDeleteModal}
+          handleCloseModal={() => setOpenDeleteModal(false)}
           handleDelete={handleDeletePosition}
         />
       )}
 
       <AddPosition
         openModal={openAddPositionModal}
-        handleCloseModal={handleCloseAddPositionModal}
+        handleCloseModal={() => setOpenAddPositionModal(false)}
       />
 
       <Button
         sx={{ my: 2 }}
-        variant="outlined"
-        onClick={handleOpenAddPositionModal}
+        variant="contained"
+        onClick={() => setOpenAddPositionModal(true)}
       >
         + Add Position
       </Button>

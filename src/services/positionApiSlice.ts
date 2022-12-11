@@ -8,6 +8,13 @@ export const positionApiSlice = apiSlice.injectEndpoints({
       providesTags: [{ type: "Position", id: "LIST" }],
     }),
 
+    getPositionsOfCompany: builder.query<any[], any>({
+      query: (companyId: string) => ({
+        url: `/positions/company/${companyId}`,
+      }),
+      providesTags: [{ type: "Position", id: "LIST" }],
+    }),
+
     getPosition: builder.query({
       query: (id: string | undefined) => ({ url: `/positions/${id}` }),
       providesTags: [{ type: "Position", id: "LIST" }],
@@ -37,4 +44,5 @@ export const {
   useDeletePositionMutation,
   useGetPositionQuery,
   useGetPositionsQuery,
+  useGetPositionsOfCompanyQuery,
 } = positionApiSlice;

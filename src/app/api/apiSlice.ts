@@ -4,7 +4,10 @@ import { RootState } from "../store";
 
 /** base query with Authorization Bearer token using the `access_token` */
 const baseQuery = fetchBaseQuery({
-  baseUrl: "http://localhost:3001/api",
+  // url for a local development
+  // baseUrl: "http://localhost:3001/api",
+  // url for a remote development
+  baseUrl: "http://196.188.93.45:3001/api",
   // credentials: "include",
   prepareHeaders: (headers, { getState }) => {
     const access_token = (getState() as RootState).auth.access_token;

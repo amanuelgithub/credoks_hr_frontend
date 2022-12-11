@@ -5,7 +5,8 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import ListSubheader from "@mui/material/ListSubheader";
 import DashboardIcon from "@mui/icons-material/Dashboard";
-import GroupsIcon from "@mui/icons-material/Group";
+import GroupsIcon from "@mui/icons-material/Groups";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { Link } from "react-router-dom";
 
 const managersSidebarMainListItems = [
@@ -23,6 +24,11 @@ const managersSidebarMainListItems = [
     to: "/manager-dashboard/departments",
     label: "Departments",
     icon: <GroupsIcon />,
+  },
+  {
+    to: "/manager-dashboard/positions",
+    label: "Positions",
+    icon: <LocationOnIcon />,
   },
 ];
 

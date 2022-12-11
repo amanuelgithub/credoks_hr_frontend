@@ -1,11 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
   DataGrid,
-  GridToolbarContainer,
-  GridToolbarColumnsButton,
-  GridToolbarFilterButton,
-  GridToolbarExport,
-  GridToolbarDensitySelector,
   GridActionsCellItem,
   GridColumns,
   GridRowId,
@@ -24,17 +19,7 @@ import {
   useDeleteDepartmentMutation,
   useGetDepartmentsQuery,
 } from "../../../services/departmentApiSlice";
-
-function CustomToolbar() {
-  return (
-    <GridToolbarContainer>
-      <GridToolbarColumnsButton />
-      <GridToolbarFilterButton />
-      <GridToolbarDensitySelector />
-      <GridToolbarExport />
-    </GridToolbarContainer>
-  );
-}
+import DataGridToolbar from "../../../components/DataGridToolbar";
 
 type Row = IDepartment;
 
@@ -188,7 +173,7 @@ function Departments() {
         loading={false}
         error={undefined}
         components={{
-          Toolbar: CustomToolbar,
+          Toolbar: DataGridToolbar,
         }}
       />
     </div>

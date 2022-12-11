@@ -12,7 +12,6 @@ import {
   useGetCompaniesQuery,
   useDeleteCompanyMutation,
 } from "../../../services/companyApiSlice";
-import { useNavigate } from "react-router-dom";
 import AddIcon from "@mui/icons-material/Add";
 import { ToastContainer } from "react-toastify";
 import { errorToast, successToast } from "../../../utils/toastify";
