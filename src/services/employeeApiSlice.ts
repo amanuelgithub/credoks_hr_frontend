@@ -61,6 +61,12 @@ export const employeeApiSlice = apiSlice.injectEndpoints({
       invalidatesTags: [{ type: "Employee", id: "LIST" }],
     }),
 
+    getEmployeeProfileImage: builder.query<any, any>({
+      query: (imagename: string) => ({
+        url: `/employees/profile-images/${imagename}`,
+      }),
+    }),
+
     getCompaniesEmployeesReport: builder.query<ICompanyEmployeeReport[], void>({
       query: () => ({ url: "/employees/report/company-employees-report" }),
     }),
@@ -74,6 +80,7 @@ export const {
   useAddEmployeeMutation,
   useDeleteEmployeeMutation,
   useUpdateEmployeeMutation,
+  useGetEmployeeProfileImageQuery,
   // reportting
   useGetCompaniesEmployeesReportQuery,
 } = employeeApiSlice;

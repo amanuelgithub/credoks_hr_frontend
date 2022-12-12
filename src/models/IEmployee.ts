@@ -9,6 +9,7 @@ export interface IEmployee {
   type?: UserTypeEnum;
   email?: string;
   phone?: string;
+  profileImage?: string;
   password?: string;
   employmentStatus?: EmploymentStatusEnum;
   maritalStatus?: MaritalStatusEnum;

@@ -6,7 +6,7 @@ import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import AddQualification from "./AddQualification";
@@ -17,22 +17,12 @@ import PersonalInfoCard from "./PersonalInfoCard";
 import FieldItem from "./FieldItem";
 import AddEmergencyContact from "./AddEmergencyContact";
 import AddExperience from "./AddExperience";
-
-const employee = {
-  id: "9876klkafa3",
-  firstName: "John",
-  fatherName: "Doe",
-  phone: "09765433456",
-  email: "johndoe@gmail.com",
-  dateOfBirth: "24th July",
-  dateOfJoining: "24th July",
-  gender: "Male",
-  reportsTo: "Jeffery Lalor",
-  position: "Software Developer",
-};
+import { useGetEmployeeQuery } from "../../../../services/employeeApiSlice";
 
 export default function DetailEmployee() {
   const { id: employeeId } = useParams();
+
+  const { data: employee } = useGetEmployeeQuery(employeeId);
 
   const [openAddQualificationModal, setOpenAddQualificationModal] =
     useState(false);
@@ -51,6 +41,10 @@ export default function DetailEmployee() {
   const [openAddExperienceModal, setOpenAddExperienceModal] = useState(false);
   const handleOpenAddExperienceModal = () => setOpenAddExperienceModal(true);
   const handleCloseAddExperienceModal = () => setOpenAddExperienceModal(false);
+
+  useEffect(() => {
+    console.log("detail employee id: ", employeeId);
+  }, []);
 
   return (
     <>
@@ -95,7 +89,10 @@ export default function DetailEmployee() {
               <Avatar
                 sx={{ width: 100, height: 100 }}
                 alt="Amanuel Girma"
-                src="https://appdevzone.com/frontend/images/dpage/t3.jpg"
+                src={`http://localhost:3001/api/employees/profile-images/${
+                  employee?.profileImage ?? ""
+                }`}
+                // src="https://appdevzone.com/frontend/images/dpage/t3.jpg"
               />
             </Grid>
             <Grid
@@ -114,15 +111,15 @@ export default function DetailEmployee() {
                   sx={{ fontWeight: "bold" }}
                   className="text-center md:text-start"
                 >
-                  {employee.firstName} {employee.fatherName}
+                  {employee?.firstName} {employee?.fatherName}
                 </Typography>
-                <Typography
+                {/* <Typography
                   variant="body2"
                   sx={{ color: "#8e8e8e" }}
                   className="text-center md:text-start"
                 >
-                  {employee.position}
-                </Typography>
+                  {employee?.position}
+                </Typography> */}
 
                 <Box marginY={2}>
                   <Typography
@@ -130,14 +127,14 @@ export default function DetailEmployee() {
                     sx={{ fontWeight: "bold" }}
                     className="text-center md:text-start"
                   >
-                    Employee ID : {employee.id}
+                    Employee ID : {employee?.id}
                   </Typography>
                   <Typography
                     variant="body2"
                     sx={{ color: "#8e8e8e" }}
                     className="text-center md:text-start"
                   >
-                    {employee.dateOfJoining}
+                    {employee?.dateOfJoining}
                   </Typography>
                 </Box>
 
@@ -150,11 +147,11 @@ export default function DetailEmployee() {
             </Grid>
             <Grid item xs={12} md={6} lg={6} sx={{ padding: 1 }}>
               <Box marginY={4}>
-                <FieldItem title="Phone" value={employee.phone} />
-                <FieldItem title="Email" value={employee.email} />
-                <FieldItem title="Birthday" value={employee.dateOfBirth} />
-                <FieldItem title="Gender" value={employee.gender} />
-                <FieldItem title="Reports To" value={employee.reportsTo} />
+                <FieldItem title="Phone" value={employee?.phone} />
+                <FieldItem title="Email" value={employee?.email} />
+                <FieldItem title="Birthday" value={employee?.dateOfBirth} />
+                <FieldItem title="Gender" value={employee?.gender} />
+                {/* <FieldItem title="Reports To" value={employee?.reportsTo} /> */}
               </Box>
             </Grid>
           </Grid>

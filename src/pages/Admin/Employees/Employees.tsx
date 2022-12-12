@@ -69,6 +69,7 @@ let initialEmployees: any[] = [];
 function Employees() {
   const [employees, setEmployees] = useState(initialEmployees);
   const { data } = useGetEmployeesQuery();
+  // const {} = useGetEmployeeProfileImageQuery();
   const [deleteEmployee] = useDeleteEmployeeMutation();
 
   // add employee modal state controller
@@ -133,7 +134,10 @@ function Employees() {
           return (
             <Avatar
               alt={`${params.row.firstName} ${params.row.fatherName}`}
-              src="/static/images/avatar/2.jpg"
+              src={`http://localhost:3001/api/employees/profile-images/${
+                params.row?.profileImage ?? ""
+              }`}
+              // src="/static/images/avatar/2.jpg"
               sx={{ bgcolor: "secondary.main" }}
             />
           );
