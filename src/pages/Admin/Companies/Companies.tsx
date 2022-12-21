@@ -18,6 +18,7 @@ import { errorToast, successToast } from "../../../utils/toastify";
 import Loading from "../../../components/Loading";
 import AddCompany from "./AddCompany";
 import EditCompany from "./EditCompany";
+import Avatar from "@mui/material/Avatar";
 
 type Row = ICompany;
 
@@ -87,10 +88,25 @@ function Companies() {
   const columns = React.useMemo<GridColumns<Row>>(
     () => [
       { field: "id", headerName: "ID", width: 80 },
+      {
+        field: "logo",
+        headerName: "Logo",
+        width: 140,
+
+        renderCell: (params) => {
+          return (
+            <Avatar
+              alt={`${params.row.name}`}
+              src="/static/images/avatar/2.jpg"
+              sx={{ bgcolor: "secondary.main" }}
+            />
+          );
+        },
+      },
       { field: "name", headerName: "Name", width: 140 },
+      { field: "bussinessType", headerName: "Bussiness Type", width: 120 },
       { field: "summary", headerName: "Summary", width: 300 },
       { field: "companyStatus", headerName: "Status", width: 140 },
-      { field: "logo", headerName: "Company Logo", width: 140 },
       {
         field: "actions",
         type: "actions",

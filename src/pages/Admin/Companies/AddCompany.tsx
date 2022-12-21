@@ -8,7 +8,6 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import CloseIcon from "@mui/icons-material/Close";
 import Select from "@mui/material/Select";
-import AttachFiles from "../../../components/AttachFiles/AttachFiles";
 import { CompanyStatusEnum } from "../../../models/ICompany";
 import { useAddCompanyMutation } from "../../../services/companyApiSlice";
 import { ToastContainer, toast } from "react-toastify";
@@ -37,7 +36,7 @@ interface FormValues {
   name: string;
   logo: string;
   companyStatus: CompanyStatusEnum;
-  // bussinessType: string;
+  bussinessType?: string;
   summary: string;
 }
 
@@ -45,7 +44,7 @@ const initialValues: FormValues = {
   name: "",
   logo: "",
   companyStatus: CompanyStatusEnum.INACTIVE,
-  // bussinessType: "",
+  bussinessType: "",
   summary: "",
 };
 
@@ -55,7 +54,7 @@ const validationSchema = yup.object({
     .mixed()
     .oneOf([CompanyStatusEnum.ACTIVE, CompanyStatusEnum.INACTIVE])
     .required(),
-  // bussinessType: yup.string(),
+  bussinessType: yup.string().default(""),
   summary: yup.string().required(),
 });
 
@@ -95,7 +94,6 @@ function AddCompany({
       });
   }, [isSuccess, isError]);
 
-  // <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
   return (
     <>
       <ToastContainer />
@@ -130,7 +128,7 @@ function AddCompany({
                 <Field
                   margin="dense"
                   fullWidth
-                  label="Name"
+                  label="Name *"
                   size="small"
                   name="name"
                   type="text"
@@ -139,19 +137,17 @@ function AddCompany({
                   helperText={touched.name && errors.name}
                 />
 
-                {/* Summary: Description */}
+                {/* Bussiness Type */}
                 <Field
                   margin="dense"
                   fullWidth
-                  multiline
-                  rows={5}
-                  label="Company Description"
+                  label="Bussiness Type"
                   size="small"
+                  name="bussinessType"
                   type="text"
-                  name="summary"
                   as={TextField}
-                  error={touched.summary && Boolean(errors.summary)}
-                  helperText={touched.summary && errors.summary}
+                  error={touched.bussinessType && Boolean(errors.bussinessType)}
+                  helperText={touched.bussinessType && errors.bussinessType}
                 />
 
                 {/* company status */}
@@ -165,10 +161,13 @@ function AddCompany({
                     Company Status
                   </InputLabel>
                   <Field
-                    name="status"
+                    name="companyStatus"
                     type="select"
-                    label="Company Status"
+                    label="Company Status *"
                     as={Select}
+                    error={
+                      touched.companyStatus && Boolean(errors.companyStatus)
+                    }
                   >
                     <MenuItem value={CompanyStatusEnum.ACTIVE}>Active</MenuItem>
                     <MenuItem value={CompanyStatusEnum.INACTIVE}>
@@ -180,7 +179,21 @@ function AddCompany({
                   </FormHelperText>
                 </FormControl>
 
-                <AttachFiles />
+                {/* Summary: Description */}
+                <Field
+                  margin="dense"
+                  fullWidth
+                  multiline
+                  rows={5}
+                  label="Company Description *"
+                  size="small"
+                  type="text"
+                  name="summary"
+                  as={TextField}
+                  error={touched.summary && Boolean(errors.summary)}
+                  helperText={touched.summary && errors.summary}
+                />
+
                 <Box
                   sx={{
                     width: "100%",

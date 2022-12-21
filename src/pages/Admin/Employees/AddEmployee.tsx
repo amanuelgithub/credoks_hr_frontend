@@ -53,7 +53,7 @@ const initialValues: IEmployee = {
   maritalStatus: MaritalStatusEnum.SINGLE,
   // dateOfJoining: undefined,
   tinNumber: "",
-  accountNumber: "",
+  bankAccountNumber: "",
 };
 
 const validationSchema = yup.object({
@@ -94,7 +94,8 @@ const validationSchema = yup.object({
     .required(),
   // dateOfJoining: yup.date().required(),
   tinNumber: yup.string().required(),
-  accountNumber: yup.string().required(),
+  bankName: yup.string().required("Bank Name is required fields"),
+  bankAccountNumber: yup.string().required(),
 });
 
 // style applied to the modals container
@@ -486,10 +487,24 @@ function AddEmployee({
                   <Divider />
                 </Box>
 
-                {/* Account Number */}
+                {/* Account Number & Tin Numbers */}
                 <Box display="flex" gap={3} marginY={2}>
+                  {/* Bank Nmme */}
                   <Field
-                    name="accountNumber"
+                    name="bankName"
+                    type="text"
+                    label="bankName"
+                    margin="dense"
+                    size="small"
+                    placeholder="bankName"
+                    fullWidth
+                    as={TextField}
+                    error={touched.bankName && Boolean(errors.bankName)}
+                    helperText={touched.bankName && errors.bankName}
+                  />
+
+                  <Field
+                    name="bankAccountNumber"
                     type="text"
                     label="Accound Number"
                     margin="dense"
@@ -498,9 +513,12 @@ function AddEmployee({
                     fullWidth
                     as={TextField}
                     error={
-                      touched.accountNumber && Boolean(errors.accountNumber)
+                      touched.bankAccountNumber &&
+                      Boolean(errors.bankAccountNumber)
                     }
-                    helperText={touched.accountNumber && errors.accountNumber}
+                    helperText={
+                      touched.bankAccountNumber && errors.bankAccountNumber
+                    }
                   />
 
                   {/* TIM Number */}
@@ -523,7 +541,7 @@ function AddEmployee({
                   disabled={isSubmitting}
                   variant="contained"
                   size="small"
-                  sx={{ borderRadius: 8 }}
+                  // sx={{ borderRadius: 8 }}
                 >
                   Add Employee
                 </Button>

@@ -151,6 +151,9 @@ function Employees() {
           return (
             <Link
               to={`/admin-dashboard/employees/detail/${params.row.id}`}
+              state={{
+                profileImage: params.row.profileImage,
+              }}
               className="hover:underline text-blue-400"
             >
               {params.row.firstName}

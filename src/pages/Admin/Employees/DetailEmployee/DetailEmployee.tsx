@@ -1,12 +1,11 @@
-import Avatar from "@mui/material/Avatar";
+import { useEffect } from "react";
 import EditIcon from "@mui/icons-material/Edit";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import AddQualification from "./AddQualification";
@@ -18,11 +17,15 @@ import FieldItem from "./FieldItem";
 import AddEmergencyContact from "./AddEmergencyContact";
 import AddExperience from "./AddExperience";
 import { useGetEmployeeQuery } from "../../../../services/employeeApiSlice";
+import ProfileAvatar from "../../../../components/ProfileAvatar";
+import UploadProfileImage from "../../../../components/UploadProfileImage";
 
 export default function DetailEmployee() {
   const { id: employeeId } = useParams();
-
   const { data: employee } = useGetEmployeeQuery(employeeId);
+
+  // profile image state
+  const [profileImage, setProfileImage] = useState("");
 
   const [openAddQualificationModal, setOpenAddQualificationModal] =
     useState(false);
@@ -43,8 +46,10 @@ export default function DetailEmployee() {
   const handleCloseAddExperienceModal = () => setOpenAddExperienceModal(false);
 
   useEffect(() => {
-    console.log("detail employee id: ", employeeId);
-  }, []);
+    if (employee?.profileImage) {
+      setProfileImage(employee?.profileImage);
+    }
+  }, [employee]);
 
   return (
     <>
@@ -86,14 +91,8 @@ export default function DetailEmployee() {
               display="flex"
               justifyContent="center"
             >
-              <Avatar
-                sx={{ width: 100, height: 100 }}
-                alt="Amanuel Girma"
-                src={`http://localhost:3001/api/employees/profile-images/${
-                  employee?.profileImage ?? ""
-                }`}
-                // src="https://appdevzone.com/frontend/images/dpage/t3.jpg"
-              />
+              {/* display profile image component */}
+              <ProfileAvatar profileImage={profileImage} />
             </Grid>
             <Grid
               item
@@ -137,12 +136,8 @@ export default function DetailEmployee() {
                     {employee?.dateOfJoining}
                   </Typography>
                 </Box>
-
-                <Box marginY={3} className="flex justify-center sm:block">
-                  <Button variant="contained" color="secondary">
-                    Send Message
-                  </Button>
-                </Box>
+                {/* upload profile image component */}
+                <UploadProfileImage employeeId={employeeId ?? ""} />
               </Box>
             </Grid>
             <Grid item xs={12} md={6} lg={6} sx={{ padding: 1 }}>

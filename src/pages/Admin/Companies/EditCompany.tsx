@@ -8,7 +8,6 @@ import MenuItem from "@mui/material/MenuItem";
 import CloseIcon from "@mui/icons-material/Close";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-import AttachFiles from "../../../components/AttachFiles/AttachFiles";
 import { CompanyStatusEnum, ICompany } from "../../../models/ICompany";
 import {
   useGetCompanyQuery,
@@ -39,13 +38,13 @@ const style = {
 };
 
 const validationSchema = yup.object({
-  name: yup.string().required(),
+  name: yup.string().required("Company Name is required"),
   companyStatus: yup
     .mixed()
     .oneOf([CompanyStatusEnum.ACTIVE, CompanyStatusEnum.INACTIVE])
     .required(),
-  // bussinessType: yup.string(),
-  summary: yup.string().required(),
+  bussinessType: yup.string().default(""),
+  summary: yup.string().required("Description of the company is required"),
 });
 
 function EditCompany({
@@ -122,6 +121,21 @@ function EditCompany({
                     helperText={touched.name && errors.name}
                   />
 
+                  {/* Bussiness Type */}
+                  <Field
+                    margin="dense"
+                    fullWidth
+                    label="Bussiness Type"
+                    size="small"
+                    name="bussinessType"
+                    type="text"
+                    as={TextField}
+                    error={
+                      touched.bussinessType && Boolean(errors.bussinessType)
+                    }
+                    helperText={touched.bussinessType && errors.bussinessType}
+                  />
+
                   {/* Summary: Description */}
                   <Field
                     margin="dense"
@@ -150,7 +164,7 @@ function EditCompany({
                       Company Status
                     </InputLabel>
                     <Field
-                      name="status"
+                      name="companyStatus"
                       type="select"
                       label="Company Status"
                       as={Select}
@@ -164,7 +178,6 @@ function EditCompany({
                     </Field>
                   </FormControl>
 
-                  <AttachFiles />
                   <Box
                     sx={{
                       width: "100%",
@@ -182,7 +195,7 @@ function EditCompany({
                       Update Company
                     </Button>
                   </Box>
-                  <pre>{JSON.stringify(values, null, 2)}</pre>
+                  {/* <pre>{JSON.stringify(values, null, 2)}</pre> */}
                 </Box>
               )}
             </Formik>

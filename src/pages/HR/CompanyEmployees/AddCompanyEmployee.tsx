@@ -44,7 +44,7 @@ const initialValues: IEmployee = {
   maritalStatus: MaritalStatusEnum.SINGLE,
   // dateOfJoining: undefined,
   tinNumber: "",
-  accountNumber: "",
+  bankAccountNumber: "",
 };
 
 const validationSchema = yup.object({
@@ -87,7 +87,9 @@ const validationSchema = yup.object({
     .required(),
   // dateOfJoining: yup.date().required(),
   tinNumber: yup.string().required("TIN number is a required field"),
-  accountNumber: yup.string().required("Account number is a required field"),
+  bankAccountNumber: yup
+    .string()
+    .required("Account number is a required field"),
 });
 
 function AddCompanyEmployee() {
@@ -403,7 +405,7 @@ function AddCompanyEmployee() {
             </Typography>
             {/* Account Number */}
             <Field
-              name="accountNumber"
+              name=".bankAccountNumber"
               type="text"
               label="Accound Number"
               margin="dense"
@@ -411,8 +413,10 @@ function AddCompanyEmployee() {
               placeholder="Accound Number"
               fullWidth
               as={TextField}
-              error={touched.accountNumber && Boolean(errors.accountNumber)}
-              helperText={touched.accountNumber && errors.accountNumber}
+              error={
+                touched.bankAccountNumber && Boolean(errors.bankAccountNumber)
+              }
+              helperText={touched.bankAccountNumber && errors.bankAccountNumber}
             />
 
             {/* TIM Number */}

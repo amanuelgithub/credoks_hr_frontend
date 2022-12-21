@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -23,6 +24,8 @@ import { IToken } from "../models/IToken";
 import jwt_decode from "jwt-decode";
 import { UserTypeEnum } from "../models/IEmployee";
 
+let responseUserData: IToken;
+
 const initialValues: IAuth = {
   email: "",
   password: "",
@@ -34,7 +37,11 @@ const validationSchema = yup.object({
 });
 
 function Login() {
-  const [login, { isLoading, isError }] = useLoginMutation();
+  const [userData, setUserData] = useState(responseUserData);
+  const [
+    login,
+    { isLoading: isLogingin, isError: loginError, isSuccess: loginSuccess },
+  ] = useLoginMutation();
 
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -43,6 +50,14 @@ function Login() {
     try {
       const userData: IToken = await login(values).unwrap();
 
+      setUserData(userData);
+    } catch (err: any) {
+      console.log("Error: ", err);
+    }
+  };
+
+  useEffect(() => {
+    if (userData) {
       const user: Partial<IAuthUser> = jwt_decode(userData.access_token);
 
       dispatch(
@@ -53,6 +68,7 @@ function Login() {
           lastName: user.lastName ?? "",
           email: user.email ?? "",
           type: user.type ?? "",
+          profileImage: user.profileImage ?? "",
           companyId: user.companyId ?? "",
         })
       );
@@ -62,14 +78,11 @@ function Login() {
         : console.log(
             "Error: could not login because user type is not specified"
           );
-    } catch (err: any) {
-      console.log("Error: ", err);
     }
-  };
+  }, [userData]);
 
   const dashboardRedirector = (userType: UserTypeEnum) => {
     if (userType === UserTypeEnum.ADMIN) navigate("/admin-dashboard");
-    // if (userType === UserTypeEnum.EMPLOYEE) navigate("/employee-dashboard");
     if (userType === UserTypeEnum.HR) navigate("/hr-dashboard");
     if (userType === UserTypeEnum.MANAGER) navigate("/manager-dashboard");
   };
@@ -106,9 +119,9 @@ function Login() {
           }}
           className="relative"
         >
-          {isLoading ? <Loading /> : null}
+          {isLogingin ? <Loading /> : null}
 
-          {isError ? (
+          {loginError ? (
             <p className="text-xs text-red-300">
               Authentication Error. Please check your credentials and try again!
             </p>

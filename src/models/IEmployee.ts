@@ -15,7 +15,8 @@ export interface IEmployee {
   maritalStatus?: MaritalStatusEnum;
   dateOfJoining?: string;
   tinNumber?: string;
-  accountNumber?: string;
+  bankName?: string;
+  bankAccountNumber?: string;
 }
 
 export enum EmploymentStatusEnum {

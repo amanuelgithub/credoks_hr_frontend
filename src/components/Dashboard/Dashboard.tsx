@@ -1,4 +1,4 @@
-import React from "react";
+import { useEffect, useState } from "react";
 import { styled } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import MuiDrawer from "@mui/material/Drawer";
@@ -8,17 +8,20 @@ import Toolbar from "@mui/material/Toolbar";
 import List from "@mui/material/List";
 import Typography from "@mui/material/Typography";
 import LogoutIcon from "@mui/icons-material/Logout";
+import LockIcon from "@mui/icons-material/Lock";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
-import Badge from "@mui/material/Badge";
 import Container from "@mui/material/Container";
 import MenuIcon from "@mui/icons-material/Menu";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import NotificationsIcon from "@mui/icons-material/Notifications";
-import { Outlet } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 import Copyright from "../Copyright";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { logout } from "../../features/auth/authSlice";
+import ProfileAvatar from "../ProfileAvatar";
+import Button from "@mui/material/Button";
+import Paper from "@mui/material/Paper";
 
 const drawerWidth: number = 240;
 
@@ -77,24 +80,36 @@ function DashboardContent({
   dashboardName: string;
   children: any;
 }) {
-  const [open, setOpen] = React.useState(true);
+  const [appbarOpen, setAppbarOpen] = useState(true);
   const toggleDrawer = () => {
-    setOpen(!open);
+    setAppbarOpen(!appbarOpen);
   };
+
+  const [appbarDropdownOpen, setAppbarDropdownOpen] = useState(false);
 
   const dispatch = useAppDispatch();
 
   const firstName = useAppSelector((state) => state.auth.firstName);
+  const profileImage = useAppSelector((state) => state.auth.profileImage);
+
+  useEffect(() => {
+    console.log("proffile img from dashboard: ", profileImage);
+  }, [profileImage]);
 
   const handleLogout = (e: any) => {
     e.preventDefault();
     dispatch(logout());
   };
 
+  const handleAppBarDropdown = (e: any) => {
+    e.preventDefault();
+    setAppbarDropdownOpen(!appbarDropdownOpen);
+  };
+
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      <AppBar position="absolute" open={open}>
+      <AppBar position="absolute" open={appbarOpen}>
         <Toolbar
           sx={{
             pr: "24px", // keep right padding when drawer closed
@@ -107,7 +122,7 @@ function DashboardContent({
             onClick={toggleDrawer}
             sx={{
               marginRight: "36px",
-              ...(open && { display: "none" }),
+              ...(appbarOpen && { display: "none" }),
             }}
           >
             <MenuIcon />
@@ -127,19 +142,88 @@ function DashboardContent({
                 <NotificationsIcon />
               </Badge>
             </IconButton> */}
-            <IconButton color="inherit" sx={{ mr: 1.5 }} onClick={handleLogout}>
+            {/* <IconButton color="inherit" sx={{ mr: 1.5 }} onClick={handleLogout}>
               <LogoutIcon />
-            </IconButton>
+            </IconButton> */}
 
             {/* logged-in user first & last name */}
           </Box>
           <Box sx={{ mr: 1.5 }}>
             <Typography>{firstName}</Typography>
           </Box>
+
+          <Box sx={{ position: "relative" }}>
+            <Button
+              variant="outlined"
+              color="secondary"
+              sx={{ borderRadius: 8 }}
+              onClick={handleAppBarDropdown}
+            >
+              {profileImage ? (
+                <ProfileAvatar
+                  width={30}
+                  height={30}
+                  profileImage={profileImage}
+                />
+              ) : (
+                <ProfileAvatar width={30} height={30} />
+              )}
+            </Button>
+            {/* profile dropdown */}
+            <Paper
+              sx={{
+                position: "absolute",
+                bottom: "-100",
+                right: 0,
+                width: 240,
+                p: 1,
+                boxShadow: 8,
+                display: appbarDropdownOpen ? "block" : "none",
+              }}
+            >
+              <Box>
+                {/* profile */}
+                <Box>
+                  <Link to={"#"}>
+                    <Box sx={{ display: "flex", gap: 2, py: 1, px: 2 }}>
+                      <AccountCircleIcon />
+                      <Typography>Profile</Typography>
+                    </Box>
+                  </Link>
+                </Box>
+
+                {/* change password */}
+                <Box>
+                  <Link to={"#"}>
+                    <Box sx={{ display: "flex", gap: 2, py: 1, px: 2 }}>
+                      <LockIcon />
+                      <Typography>Change Password</Typography>
+                    </Box>
+                  </Link>
+                </Box>
+
+                {/* logout */}
+                <Box
+                  color="inherit"
+                  sx={{
+                    display: "flex",
+                    gap: 2,
+                    py: 1,
+                    px: 2,
+                    cursor: "pointer",
+                  }}
+                  onClick={handleLogout}
+                >
+                  <LogoutIcon />
+                  <Typography>Logout</Typography>
+                </Box>
+              </Box>
+            </Paper>
+          </Box>
         </Toolbar>
       </AppBar>
 
-      <Drawer variant="permanent" open={open}>
+      <Drawer variant="permanent" open={appbarOpen}>
         <Toolbar
           sx={{
             display: "flex",

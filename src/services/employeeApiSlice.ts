@@ -61,6 +61,16 @@ export const employeeApiSlice = apiSlice.injectEndpoints({
       invalidatesTags: [{ type: "Employee", id: "LIST" }],
     }),
 
+    uploadProfileImage: builder.mutation({
+      query: ({ id, file }: { id: string | undefined; file: any }) => ({
+        url: `/employees/upload-profile-img/${id}`,
+        method: "POST",
+        body: file,
+      }),
+      invalidatesTags: [{ type: "Employee", id: "LIST" }],
+    }),
+
+    /** this function has some issues */
     getEmployeeProfileImage: builder.query<any, any>({
       query: (imagename: string) => ({
         url: `/employees/profile-images/${imagename}`,
@@ -81,6 +91,7 @@ export const {
   useDeleteEmployeeMutation,
   useUpdateEmployeeMutation,
   useGetEmployeeProfileImageQuery,
+  useUploadProfileImageMutation,
   // reportting
   useGetCompaniesEmployeesReportQuery,
 } = employeeApiSlice;
