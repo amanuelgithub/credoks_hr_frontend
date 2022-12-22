@@ -92,12 +92,14 @@ function Companies() {
         field: "logo",
         headerName: "Logo",
         width: 140,
-
         renderCell: (params) => {
           return (
             <Avatar
               alt={`${params.row.name}`}
-              src="/static/images/avatar/2.jpg"
+              src={`http://localhost:3001/api/companies/companies-logos/${
+                params.row?.logo ?? ""
+              }`}
+              // src="/static/images/avatar/2.jpg"
               sx={{ bgcolor: "secondary.main" }}
             />
           );

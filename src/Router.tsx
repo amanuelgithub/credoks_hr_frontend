@@ -24,7 +24,7 @@ import ManagerDashboard from "./pages/Manager/Dashboard/ManagerDashboard";
 import AdminDepartments from "./pages/Admin/Departments/Departments";
 import ManagerDepartments from "./pages/Manager/Departments/Departments";
 import DetailDepartment from "./pages/Admin/Departments/DetailDepartment";
-import UploadCompanyLogo from "./components/UploadCompanyLogo";
+import UploadCompanyLogo from "./pages/Admin/Companies/UploadCompanyLogo";
 
 function Router() {
   const token = useAppSelector((state) => state.auth.access_token);

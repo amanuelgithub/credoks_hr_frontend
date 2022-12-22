@@ -3,7 +3,7 @@ import { ICompany } from "../models/ICompany";
 
 export const companyApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    getCompanies: builder.query<any[], void>({
+    getCompanies: builder.query<ICompany[], void>({
       query: () => ({ url: "/companies" }),
       providesTags: [{ type: "Company", id: "LIST" }],
     }),
@@ -18,6 +18,15 @@ export const companyApiSlice = apiSlice.injectEndpoints({
         url: "/companies",
         method: "POST",
         body: company,
+      }),
+      invalidatesTags: [{ type: "Company", id: "LIST" }],
+    }),
+
+    uploadCompanyLogo: builder.mutation({
+      query: ({ companyId, file }: { companyId: string; file: any }) => ({
+        url: `/companies/${companyId}/upload-logo`,
+        method: "PATCH",
+        body: file,
       }),
       invalidatesTags: [{ type: "Company", id: "LIST" }],
     }),
@@ -47,4 +56,5 @@ export const {
   useGetCompanyQuery,
   useUpdateCompanyMutation,
   useDeleteCompanyMutation,
+  useUploadCompanyLogoMutation,
 } = companyApiSlice;
