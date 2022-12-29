@@ -1,7 +1,7 @@
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
 import Paper from "@mui/material/Paper";
-import { useGetEmergencyContactByEmployeeIdQuery } from "../../../../services/emergencyContactApiSlice";
+import { useGetEmergencyContactByEmployeeIdQuery } from "../services/emergencyContactApiSlice";
 import FieldItem from "./FieldItem";
 import ListCardHeader from "./ListCardHeader";
 

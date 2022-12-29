@@ -158,7 +158,7 @@ function Departments() {
 
       <Button
         sx={{ my: 2 }}
-        variant="outlined"
+        variant="contained"
         onClick={handleOpenAddDepartmentModal}
       >
         + Add Department

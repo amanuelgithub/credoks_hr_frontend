@@ -3,10 +3,9 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import PeopleIcon from "@mui/icons-material/People";
-import AddIcon from "@mui/icons-material/Add";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import ListSubheader from "@mui/material/ListSubheader";
 import DashboardIcon from "@mui/icons-material/Dashboard";
+import PaymentsIcon from "@mui/icons-material/Payments";
 import { Link } from "react-router-dom";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
@@ -19,14 +18,14 @@ const hrsSidebarMainListItems = [
     label: "Dashboard",
     icon: <DashboardIcon />,
   },
+  {
+    to: "/hr-dashboard/payroll/process-payroll",
+    label: "Payroll",
+    icon: <PaymentsIcon />,
+  },
 ];
 
 const hrsSidebarEmployeesListItems = [
-  {
-    to: "/hr-dashboard/employees/add",
-    label: "Employee",
-    icon: <AddIcon />,
-  },
   {
     to: "/hr-dashboard/employees",
     label: "Employees",
@@ -62,6 +61,7 @@ export const HrSidebarMainListItems = () => {
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel1bh-content"
           id="panel1bh-header"
+          sx={{ borderBottom: "1px solid gray" }}
         >
           <Typography sx={{ width: "33%", flexShrink: 0 }}>
             Employees
@@ -72,22 +72,12 @@ export const HrSidebarMainListItems = () => {
             <Link to={item.to}>
               <ListItemButton>
                 <ListItemIcon>{item.icon}</ListItemIcon>
-                <ListItemText primary={item.label} />
+                <ListItemText secondary={item.label} />
               </ListItemButton>
             </Link>
           ))}
         </AccordionDetails>
       </Accordion>
-    </React.Fragment>
-  );
-};
-
-export const HrSidebarSecondaryListItems = () => {
-  return (
-    <React.Fragment>
-      <ListSubheader component="div" inset>
-        Saved reports
-      </ListSubheader>
     </React.Fragment>
   );
 };

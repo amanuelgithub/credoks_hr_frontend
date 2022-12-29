@@ -1,8 +1,8 @@
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
-import { useGetQualificationsByEmployeeIdQuery } from "../../../../services/qualificationApiSlice";
-import { IQualification } from "../../../../models/IQualification";
+import { IQualification } from "../models/IQualification";
+import { useGetQualificationsByEmployeeIdQuery } from "../services/qualificationApiSlice";
 import ListCardHeader from "./ListCardHeader";
 
 const QualificationListItem = ({

@@ -21,21 +21,23 @@ import { ICompany } from "../../../models/ICompany";
 import { ILocation } from "../../../models/ILocation";
 import { useAddLocationMutation } from "../../../services/locationApiSlice";
 import Autocomplete from "@mui/material/Autocomplete";
-import { countryList } from "../../../utils/constants/countryList";
-import { ethiopianCitiesList } from "../../../utils/constants/ethiopianCitiesList";
+import { regionList } from "../../../data/regionLists";
+import { ethiopianCitiesList } from "../../../data/ethiopianCitiesList";
 
 let initialCompanies: ICompany[] = [];
 
 const initialValues: ILocation = {
+  region: "",
   city: "",
-  country: "Ethiopia",
+  woreda: "",
   specificLocationName: "",
   companyId: "", // company-id
 };
 
 const validationSchema = yup.object({
+  region: yup.string().required(),
   city: yup.string().required(),
-  country: yup.string().required(),
+  woreda: yup.string().required(),
   specificLocationName: yup.string().required(),
   companyId: yup.string().required(),
 });
@@ -47,7 +49,7 @@ const style = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: 600,
-  height: "95%",
+  height: "75%",
   bgcolor: "background.paper",
   border: "2px solid #000",
   boxShadow: 24,
@@ -103,15 +105,14 @@ function AddLocation({
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <Box className="flex justify-end">
-            <IconButton size="small" onClick={handleCloseModal}>
-              <CloseIcon sx={{ fontSize: "36px", color: "gray" }} />
-            </IconButton>
-          </Box>
-          <Box className="flex flex-col items-center my-6">
-            <Typography variant="h4" component="h4" className="underline">
+          <Box className="flex justify-between mb-10">
+            <Box />
+            <Typography variant="h5" className="underline">
               Add Location
             </Typography>
+            <IconButton size="small" onClick={handleCloseModal}>
+              <CloseIcon sx={{ color: "gray" }} />
+            </IconButton>
           </Box>
           <Formik
             initialValues={initialValues}
@@ -162,12 +163,12 @@ function AddLocation({
 
                   <Divider sx={{ my: 3 }} />
 
-                  {/* Country List */}
+                  {/* Region List */}
                   <Autocomplete
-                    options={countryList}
+                    options={regionList}
                     defaultValue={(() => {
-                      const val = countryList.find(
-                        (country) => country === values.country
+                      const val = regionList.find(
+                        (region) => region === values.region
                       );
                       return val;
                     })()}
@@ -175,12 +176,12 @@ function AddLocation({
                       console.log(value);
 
                       setFieldValue(
-                        "country",
-                        value !== null ? value : initialValues.country
+                        "region",
+                        value !== null ? value : initialValues.region
                       );
                     }}
                     renderInput={(params) => (
-                      <TextField margin="normal" label="Country" {...params} />
+                      <TextField margin="normal" label="Region" {...params} />
                     )}
                   />
 
@@ -203,6 +204,19 @@ function AddLocation({
                     renderInput={(params) => (
                       <TextField margin="normal" label="City" {...params} />
                     )}
+                  />
+
+                  {/* woreda */}
+                  <Field
+                    name="woreda"
+                    margin="dense"
+                    fullWidth
+                    label="Woreda"
+                    type="text"
+                    size="small"
+                    as={TextField}
+                    error={touched.woreda && Boolean(errors.woreda)}
+                    helperText={touched.woreda && errors.woreda}
                   />
 
                   {/* Specific Location Name */}

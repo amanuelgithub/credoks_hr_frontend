@@ -2,7 +2,7 @@ import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import { useEffect } from "react";
-import { useGetExperiencesByEmployeeIdQuery } from "../../../../services/experienceApiSlice";
+import { useGetExperiencesByEmployeeIdQuery } from "../services/experienceApiSlice";
 import ListCardHeader from "./ListCardHeader";
 
 // const experiences = [

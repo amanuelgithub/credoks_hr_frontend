@@ -4,7 +4,6 @@ import Modal from "@mui/material/Modal";
 import Typography from "@mui/material/Typography";
 import { ToastContainer } from "react-toastify";
 import CloseIcon from "@mui/icons-material/Close";
-import { IQualification } from "../../../../models/IQualification";
 import { Field, Formik } from "formik";
 import * as yup from "yup";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -15,8 +14,9 @@ import { useEffect, useState } from "react";
 import FormControl from "@mui/material/FormControl";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import { useAddQaualificationMutation } from "../../../../services/qualificationApiSlice";
-import { errorToast, successToast } from "../../../../utils/toastify";
+import { IQualification } from "../models/IQualification";
+import { useAddQaualificationMutation } from "../services/qualificationApiSlice";
+import { errorToast, successToast } from "../utils/toastify";
 
 // style applied to the modals container
 const style = {

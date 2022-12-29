@@ -19,8 +19,9 @@ import {
   useUpdateLocationMutation,
 } from "../../../services/locationApiSlice";
 import Autocomplete from "@mui/material/Autocomplete";
-import { countryList } from "../../../utils/constants/countryList";
-import { ethiopianCitiesList } from "../../../utils/constants/ethiopianCitiesList";
+import { countryList } from "../../../data/countryList";
+import { ethiopianCitiesList } from "../../../data/ethiopianCitiesList";
+import { regionList } from "../../../data/regionLists";
 
 let initialCompanies: ICompany[] = [];
 
@@ -38,7 +39,7 @@ const style = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: 600,
-  height: "95%",
+  height: "75%",
   bgcolor: "background.paper",
   border: "2px solid #000",
   boxShadow: 24,
@@ -99,15 +100,14 @@ function EditLocation({
             aria-describedby="modal-modal-description"
           >
             <Box sx={style}>
-              <Box className="flex justify-end">
-                <IconButton size="small" onClick={handleCloseModal}>
-                  <CloseIcon sx={{ fontSize: "36px", color: "gray" }} />
-                </IconButton>
-              </Box>
-              <Box className="flex flex-col items-center my-6">
-                <Typography variant="h4" component="h4" className="underline">
+              <Box className="flex justify-between mb-10">
+                <Box />
+                <Typography variant="h5" className="underline">
                   Edit Location
                 </Typography>
+                <IconButton size="small" onClick={handleCloseModal}>
+                  <CloseIcon sx={{ color: "gray" }} />
+                </IconButton>
               </Box>
               <Formik
                 initialValues={location}
@@ -130,12 +130,12 @@ function EditLocation({
                     <Box>
                       <Divider sx={{ my: 3 }} />
 
-                      {/* Country List */}
+                      {/* region List */}
                       <Autocomplete
-                        options={countryList}
+                        options={regionList}
                         defaultValue={(() => {
-                          const val = countryList.find(
-                            (country) => country === values.country
+                          const val = regionList.find(
+                            (region) => region === values.region
                           );
                           return val !== undefined ? val : "";
                         })()}
@@ -143,15 +143,15 @@ function EditLocation({
                           console.log(value);
 
                           setFieldValue(
-                            "country",
-                            value !== null ? value : location.country
+                            "region",
+                            value !== null ? value : location.region
                           );
                         }}
                         renderInput={(params) => (
                           <TextField
                             margin="normal"
-                            name="country"
-                            label="Country"
+                            name="region"
+                            label="Region"
                             {...params}
                           />
                         )}
@@ -181,6 +181,19 @@ function EditLocation({
                             {...params}
                           />
                         )}
+                      />
+
+                      {/* woreda */}
+                      <Field
+                        name="woreda"
+                        margin="dense"
+                        fullWidth
+                        label="Woreda"
+                        type="text"
+                        size="small"
+                        as={TextField}
+                        error={touched.woreda && Boolean(errors.woreda)}
+                        helperText={touched.woreda && errors.woreda}
                       />
 
                       {/* Specific Location Name */}

@@ -58,9 +58,8 @@ function Positions() {
 
   const columns = React.useMemo<GridColumns<Row>>(
     () => [
-      { field: "id", headerName: "ID", width: 80 },
-      { field: "title", headerName: "Title", width: 150 },
-      { field: "qualification", headerName: "Qualification", width: 200 },
+      { field: "id", headerName: "ID", width: 120 },
+      { field: "title", headerName: "Title", width: 200 },
       {
         field: "actions",
         type: "actions",
@@ -106,7 +105,7 @@ function Positions() {
 
       <Button
         sx={{ my: 2 }}
-        variant="outlined"
+        variant="contained"
         onClick={handleOpenAddPositionModal}
       >
         + Add Position

@@ -8,17 +8,17 @@ import IconButton from "@mui/material/IconButton";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
-import AddQualification from "./AddQualification";
-import QualificationsCard from "./QualificationsCard";
-import EmergencyContactCard from "./EmergencyContactCard";
-import ExperienceCard from "./ExperienceCard";
-import PersonalInfoCard from "./PersonalInfoCard";
-import FieldItem from "./FieldItem";
-import AddEmergencyContact from "./AddEmergencyContact";
-import AddExperience from "./AddExperience";
-import { useGetEmployeeQuery } from "../../../../services/employeeApiSlice";
-import ProfileAvatar from "../../../../components/ProfileAvatar";
-import UploadProfileImage from "../../../../components/UploadProfileImage";
+import { useGetEmployeeQuery } from "../../../services/employeeApiSlice";
+import ProfileAvatar from "../../../components/ProfileAvatar";
+import UploadProfileImage from "../../../components/UploadProfileImage";
+import AddExperience from "../../../components/AddExperience";
+import AddEmergencyContact from "../../../components/AddEmergencyContact";
+import AddQualification from "../../../components/AddQualification";
+import ExperienceCard from "../../../components/ExperienceCard";
+import QualificationsCard from "../../../components/QualificationsCard";
+import EmergencyContactCard from "../../../components/EmergencyContactCard";
+import PersonalInfoCard from "../../../components/PersonalInfoCard";
+import FieldItem from "../../../components/FieldItem";
 
 export default function DetailEmployee() {
   const { id: employeeId } = useParams();

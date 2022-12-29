@@ -1,18 +1,16 @@
 import Dashboard from "../../../components/Dashboard/Dashboard";
-import {
-  AdminSidebarMainListItems,
-  AdminSidebarSecondaryListItems,
-} from "./AdminSidebarListItems";
-import Divider from "@mui/material/Divider";
+import { AdminSidebarMainListItems } from "./AdminSidebarListItems";
+import { useAppSelector } from "../../../app/hooks";
+import { useGetCompanyQuery } from "../../../services/companyApiSlice";
 
 function AdminDashboard() {
+  const companyId = useAppSelector((state) => state.auth.companyId);
+
+  const { data } = useGetCompanyQuery(companyId);
+
   return (
-    <Dashboard dashboardName="Admin Dashboard">
+    <Dashboard dashboardName={`${data?.name ?? "Super Admin"}`}>
       <AdminSidebarMainListItems />
-
-      <Divider sx={{ my: 1 }} />
-
-      <AdminSidebarSecondaryListItems />
     </Dashboard>
   );
 }

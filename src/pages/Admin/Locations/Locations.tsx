@@ -87,6 +87,8 @@ function Locations() {
     () => [
       { field: "id", headerName: "ID", width: 80 },
       { field: "country", headerName: "Country", width: 150 },
+      { field: "region", headerName: "Region", width: 150 },
+      { field: "woreda", headerName: "Woreda", width: 150 },
       { field: "city", headerName: "City", width: 200 },
       {
         field: "specificLocationName",
@@ -161,7 +163,7 @@ function Locations() {
 
       <Button
         sx={{ my: 2 }}
-        variant="outlined"
+        variant="contained"
         onClick={handleOpenAddLocationModal}
       >
         + Add Location

@@ -1,18 +1,16 @@
-import Divider from "@mui/material/Divider";
+import { useAppSelector } from "../../app/hooks";
 import Dashboard from "../../components/Dashboard/Dashboard";
-import {
-  HrSidebarMainListItems,
-  HrSidebarSecondaryListItems,
-} from "./HrSidebarListLtems";
+import { useGetCompanyQuery } from "../../services/companyApiSlice";
+import { HrSidebarMainListItems } from "./HrSidebarListLtems";
 
 function HrDashboard() {
+  const companyId = useAppSelector((state) => state.auth.companyId);
+
+  const { data } = useGetCompanyQuery(companyId);
+
   return (
-    <Dashboard dashboardName="HR Dashboard">
+    <Dashboard dashboardName={`${data?.name}`}>
       <HrSidebarMainListItems />
-
-      <Divider sx={{ my: 1 }} />
-
-      <HrSidebarSecondaryListItems />
     </Dashboard>
   );
 }

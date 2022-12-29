@@ -1,0 +1,192 @@
+import { useEffect } from "react";
+import EditIcon from "@mui/icons-material/Edit";
+import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
+import Paper from "@mui/material/Paper";
+import Typography from "@mui/material/Typography";
+import IconButton from "@mui/material/IconButton";
+import { useState } from "react";
+import { useParams } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import { useGetEmployeeQuery } from "../../../services/employeeApiSlice";
+import ProfileAvatar from "../../../components/ProfileAvatar";
+import UploadProfileImage from "../../../components/UploadProfileImage";
+import AddQualification from "../../../components/AddQualification";
+import AddEmergencyContact from "../../../components/AddEmergencyContact";
+import AddExperience from "../../../components/AddExperience";
+import FieldItem from "../../../components/FieldItem";
+import PersonalInfoCard from "../../../components/PersonalInfoCard";
+import EmergencyContactCard from "../../../components/EmergencyContactCard";
+import QualificationsCard from "../../../components/QualificationsCard";
+import ExperienceCard from "../../../components/ExperienceCard";
+
+export default function DetailEmployee() {
+  const { id: employeeId } = useParams();
+  const { data: employee } = useGetEmployeeQuery(employeeId);
+
+  // profile image state
+  const [profileImage, setProfileImage] = useState("");
+
+  const [openAddQualificationModal, setOpenAddQualificationModal] =
+    useState(false);
+  const handleOpenAddQualificationModal = () =>
+    setOpenAddQualificationModal(true);
+  const handleCloseAddQualificationModal = () =>
+    setOpenAddQualificationModal(false);
+
+  const [openAddEmergencyContactModal, setOpenAddEmergencyContactModal] =
+    useState(false);
+  const handleOpenAddEmergencyContactModal = () =>
+    setOpenAddEmergencyContactModal(true);
+  const handleCloseAddEmergencyContactModal = () =>
+    setOpenAddEmergencyContactModal(false);
+
+  const [openAddExperienceModal, setOpenAddExperienceModal] = useState(false);
+  const handleOpenAddExperienceModal = () => setOpenAddExperienceModal(true);
+  const handleCloseAddExperienceModal = () => setOpenAddExperienceModal(false);
+
+  useEffect(() => {
+    if (employee?.profileImage) {
+      setProfileImage(employee?.profileImage);
+    }
+  }, [employee]);
+
+  return (
+    <>
+      <ToastContainer />
+      {/* modals */}
+      <AddQualification
+        employeeId={employeeId ?? ""}
+        openModal={openAddQualificationModal}
+        handleCloseModal={handleCloseAddQualificationModal}
+      />
+
+      <AddEmergencyContact
+        employeeId={employeeId ?? ""}
+        openModal={openAddEmergencyContactModal}
+        handleCloseModal={handleCloseAddEmergencyContactModal}
+      />
+
+      <AddExperience
+        employeeId={employeeId ?? ""}
+        openModal={openAddExperienceModal}
+        handleCloseModal={handleCloseAddExperienceModal}
+      />
+
+      <Box>
+        <Box>
+          <Typography variant="h5" sx={{ fontWeight: "bold" }}>
+            Profile
+          </Typography>
+        </Box>
+
+        <Paper sx={{ marginY: 6, position: "relative" }}>
+          <Grid container>
+            <Grid
+              item
+              xs={12}
+              md={1.5}
+              lg={1.5}
+              sx={{ padding: 1 }}
+              display="flex"
+              justifyContent="center"
+            >
+              {/* display profile image component */}
+              <ProfileAvatar profileImage={profileImage} />
+            </Grid>
+            <Grid
+              item
+              xs={12}
+              md={4}
+              lg={4}
+              sx={{
+                padding: 1,
+                borderRight: "2px dashed #8e8e8e",
+              }}
+            >
+              <Box>
+                <Typography
+                  variant="h5"
+                  sx={{ fontWeight: "bold" }}
+                  className="text-center md:text-start"
+                >
+                  {employee?.firstName} {employee?.fatherName}
+                </Typography>
+                {/* <Typography
+                  variant="body2"
+                  sx={{ color: "#8e8e8e" }}
+                  className="text-center md:text-start"
+                >
+                  {employee?.position}
+                </Typography> */}
+
+                <Box marginY={2}>
+                  <Typography
+                    variant="body2"
+                    sx={{ fontWeight: "bold" }}
+                    className="text-center md:text-start"
+                  >
+                    Employee ID : {employee?.id}
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    sx={{ color: "#8e8e8e" }}
+                    className="text-center md:text-start"
+                  >
+                    {employee?.dateOfJoining}
+                  </Typography>
+                </Box>
+                {/* upload profile image component */}
+                <UploadProfileImage employeeId={employeeId ?? ""} />
+              </Box>
+            </Grid>
+            <Grid item xs={12} md={6} lg={6} sx={{ padding: 1 }}>
+              <Box marginY={4}>
+                <FieldItem title="Phone" value={employee?.phone} />
+                <FieldItem title="Email" value={employee?.email} />
+                <FieldItem title="Birthday" value={employee?.dateOfBirth} />
+                <FieldItem title="Gender" value={employee?.gender} />
+                {/* <FieldItem title="Reports To" value={employee?.reportsTo} /> */}
+              </Box>
+            </Grid>
+          </Grid>
+
+          <Box position="absolute" top={6} right={6}>
+            <IconButton>
+              <EditIcon sx={{ color: "#8e8e8e" }} />
+            </IconButton>
+          </Box>
+        </Paper>
+
+        {/* peronal informations & Emergeny contacts */}
+        <Grid container spacing={2}>
+          <Grid item xs={12} md={6} lg={6}>
+            <PersonalInfoCard />
+          </Grid>
+          <Grid item xs={12} md={6} lg={6}>
+            <EmergencyContactCard
+              employeeId={employeeId}
+              openAddEmergencyContactModal={handleOpenAddEmergencyContactModal}
+            />
+          </Grid>
+        </Grid>
+
+        {/* Education & Experience */}
+        <Grid container spacing={2}>
+          <Grid item xs={12} md={6} lg={6}>
+            <QualificationsCard
+              employeeId={employeeId}
+              openAddQualificationModal={handleOpenAddQualificationModal}
+            />
+          </Grid>
+          <Grid item xs={12} md={6} lg={6}>
+            <ExperienceCard
+              employeeId={employeeId}
+              openAddExperienceModal={handleOpenAddExperienceModal}
+            />
+          </Grid>
+        </Grid>
+      </Box>
+    </>
+  );
+}

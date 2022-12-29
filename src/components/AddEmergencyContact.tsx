@@ -12,11 +12,11 @@ import Button from "@mui/material/Button";
 import {
   IEmergencyContact,
   RelationTypeEnum,
-} from "../../../../models/IEmergencyContact";
+} from "../models/IEmergencyContact";
 import { FormControl, InputLabel, MenuItem } from "@mui/material";
-import { useAddEmergencyContactMutation } from "../../../../services/emergencyContactApiSlice";
+import { useAddEmergencyContactMutation } from "../services/emergencyContactApiSlice";
 import { useEffect } from "react";
-import { errorToast, successToast } from "../../../../utils/toastify";
+import { errorToast, successToast } from "../utils/toastify";
 
 // style applied to the modals container
 const style = {

@@ -9,10 +9,10 @@ import * as yup from "yup";
 import { useEffect } from "react";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import { IExperience } from "../../../../models/IExperience";
-import { useAddExperienceMutation } from "../../../../services/experienceApiSlice";
 import Grid from "@mui/material/Grid";
-import { errorToast, successToast } from "../../../../utils/toastify";
+import { IExperience } from "../models/IExperience";
+import { useAddExperienceMutation } from "../services/experienceApiSlice";
+import { errorToast, successToast } from "../utils/toastify";
 
 // style applied to the modals container
 const style = {

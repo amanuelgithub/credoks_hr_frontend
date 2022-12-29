@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import TextField from "@mui/material/TextField";
 import IconButton from "@mui/material/IconButton";
 import Box from "@mui/material/Box";
@@ -20,17 +20,20 @@ import MenuItem from "@mui/material/MenuItem";
 import FormHelperText from "@mui/material/FormHelperText";
 import { useGetDepartmentsQuery } from "../../../services/departmentApiSlice";
 import Select from "@mui/material/Select";
+import { useGetCompaniesQuery } from "../../../services/companyApiSlice";
 
-const initialValues: IPosition = {
+const initialValues = {
   title: "",
   // companyId: "",
-  departmentId: "",
+  // departmentId: "",
+  department: null,
 };
 
 const validationSchema = yup.object({
   title: yup.string().required("Position's name is a required field"),
-  companyId: yup.string().required("Company's id is a required field"),
-  departmentId: yup.string().required("Department's id is a required field"),
+  // companyId: yup.string().required("Company's id is a required field"),
+  // departmentId: yup.string().required("Department's id is a required field"),
+  department: yup.object().required("Department id is a required field"),
 });
 
 // style applied to the modals container
@@ -40,7 +43,7 @@ const style = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: 450,
-  height: "45%",
+  height: "55%",
   bgcolor: "background.paper",
   boxShadow: 24,
   p: 3,
@@ -57,9 +60,15 @@ function AddPosition({
 
   const { data: departments } = useGetDepartmentsQuery();
 
-  const handleSubmit = async (values: IPosition) => {
+  const handleSubmit = async (values: any) => {
+    const { title, department } = values;
+    console.log("title: ", title, " department: ", department);
     try {
-      await createPosition(values).unwrap();
+      await createPosition({
+        title,
+        companyId: department.companyId,
+        departmentId: department.id,
+      }).unwrap();
       handleCloseModal();
     } catch (err: any) {
       console.log("Error: ", err);
@@ -95,13 +104,13 @@ function AddPosition({
           <Formik
             initialValues={initialValues}
             validationSchema={validationSchema}
-            onSubmit={(values: IPosition, { setSubmitting }) => {
+            onSubmit={(values: any, { setSubmitting }) => {
               setSubmitting(true);
               handleSubmit(values);
               setSubmitting(false);
             }}
           >
-            {({ errors, touched, handleSubmit, isSubmitting }) => (
+            {({ values, errors, touched, handleSubmit, isSubmitting }) => (
               <Box component="form" onSubmit={handleSubmit}>
                 <Box>
                   <Divider sx={{ my: 3 }} />
@@ -124,20 +133,21 @@ function AddPosition({
                     fullWidth
                     margin="normal"
                     size="small"
-                    error={touched.departmentId && Boolean(errors.departmentId)}
+                    error={touched.department && Boolean(errors.department)}
                   >
                     <InputLabel id="user-type-select-label">
                       Department
                     </InputLabel>
+
                     <Field
-                      name="departmentId"
+                      name="department"
                       type="select"
                       label="User Type"
                       as={Select}
-                      helperText={touched.departmentId && errors.departmentId}
+                      helperText={touched.department && errors.department}
                     >
                       {departments?.map((department) => (
-                        <MenuItem key={department.id} value={department.id}>
+                        <MenuItem key={department.id} value={department}>
                           {department.name}
                         </MenuItem>
                       ))}
