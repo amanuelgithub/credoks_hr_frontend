@@ -47,7 +47,7 @@ export const HrSidebarMainListItems = () => {
         <Link to={item.to}>
           <ListItemButton>
             <ListItemIcon>{item.icon}</ListItemIcon>
-            <ListItemText primary={item.label} />
+            <ListItemText secondary={item.label} />
           </ListItemButton>
         </Link>
       ))}
@@ -63,7 +63,7 @@ export const HrSidebarMainListItems = () => {
           id="panel1bh-header"
           sx={{ borderBottom: "1px solid gray" }}
         >
-          <Typography sx={{ width: "33%", flexShrink: 0 }}>
+          <Typography sx={{ width: "33%", flexShrink: 0 }} variant="body2">
             Employees
           </Typography>
         </AccordionSummary>

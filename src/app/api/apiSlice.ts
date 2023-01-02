@@ -76,5 +76,6 @@ export const apiSlice = createApi({
     "Location",
     "Position",
     "Leave",
+    "Payroll",
   ],
 });

@@ -27,6 +27,7 @@ import ManagerDepartments from "./pages/Manager/Departments/Departments";
 import DetailDepartment from "./pages/Admin/Departments/DetailDepartment";
 import UploadCompanyLogo from "./pages/Admin/Companies/UploadCompanyLogo";
 import ProcessPayroll from "./pages/HR/Payroll/ProcessPayroll";
+import Pay from "./pages/HR/pay/Pay";
 
 function Router() {
   const token = useAppSelector((state) => state.auth.access_token);
@@ -75,6 +76,10 @@ function Router() {
           </Route>
           <Route path="payroll">
             <Route path="process-payroll" element={<ProcessPayroll />} />
+          </Route>
+
+          <Route path="pay">
+            <Route path=":payrollId" element={<Pay />} />
           </Route>
         </Route>
       </Route>

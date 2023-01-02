@@ -17,8 +17,13 @@ import { useGetCompanyQuery } from "../../../services/companyApiSlice";
 import * as yup from "yup";
 import { useAppSelector } from "../../../app/hooks";
 import TextField from "@mui/material/TextField";
-import { Button, Typography } from "@mui/material";
+import { Button, Divider, Typography } from "@mui/material";
 import { useProcessPayrollMutation } from "../../../services/payrollApiSlice";
+import Loading from "../../../components/Loading";
+import { useEffect } from "react";
+import { errorToast, successToast } from "../../../utils/toastify";
+import { ToastContainer } from "react-toastify";
+import Payrolls from "./Payrolls";
 
 const initialValues: IPayroll = {
   //   companyId: "",
@@ -57,6 +62,14 @@ function ProcessPayroll() {
   const [processPayroll, { isSuccess, isError, isLoading }] =
     useProcessPayrollMutation();
 
+  useEffect(() => {
+    if (isSuccess) {
+      successToast("Payroll Processed Successfully!");
+    } else if (isError) {
+      errorToast("Payroll Processing Error! Check if it is already processed");
+    }
+  }, [isError, isSuccess]);
+
   const handleSubmit = async (values: IPayroll) => {
     try {
       console.log("processing payroll....");
@@ -72,10 +85,12 @@ function ProcessPayroll() {
   };
 
   return (
-    <div className="h-screen">
+    <div className="h-screen relative">
+      <ToastContainer />
+
       <Box marginY={3} textAlign="center">
         <Typography variant="h5">
-          Create A Payroll for {company.name}
+          CREATE A PAYROLl FOR {company.name.toString().toUpperCase()}
         </Typography>
       </Box>
       <div>
@@ -88,7 +103,9 @@ function ProcessPayroll() {
 
             handleSubmit(values);
 
-            setSubmitting(false);
+            setTimeout(() => {
+              setSubmitting(false);
+            }, 1000);
           }}
         >
           {({ values, errors, touched, handleSubmit, isSubmitting }) => (
@@ -145,19 +162,32 @@ function ProcessPayroll() {
                 </FormControl>
               </div>
 
+              {/* show loading when the submitting the button */}
+              {isSubmitting && <Loading />}
+
               <Box display="flex" justifyContent="center" marginY={5}>
                 <Button
                   type="submit"
+                  disabled={isSubmitting}
                   variant="outlined"
                   sx={{ borderRadius: 8 }}
                 >
-                  Run Payroll Processing
+                  Run Payroll Processer
                 </Button>
               </Box>
             </Box>
           )}
         </Formik>
       </div>
+
+      <Divider sx={{ marginY: 10 }} />
+
+      <Box>
+        <Typography variant="h5" sx={{ marginY: 3 }}>
+          ALL PROCESSESSED PAYROLLS
+        </Typography>
+        <Payrolls />
+      </Box>
     </div>
   );
 }
