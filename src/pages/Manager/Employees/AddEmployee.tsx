@@ -52,6 +52,7 @@ const initialValues: IEmployee = {
   password: "",
   employmentStatus: EmploymentStatusEnum.CONFIRMED,
   maritalStatus: MaritalStatusEnum.SINGLE,
+  salary: 0,
   // dateOfJoining: undefined,
   tinNumber: "",
   bankAccountNumber: "",

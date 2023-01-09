@@ -14,6 +14,7 @@ export interface IEmployee {
   employmentStatus?: EmploymentStatusEnum;
   maritalStatus?: MaritalStatusEnum;
   dateOfJoining?: string;
+  salary?: number;
   tinNumber?: string;
   bankName?: string;
   bankAccountNumber?: string;

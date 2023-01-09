@@ -16,6 +16,6 @@ export enum MonthEnum {
 export interface IPayroll {
   id?: string;
   companyId?: string;
-  month: MonthEnum;
+  month?: MonthEnum;
   year?: number;
 }

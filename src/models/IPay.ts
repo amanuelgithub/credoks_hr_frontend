@@ -1,3 +1,4 @@
+import { IEmployee } from "./IEmployee";
 import { MonthEnum } from "./IPayroll";
 
 export interface IPay {
@@ -9,4 +10,5 @@ export interface IPay {
   payrollId: string;
   year: number;
   month: MonthEnum;
+  employee: IEmployee;
 }

@@ -180,6 +180,7 @@ function Employees() {
         },
       },
       { field: "type", headerName: "type", width: 140 },
+      { field: "salary", headerName: "Salary", width: 140 },
       { field: "bankName", headerName: "Bank Name", width: 140 },
       {
         field: "bankAccountNumber",

@@ -52,6 +52,7 @@ const initialValues: IEmployee = {
   employmentStatus: EmploymentStatusEnum.CONFIRMED,
   maritalStatus: MaritalStatusEnum.SINGLE,
   // dateOfJoining: undefined,
+  salary: 0,
   tinNumber: "",
   bankAccountNumber: "",
 };
@@ -92,6 +93,7 @@ const validationSchema = yup.object({
       MaritalStatusEnum.MARRIED,
     ])
     .required(),
+  salary: yup.number().positive().required(),
   // dateOfJoining: yup.date().required(),
   tinNumber: yup.string().required(),
   bankName: yup.string().required("Bank Name is required fields"),
@@ -489,6 +491,18 @@ function AddEmployee({
 
                 {/* Account Number & Tin Numbers */}
                 <Box display="flex" gap={3} marginY={2}>
+                  <Field
+                    name="salary"
+                    type="text"
+                    label="Salary"
+                    margin="dense"
+                    size="small"
+                    fullWidth
+                    as={TextField}
+                    error={touched.salary && Boolean(errors.salary)}
+                    helperText={touched.salary && errors.salary}
+                  />
+
                   {/* Bank Nmme */}
                   <Field
                     name="bankName"

@@ -1,11 +1,3 @@
-/**
- *
- * 1. select company
- * 2. select the payroll year
- * 3. select payroll monthc
- *
- */
-
 import Box from "@mui/material/Box";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
@@ -27,7 +19,7 @@ import Payrolls from "./Payrolls";
 
 const initialValues: IPayroll = {
   //   companyId: "",
-  month: MonthEnum.January,
+  month: undefined,
   year: undefined,
 };
 
@@ -157,7 +149,7 @@ function ProcessPayroll() {
                     helperText={touched.year && errors.year}
                   >
                     <MenuItem value={2022}>2022 G.C</MenuItem>
-                    <MenuItem value={2023}>2023 G.C</MenuItem>
+                    {/* <MenuItem value={2023}>2023 G.C</MenuItem> */}
                   </Field>
                 </FormControl>
               </div>

@@ -28,6 +28,7 @@ import DetailDepartment from "./pages/Admin/Departments/DetailDepartment";
 import UploadCompanyLogo from "./pages/Admin/Companies/UploadCompanyLogo";
 import ProcessPayroll from "./pages/HR/Payroll/ProcessPayroll";
 import Pay from "./pages/HR/pay/Pay";
+import Payslip from "./pages/HR/pay/Payslip";
 
 function Router() {
   const token = useAppSelector((state) => state.auth.access_token);
@@ -83,6 +84,10 @@ function Router() {
           </Route>
         </Route>
       </Route>
+
+      {/* payslip */}
+
+      <Route path="/pay/:id/generate-payslip" element={<Payslip />} />
 
       {/* Manager Routes */}
       <Route element={<ManagerRoutesProtector />}>
