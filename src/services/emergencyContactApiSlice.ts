@@ -25,10 +25,19 @@ export const emergencyContactApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: [{ type: "EmergencyContact", id: "LIST" }],
     }),
+
+    deleteEmergencyContact: builder.mutation({
+      query: (id: string | undefined) => ({
+        url: `/emergency-contacts/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: [{ type: "EmergencyContact", id: "LIST" }],
+    }),
   }),
 });
 
 export const {
   useAddEmergencyContactMutation,
   useGetEmergencyContactByEmployeeIdQuery,
+  useDeleteEmergencyContactMutation,
 } = emergencyContactApiSlice;

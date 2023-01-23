@@ -167,6 +167,9 @@ export default function DetailEmployee() {
             <EmergencyContactCard
               employeeId={employeeId}
               openAddEmergencyContactModal={handleOpenAddEmergencyContactModal}
+              // deleteEmergencyContact={function (): void {
+              //   throw new Error("Function not implemented.");
+              // }}
             />
           </Grid>
         </Grid>

@@ -1,7 +1,7 @@
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
+import Typography from "@mui/material/Typography";
 import FieldItem from "./FieldItem";
-import ListCardHeader from "./ListCardHeader";
 
 const personalInfo = {
   passportNumber: "98765345678",
@@ -16,10 +16,15 @@ const personalInfo = {
 function PersonalInfoCard() {
   return (
     <Paper sx={{ marginY: 6, padding: 1, position: "relative" }}>
-      <ListCardHeader
-        headerText="Personal Information"
-        handleClick={undefined}
-      />
+      <Box sx={{ marginBottom: 2 }}>
+        <Typography
+          variant="h5"
+          sx={{ fontWeight: "light", color: "gray" }}
+          className="text-center md:text-start"
+        >
+          Personal Information
+        </Typography>
+      </Box>
 
       <Box marginY={3}>
         <FieldItem title="Passport No" value={personalInfo.passportNumber} />

@@ -69,12 +69,14 @@ function AddEmergencyContact({
 
       console.log("Emergency Contact request value: ", emergencyContact);
 
-      await createEmergencyContact({
+      const response = await createEmergencyContact({
         employeeId,
         emergencyContact,
       }).unwrap();
 
-      console.log("Emergency Contact request value: ", emergencyContact);
+      // console.log("Emergency Contact request value: ", emergencyContact);
+
+      console.log("emergencyContact response:", response);
 
       handleCloseModal();
     } catch (err: any) {}
@@ -83,9 +85,7 @@ function AddEmergencyContact({
   useEffect(() => {
     if (isSuccess) {
       successToast("Emergency Contact Added Successfully!");
-    }
-
-    if (isError) {
+    } else if (isError) {
       errorToast("Can Not Adde Emergency Contact!");
     }
   }, [isSuccess, isError]);

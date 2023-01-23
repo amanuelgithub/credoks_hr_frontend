@@ -30,6 +30,11 @@ const managersSidebarMainListItems = [
     label: "Positions",
     icon: <LocationOnIcon />,
   },
+  {
+    to: "/manager-dashboard/change-password",
+    label: "Change Password",
+    icon: <LocationOnIcon />,
+  },
 ];
 
 export const ManagerSidebarMainListItems = () => {

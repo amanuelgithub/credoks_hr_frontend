@@ -25,8 +25,19 @@ export const experienceApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: [{ type: "Experience", id: "LIST" }],
     }),
+
+    deleteExperience: builder.mutation({
+      query: (experienceId: string) => ({
+        url: `/experiences/${experienceId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: [{ type: "Experience", id: "LIST" }],
+    }),
   }),
 });
 
-export const { useAddExperienceMutation, useGetExperiencesByEmployeeIdQuery } =
-  experienceApiSlice;
+export const {
+  useAddExperienceMutation,
+  useGetExperiencesByEmployeeIdQuery,
+  useDeleteExperienceMutation,
+} = experienceApiSlice;

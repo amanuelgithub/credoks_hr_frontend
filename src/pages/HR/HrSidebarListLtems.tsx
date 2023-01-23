@@ -4,6 +4,8 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import PeopleIcon from "@mui/icons-material/People";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import PersonIcon from "@mui/icons-material/Person";
+import LockIcon from "@mui/icons-material/Lock";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import PaymentsIcon from "@mui/icons-material/Payments";
 import { Link } from "react-router-dom";
@@ -14,14 +16,22 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 
 const hrsSidebarMainListItems = [
   {
-    to: "/hr-dashboard",
-    label: "Dashboard",
-    icon: <DashboardIcon />,
-  },
-  {
     to: "/hr-dashboard/payroll/process-payroll",
     label: "Payroll",
     icon: <PaymentsIcon />,
+  },
+];
+
+const hrsSidebarSettingsListItems = [
+  {
+    to: "/hr-dashboard/profile",
+    label: "Account",
+    icon: <PersonIcon />,
+  },
+  {
+    to: "/hr-dashboard/change-password",
+    label: "Change Password",
+    icon: <LockIcon />,
   },
 ];
 
@@ -43,14 +53,14 @@ export const HrSidebarMainListItems = () => {
 
   return (
     <React.Fragment>
-      {hrsSidebarMainListItems.map((item) => (
-        <Link to={item.to}>
-          <ListItemButton>
-            <ListItemIcon>{item.icon}</ListItemIcon>
-            <ListItemText secondary={item.label} />
-          </ListItemButton>
-        </Link>
-      ))}
+      <Link to="/hr-dashboard">
+        <ListItemButton>
+          <ListItemIcon>
+            <DashboardIcon />
+          </ListItemIcon>
+          <ListItemText secondary="Dashboard" />
+        </ListItemButton>
+      </Link>
 
       {/* Employees */}
       <Accordion
@@ -61,7 +71,7 @@ export const HrSidebarMainListItems = () => {
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel1bh-content"
           id="panel1bh-header"
-          sx={{ borderBottom: "1px solid gray" }}
+          sx={{ borderTop: "1px solid gray" }}
         >
           <Typography sx={{ width: "33%", flexShrink: 0 }} variant="body2">
             Employees
@@ -69,6 +79,42 @@ export const HrSidebarMainListItems = () => {
         </AccordionSummary>
         <AccordionDetails>
           {hrsSidebarEmployeesListItems.map((item) => (
+            <Link to={item.to}>
+              <ListItemButton>
+                <ListItemIcon>{item.icon}</ListItemIcon>
+                <ListItemText secondary={item.label} />
+              </ListItemButton>
+            </Link>
+          ))}
+        </AccordionDetails>
+      </Accordion>
+
+      {hrsSidebarMainListItems.map((item) => (
+        <Link to={item.to}>
+          <ListItemButton>
+            <ListItemIcon>{item.icon}</ListItemIcon>
+            <ListItemText secondary={item.label} />
+          </ListItemButton>
+        </Link>
+      ))}
+
+      {/* Settings */}
+      <Accordion
+        expanded={expanded === "panel2"}
+        onChange={handleAccordionChange("panel2")}
+      >
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel1bh-content"
+          id="panel1bh-header"
+          sx={{ borderTop: "1px solid gray" }}
+        >
+          <Typography sx={{ width: "33%", flexShrink: 0 }} variant="body2">
+            Settings
+          </Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          {hrsSidebarSettingsListItems.map((item) => (
             <Link to={item.to}>
               <ListItemButton>
                 <ListItemIcon>{item.icon}</ListItemIcon>

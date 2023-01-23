@@ -4,6 +4,7 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import ListSubheader from "@mui/material/ListSubheader";
 import DashboardIcon from "@mui/icons-material/Dashboard";
+import LockIcon from "@mui/icons-material/Lock";
 import GradingIcon from "@mui/icons-material/Grading";
 import PeopleIcon from "@mui/icons-material/People";
 import BusinessIcon from "@mui/icons-material/Business";
@@ -182,15 +183,14 @@ export const AdminSidebarMainListItems = () => {
         </AccordionDetails>
       </Accordion>
 
-      {/* original */}
-      {/* {adminSidebarMainListItems.map((item) => (
-        <Link to={item.to}>
-          <ListItemButton>
-            <ListItemIcon>{item.icon}</ListItemIcon>
-            <ListItemText primary={item.label} />
-          </ListItemButton>
-        </Link>
-      ))} */}
+      <Link to="/admin-dashboard/change-password">
+        <ListItemButton>
+          <ListItemIcon>
+            <LockIcon />
+          </ListItemIcon>
+          <ListItemText secondary="Change Password" />
+        </ListItemButton>
+      </Link>
     </React.Fragment>
   );
 };

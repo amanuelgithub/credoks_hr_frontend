@@ -29,6 +29,7 @@ import UploadCompanyLogo from "./pages/Admin/Companies/UploadCompanyLogo";
 import ProcessPayroll from "./pages/HR/Payroll/ProcessPayroll";
 import Pay from "./pages/HR/pay/Pay";
 import Payslip from "./pages/HR/pay/Payslip";
+import ChangePassword from "./components/ChangePassword";
 
 function Router() {
   const token = useAppSelector((state) => state.auth.access_token);
@@ -65,6 +66,8 @@ function Router() {
           <Route path="positions">
             <Route index element={<AdminPositions />} />
           </Route>
+
+          <Route path="change-password" element={<ChangePassword />} />
         </Route>
       </Route>
 
@@ -75,6 +78,7 @@ function Router() {
             <Route index element={<HREmployeesPage />} />
             <Route path="detail/:id" element={<HRDetailEmployee />} />
           </Route>
+
           <Route path="payroll">
             <Route path="process-payroll" element={<ProcessPayroll />} />
           </Route>
@@ -82,6 +86,8 @@ function Router() {
           <Route path="pay">
             <Route path=":payrollId" element={<Pay />} />
           </Route>
+
+          <Route path="change-password" element={<ChangePassword />} />
         </Route>
       </Route>
 
@@ -103,6 +109,8 @@ function Router() {
           <Route path="positions">
             <Route index element={<ManagerPositions />} />
           </Route>
+
+          <Route path="change-password" element={<ChangePassword />} />
         </Route>
       </Route>
 

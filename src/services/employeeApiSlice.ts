@@ -70,6 +70,20 @@ export const employeeApiSlice = apiSlice.injectEndpoints({
       invalidatesTags: [{ type: "Employee", id: "LIST" }],
     }),
 
+    changePassword: builder.mutation({
+      query: ({
+        employeeId,
+        changePassword,
+      }: {
+        employeeId: string;
+        changePassword: { password: string };
+      }) => ({
+        url: `/employees/${employeeId}/change-password`,
+        method: "PATCH",
+        body: changePassword,
+      }),
+    }),
+
     /** this function has some issues */
     getEmployeeProfileImage: builder.query<any, any>({
       query: (imagename: string) => ({
@@ -92,6 +106,7 @@ export const {
   useUpdateEmployeeMutation,
   useGetEmployeeProfileImageQuery,
   useUploadProfileImageMutation,
+  useChangePasswordMutation,
   // reportting
   useGetCompaniesEmployeesReportQuery,
 } = employeeApiSlice;

@@ -8,14 +8,12 @@ import Toolbar from "@mui/material/Toolbar";
 import List from "@mui/material/List";
 import Typography from "@mui/material/Typography";
 import LogoutIcon from "@mui/icons-material/Logout";
-import LockIcon from "@mui/icons-material/Lock";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import Container from "@mui/material/Container";
 import MenuIcon from "@mui/icons-material/Menu";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import { Link, Outlet } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import Copyright from "../Copyright";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { logout } from "../../features/auth/authSlice";
@@ -182,26 +180,6 @@ function DashboardContent({
               }}
             >
               <Box>
-                {/* profile */}
-                <Box>
-                  <Link to={"#"}>
-                    <Box sx={{ display: "flex", gap: 2, py: 1, px: 2 }}>
-                      <AccountCircleIcon />
-                      <Typography>Profile</Typography>
-                    </Box>
-                  </Link>
-                </Box>
-
-                {/* change password */}
-                <Box>
-                  <Link to={"#"}>
-                    <Box sx={{ display: "flex", gap: 2, py: 1, px: 2 }}>
-                      <LockIcon />
-                      <Typography>Change Password</Typography>
-                    </Box>
-                  </Link>
-                </Box>
-
                 {/* logout */}
                 <Box
                   color="inherit"
