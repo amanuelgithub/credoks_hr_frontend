@@ -3,10 +3,11 @@ import PeopleIcon from "@mui/icons-material/People";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
+import LockIcon from "@mui/icons-material/Lock";
+import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
 import ListSubheader from "@mui/material/ListSubheader";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import GroupsIcon from "@mui/icons-material/Groups";
-import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { Link } from "react-router-dom";
 
 const managersSidebarMainListItems = [
@@ -28,12 +29,12 @@ const managersSidebarMainListItems = [
   {
     to: "/manager-dashboard/positions",
     label: "Positions",
-    icon: <LocationOnIcon />,
+    icon: <AssignmentIndIcon />,
   },
   {
     to: "/manager-dashboard/change-password",
     label: "Change Password",
-    icon: <LocationOnIcon />,
+    icon: <LockIcon />,
   },
 ];
 
@@ -44,7 +45,7 @@ export const ManagerSidebarMainListItems = () => {
         <Link to={item.to}>
           <ListItemButton>
             <ListItemIcon>{item.icon}</ListItemIcon>
-            <ListItemText primary={item.label} />
+            <ListItemText secondary={item.label} />
           </ListItemButton>
         </Link>
       ))}
@@ -56,7 +57,7 @@ export const ManagerSidebarSecondaryListItems = () => {
   return (
     <React.Fragment>
       <ListSubheader component="div" inset>
-        Saved reports
+        reports
       </ListSubheader>
     </React.Fragment>
   );

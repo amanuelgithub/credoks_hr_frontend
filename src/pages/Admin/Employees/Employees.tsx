@@ -138,7 +138,7 @@ function Employees() {
                 params.row?.profileImage ?? ""
               }`}
               // src="/static/images/avatar/2.jpg"
-              sx={{ bgcolor: "secondary.main" }}
+              sx={{ bgcolor: "secondary.main", width: 60, height: 60 }}
             />
           );
         },
@@ -275,6 +275,7 @@ function Employees() {
         pageSize={10}
         rowsPerPageOptions={[10]}
         autoHeight
+        rowHeight={75}
         loading={false}
         error={undefined}
         isRowSelectable={(_params) => false}

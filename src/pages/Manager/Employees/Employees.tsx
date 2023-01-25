@@ -6,17 +6,16 @@ import {
   GridRowId,
   gridClasses,
 } from "@mui/x-data-grid";
-import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import { IEmployee } from "../../../models/IEmployee";
+import { EmploymentStatusEnum, IEmployee } from "../../../models/IEmployee";
 import {
-  useGetEmployeesQuery,
   useDeleteEmployeeMutation,
   useGetEmployeesByCompanyQuery,
+  useUpdateEmploymentStatusMutation,
 } from "../../../services/employeeApiSlice";
 import Button from "@mui/material/Button";
 import MoreIcon from "@mui/icons-material/More";
-import DeleteModal from "../../../components/DeleteModal/DeleteModal";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { ToastContainer } from "react-toastify";
 import EditEmployee from "./EditEmployee";
 import { Link, useNavigate } from "react-router-dom";
@@ -28,6 +27,8 @@ import { alpha, styled } from "@mui/material/styles";
 import DataGridToolbar from "../../../components/DataGridToolbar";
 import AddEmployee from "./AddEmployee";
 import { useAppSelector } from "../../../app/hooks";
+import { FormControl, MenuItem, Select } from "@mui/material";
+import DeleteModal from "../../../components/DeleteModal/DeleteModal";
 
 const ODD_OPACITY = 0.2;
 
@@ -92,7 +93,50 @@ function Employees() {
   const handleOpenDeleteModal = () => setOpenDeleteModal(true);
   const handleCloseDeleteModal = () => setOpenDeleteModal(false);
 
+  // employe status change controller
+  const [updateEmploymentStatus, { isError, isSuccess }] =
+    useUpdateEmploymentStatusMutation();
+  const [selectedIdToUpdateEmpStatus, setSelectedIdToUpdateEmpStatus] =
+    useState("");
+  const [employementStatus, setEmployementStatus] =
+    useState<EmploymentStatusEnum>();
+
   const navigate = useNavigate();
+
+  // employee status change starts here
+  const handleUpdateEmploymentStatus = async ({
+    id,
+    body,
+  }: {
+    id: string;
+    body: { employmentStatus: EmploymentStatusEnum };
+  }) => {
+    try {
+      await updateEmploymentStatus({
+        id,
+        body,
+      }).unwrap();
+
+      console.log("updateEmploymentStatus");
+    } catch (err: any) {
+      console.log("Error: ", err);
+    }
+  };
+  const handleEmploymentStatusChange = (e: any, empId: string) => {
+    e.preventDefault();
+
+    setSelectedIdToUpdateEmpStatus(empId);
+    setEmployementStatus(e.target.value);
+  };
+  useEffect(() => {
+    handleUpdateEmploymentStatus({
+      id: selectedIdToUpdateEmpStatus,
+      body: {
+        employmentStatus: employementStatus ?? EmploymentStatusEnum.TRAINEE,
+      },
+    });
+  }, [selectedIdToUpdateEmpStatus]);
+  // employee status change end here
 
   useEffect(() => {
     if (data !== undefined) {
@@ -105,17 +149,17 @@ function Employees() {
     };
   }, [data]);
 
-  const handleMoreEmployeeFieldAction = React.useCallback(
-    (id: GridRowId) => () => {
-      navigate(`/admin-dashboard/employees/detail/${id}`);
-    },
-    []
-  );
-
   const handleDeleteEmployeeFieldAction = React.useCallback(
     (id: GridRowId) => () => {
       setIdToBeDeleted(id.toString());
       handleOpenDeleteModal();
+    },
+    []
+  );
+
+  const handleMoreEmployeeFieldAction = React.useCallback(
+    (id: GridRowId) => () => {
+      navigate(`/admin-dashboard/employees/detail/${id}`);
     },
     []
   );
@@ -127,6 +171,12 @@ function Employees() {
     },
     []
   );
+
+  // hander to delete an employee
+  const handleDeleteEmployee = (id: string) => {
+    handleCloseDeleteModal();
+    deleteEmployee(id);
+  };
 
   const columns = React.useMemo<GridColumns<Row>>(
     () => [
@@ -141,7 +191,7 @@ function Employees() {
                 params.row?.profileImage ?? ""
               }`}
               // src="/static/images/avatar/2.jpg"
-              sx={{ bgcolor: "secondary.main" }}
+              sx={{ bgcolor: "secondary.main", width: 60, height: 60 }}
             />
           );
         },
@@ -153,7 +203,7 @@ function Employees() {
         renderCell: (params) => {
           return (
             <Link
-              to={`/hr-dashboard/employees/detail/${params.row.id}`}
+              to={`/manager-dashboard/employees/detail/${params.row.id}`}
               state={{
                 profileImage: params.row.profileImage,
               }}
@@ -189,7 +239,45 @@ function Employees() {
       },
       { field: "tinNumber", headerName: "TIN Number", width: 200 },
       { field: "gender", headerName: "gender", width: 140 },
-      { field: "employmentStatus", headerName: "status", width: 140 },
+      {
+        field: "employmentStatus",
+        headerName: "Employment Status",
+        width: 140,
+        renderCell: (params) => {
+          return (
+            <FormControl fullWidth margin="normal" size="small">
+              <Select
+                defaultValue={params.row.employmentStatus}
+                name="companyId"
+                type="select"
+                label="Employement Status"
+                sx={{
+                  bgcolor: `primary.main`,
+                  borderRadius: 8,
+                  border: "1px solid gray",
+                }}
+                // value={undefined}
+                onChange={(e: any) =>
+                  handleEmploymentStatusChange(e, params.row.id ?? "")
+                }
+              >
+                <MenuItem value={EmploymentStatusEnum.CONFIRMED}>
+                  {EmploymentStatusEnum.CONFIRMED}
+                </MenuItem>
+                <MenuItem value={EmploymentStatusEnum.CONTRACT}>
+                  {EmploymentStatusEnum.CONTRACT}
+                </MenuItem>
+                <MenuItem value={EmploymentStatusEnum.PROBAATION}>
+                  {EmploymentStatusEnum.PROBAATION}
+                </MenuItem>
+                <MenuItem value={EmploymentStatusEnum.TRAINEE}>
+                  {EmploymentStatusEnum.TRAINEE}
+                </MenuItem>
+              </Select>
+            </FormControl>
+          );
+        },
+      },
       {
         field: "actions",
         type: "actions",
@@ -201,7 +289,13 @@ function Employees() {
             onClick={handleMoreEmployeeFieldAction(params.id)}
           />,
           <GridActionsCellItem
-            icon={<EditIcon sx={{ color: "secondary.main" }} />}
+            icon={
+              <EditIcon
+                sx={{
+                  color: "secondary.main",
+                }}
+              />
+            }
             label="Edit"
             onClick={handleEditEmployeeFieldAction(params.id)}
           />,
@@ -219,12 +313,6 @@ function Employees() {
       handleEditEmployeeFieldAction,
     ]
   );
-
-  // hander to delete an employee
-  const handleDeleteEmployee = (id: string) => {
-    handleCloseDeleteModal();
-    deleteEmployee(id);
-  };
 
   return (
     <div style={{ height: "100vh", width: "100%" }}>
@@ -279,6 +367,7 @@ function Employees() {
         pageSize={10}
         rowsPerPageOptions={[10]}
         autoHeight
+        rowHeight={75}
         loading={false}
         error={undefined}
         isRowSelectable={(_params) => false}

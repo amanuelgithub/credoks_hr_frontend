@@ -148,7 +148,9 @@ function ProcessPayroll() {
                     as={Select}
                     helperText={touched.year && errors.year}
                   >
-                    <MenuItem value={2022}>2022 G.C</MenuItem>
+                    <MenuItem value={new Date().getFullYear()}>
+                      {new Date().getFullYear()} G.C
+                    </MenuItem>
                     {/* <MenuItem value={2023}>2023 G.C</MenuItem> */}
                   </Field>
                 </FormControl>

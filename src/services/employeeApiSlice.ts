@@ -1,6 +1,6 @@
 import { apiSlice } from "../app/api/apiSlice";
 import { ICompanyEmployeeReport } from "../models/ICompanyEmployeeReport";
-import { IEmployee } from "../models/IEmployee";
+import { EmploymentStatusEnum, IEmployee } from "../models/IEmployee";
 
 export const employeeApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -49,6 +49,21 @@ export const employeeApiSlice = apiSlice.injectEndpoints({
         url: `/employees/${employee.id}`,
         method: "PATCH",
         body: employee,
+      }),
+      invalidatesTags: [{ type: "Employee", id: "LIST" }],
+    }),
+
+    updateEmploymentStatus: builder.mutation({
+      query: ({
+        id,
+        body,
+      }: {
+        id: string;
+        body: { employmentStatus: EmploymentStatusEnum };
+      }) => ({
+        url: `/employees/${id}/update-employement-status`,
+        method: "PATCH",
+        body: body,
       }),
       invalidatesTags: [{ type: "Employee", id: "LIST" }],
     }),
@@ -104,6 +119,7 @@ export const {
   useAddEmployeeMutation,
   useDeleteEmployeeMutation,
   useUpdateEmployeeMutation,
+  useUpdateEmploymentStatusMutation,
   useGetEmployeeProfileImageQuery,
   useUploadProfileImageMutation,
   useChangePasswordMutation,
