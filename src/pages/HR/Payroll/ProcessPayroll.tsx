@@ -16,6 +16,7 @@ import { useEffect } from "react";
 import { errorToast, successToast } from "../../../utils/toastify";
 import { ToastContainer } from "react-toastify";
 import Payrolls from "./Payrolls";
+import Breadcrumbs from "../../../components/Breadcrumbs";
 
 const initialValues: IPayroll = {
   //   companyId: "",
@@ -79,6 +80,8 @@ function ProcessPayroll() {
   return (
     <div className="h-screen relative">
       <ToastContainer />
+
+      <Breadcrumbs />
 
       <Box marginY={3} textAlign="center">
         <Typography variant="h5">

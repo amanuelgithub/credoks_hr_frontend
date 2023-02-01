@@ -30,6 +30,7 @@ import ProcessPayroll from "./pages/HR/Payroll/ProcessPayroll";
 import Pay from "./pages/HR/pay/Pay";
 import Payslip from "./pages/HR/pay/Payslip";
 import ChangePassword from "./components/ChangePassword";
+import PdfViewerComponent from "./components/PdfViewerComponent";
 
 function Router() {
   const token = useAppSelector((state) => state.auth.access_token);
@@ -77,6 +78,7 @@ function Router() {
           <Route path="employees">
             <Route index element={<HREmployeesPage />} />
             <Route path="detail/:id" element={<HRDetailEmployee />} />
+            <Route path="cv/:cvName" element={<PdfViewerComponent />} />
           </Route>
 
           <Route path="payroll">

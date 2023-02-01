@@ -11,6 +11,7 @@ import DownloadIcon from "@mui/icons-material/Download";
 import { IEmployee } from "../../../models/IEmployee";
 import { IPay } from "../../../models/IPay";
 import { useFindAllPayByPayrollIdQuery } from "../../../services/payApiSlice";
+import Breadcrumbs from "../../../components/Breadcrumbs";
 
 interface IEmployeePay extends IPay, IEmployee {}
 
@@ -107,6 +108,8 @@ function Pay() {
 
   return (
     <div className="h-screen">
+      {/* <Breadcrumbs /> */}
+
       <DataGrid
         rows={pays}
         columns={columns}
