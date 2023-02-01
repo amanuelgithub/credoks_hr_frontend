@@ -85,6 +85,15 @@ export const employeeApiSlice = apiSlice.injectEndpoints({
       invalidatesTags: [{ type: "Employee", id: "LIST" }],
     }),
 
+    uploadCV: builder.mutation({
+      query: ({ id, file }: { id: string | undefined; file: any }) => ({
+        url: `/employees/${id}/upload-cv`,
+        method: "POST",
+        body: file,
+      }),
+      invalidatesTags: [{ type: "Employee", id: "LIST" }],
+    }),
+
     changePassword: builder.mutation({
       query: ({
         employeeId,
@@ -122,6 +131,7 @@ export const {
   useUpdateEmploymentStatusMutation,
   useGetEmployeeProfileImageQuery,
   useUploadProfileImageMutation,
+  useUploadCVMutation,
   useChangePasswordMutation,
   // reportting
   useGetCompaniesEmployeesReportQuery,

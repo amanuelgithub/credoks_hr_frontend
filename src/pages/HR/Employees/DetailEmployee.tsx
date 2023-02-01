@@ -19,6 +19,7 @@ import QualificationsCard from "../../../components/QualificationsCard";
 import EmergencyContactCard from "../../../components/EmergencyContactCard";
 import PersonalInfoCard from "../../../components/PersonalInfoCard";
 import FieldItem from "../../../components/FieldItem";
+import UploadCV from "../../../components/UploadCV";
 
 export default function DetailEmployee() {
   const { id: employeeId } = useParams();
@@ -156,6 +157,36 @@ export default function DetailEmployee() {
               <EditIcon sx={{ color: "#8e8e8e" }} />
             </IconButton>
           </Box>
+        </Paper>
+
+        <Paper
+          sx={{
+            p: 3,
+            position: "relative",
+            display: "flex",
+            justifyContent: "start",
+            alignItems: "center",
+            gap: 8,
+          }}
+        >
+          <UploadCV employeeId={employeeId ?? ""} />
+
+          <div>
+            {employee?.cv ? (
+              <div>
+                {employee?.cv.length > 15 ? (
+                  <div>
+                    <div>{`${employee?.cv.slice(0, 15)}...pdf`}</div>
+                    <a href="#">view</a>
+                  </div>
+                ) : (
+                  employee?.cv
+                )}
+              </div>
+            ) : (
+              "No CV"
+            )}
+          </div>
         </Paper>
 
         {/* peronal informations & Emergeny contacts */}

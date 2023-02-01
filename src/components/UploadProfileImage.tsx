@@ -59,7 +59,7 @@ function UploadProfileImage({ employeeId }: { employeeId: string }) {
       />
 
       <Button size="small" variant="contained" color="secondary" type="submit">
-        Submit
+        Upload
       </Button>
     </Box>
   );

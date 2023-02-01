@@ -1,19 +1,14 @@
-import { ThemeProvider, createTheme } from "@mui/material";
+import { ThemeProvider } from "@mui/material";
 import { BrowserRouter } from "react-router-dom";
+// import DisplayPdf from "./components/DisplayPdf";
 import Router from "./Router";
-
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: "#fbc02d",
-    },
-  },
-});
+import { theme } from "./theme/theme";
 
 function App() {
   return (
     <ThemeProvider theme={theme}>
       <BrowserRouter>
+        {/* <DisplayPdf /> */}
         <Router />
       </BrowserRouter>
     </ThemeProvider>
