@@ -20,6 +20,7 @@ import {
   useGetDepartmentsQuery,
 } from "../../../services/departmentApiSlice";
 import DataGridToolbar from "../../../components/DataGridToolbar";
+import Breadcrumbs from "../../../components/Breadcrumbs";
 
 type Row = IDepartment;
 
@@ -130,6 +131,8 @@ function Departments() {
     <div style={{ height: "100vh", width: "100%" }}>
       {/* react-toastifiy container */}
       <ToastContainer />
+
+      <Breadcrumbs />
 
       {/* delete employee dialog */}
       {idToBeDeleted && (

@@ -19,6 +19,8 @@ import QualificationsCard from "../../../components/QualificationsCard";
 import EmergencyContactCard from "../../../components/EmergencyContactCard";
 import PersonalInfoCard from "../../../components/PersonalInfoCard";
 import FieldItem from "../../../components/FieldItem";
+import Breadcrumbs from "../../../components/Breadcrumbs";
+import CV from "../../../components/CV";
 
 export default function DetailEmployee() {
   const { id: employeeId } = useParams();
@@ -72,6 +74,8 @@ export default function DetailEmployee() {
         openModal={openAddExperienceModal}
         handleCloseModal={handleCloseAddExperienceModal}
       />
+
+      <Breadcrumbs />
 
       <Box>
         <Box>
@@ -157,6 +161,12 @@ export default function DetailEmployee() {
             </IconButton>
           </Box>
         </Paper>
+
+        <CV
+          employeeId={employeeId}
+          cv={employee?.cv}
+          to={"/manager-dashboard/employees/cv"}
+        />
 
         {/* peronal informations & Emergeny contacts */}
         <Grid container spacing={2}>

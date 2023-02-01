@@ -23,6 +23,7 @@ import { useAppSelector } from "../../../app/hooks";
 import DeleteModal from "../../../components/DeleteModal/DeleteModal";
 import { errorToast, successToast } from "../../../utils/toastify";
 import DataGridToolbar from "../../../components/DataGridToolbar";
+import Breadcrumbs from "../../../components/Breadcrumbs";
 
 type Row = IDepartment;
 
@@ -139,6 +140,8 @@ function Departments() {
           handleDelete={handleDeleteDepartment}
         />
       )}
+
+      <Breadcrumbs />
 
       <Box
         display="flex"

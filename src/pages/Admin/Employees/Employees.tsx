@@ -26,6 +26,7 @@ import Typography from "@mui/material/Typography";
 import Avatar from "@mui/material/Avatar";
 import { alpha, styled } from "@mui/material/styles";
 import DataGridToolbar from "../../../components/DataGridToolbar";
+import Breadcrumbs from "../../../components/Breadcrumbs";
 
 const ODD_OPACITY = 0.2;
 
@@ -251,6 +252,8 @@ function Employees() {
           handleCloseModal={handleCloseEditEmployeeModal}
         />
       )}
+
+      <Breadcrumbs />
 
       <Box
         display="flex"

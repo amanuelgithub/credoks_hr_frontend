@@ -16,6 +16,7 @@ import {
 } from "../../../services/positionApiSlice";
 import AddPosition from "./AddPosition";
 import DataGridToolbar from "../../../components/DataGridToolbar";
+import Breadcrumbs from "../../../components/Breadcrumbs";
 
 type Row = IPosition;
 
@@ -102,6 +103,8 @@ function Positions() {
         openModal={openAddPositionModal}
         handleCloseModal={handleCloseAddPositionModal}
       />
+
+      <Breadcrumbs />
 
       <Button
         sx={{ my: 2 }}

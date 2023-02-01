@@ -19,6 +19,7 @@ import Loading from "../../../components/Loading";
 import AddCompany from "./AddCompany";
 import EditCompany from "./EditCompany";
 import Avatar from "@mui/material/Avatar";
+import Breadcrumbs from "../../../components/Breadcrumbs";
 
 type Row = ICompany;
 
@@ -157,6 +158,8 @@ function Companies() {
         handleCloseModal={handleCloseModal}
         handleDelete={handleDeleteCompany}
       /> */}
+
+      <Breadcrumbs />
 
       <Button
         variant="contained"

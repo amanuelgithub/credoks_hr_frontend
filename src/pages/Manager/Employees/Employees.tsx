@@ -29,6 +29,7 @@ import AddEmployee from "./AddEmployee";
 import { useAppSelector } from "../../../app/hooks";
 import { FormControl, MenuItem, Select } from "@mui/material";
 import DeleteModal from "../../../components/DeleteModal/DeleteModal";
+import Breadcrumbs from "../../../components/Breadcrumbs";
 
 const ODD_OPACITY = 0.2;
 
@@ -343,6 +344,8 @@ function Employees() {
           handleCloseModal={handleCloseEditEmployeeModal}
         />
       )}
+
+      <Breadcrumbs />
 
       <Box
         display="flex"

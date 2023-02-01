@@ -6,7 +6,7 @@ import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import { useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import { useGetEmployeeQuery } from "../../../services/employeeApiSlice";
 import ProfileAvatar from "../../../components/ProfileAvatar";
@@ -19,9 +19,8 @@ import QualificationsCard from "../../../components/QualificationsCard";
 import EmergencyContactCard from "../../../components/EmergencyContactCard";
 import PersonalInfoCard from "../../../components/PersonalInfoCard";
 import FieldItem from "../../../components/FieldItem";
-import UploadCV from "../../../components/UploadCV";
-import PdfViewerComponent from "../../../components/PdfViewerComponent";
 import Breadcrumbs from "../../../components/Breadcrumbs";
+import CV from "../../../components/CV";
 
 export default function DetailEmployee() {
   const { id: employeeId } = useParams();
@@ -163,43 +162,11 @@ export default function DetailEmployee() {
           </Box>
         </Paper>
 
-        <Paper
-          sx={{
-            p: 3,
-            position: "relative",
-            display: "flex",
-            justifyContent: "start",
-            alignItems: "center",
-            gap: 8,
-          }}
-        >
-          <div className="pr-4 border-r-2 border-gray-400">
-            <UploadCV employeeId={employeeId ?? ""} />
-          </div>
-
-          <div>
-            {employee?.cv ? (
-              <div className="flex justify-between items-center gap-16">
-                <div>
-                  {employee?.cv.length > 15 ? (
-                    <div>
-                      <div>{`${employee?.cv.slice(0, 15)}...pdf`}</div>
-                    </div>
-                  ) : (
-                    employee?.cv
-                  )}
-                </div>
-                <div className="bg-yellow-500 px-8 py-1 rounded-full border border-gray-300 text-white">
-                  <Link to={`/hr-dashboard/employees/cv/${employee?.cv}`}>
-                    View CV
-                  </Link>
-                </div>
-              </div>
-            ) : (
-              "No CV"
-            )}
-          </div>
-        </Paper>
+        <CV
+          employeeId={employeeId}
+          cv={employee?.cv}
+          to={"/hr-dashboard/employees/cv"}
+        />
 
         {/* peronal informations & Emergeny contacts */}
         <Grid container spacing={2}>

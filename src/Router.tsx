@@ -50,6 +50,7 @@ function Router() {
           <Route path="employees">
             <Route index element={<AdminEmployeesPage />} />
             <Route path="detail/:id" element={<AdminDetailEmployee />} />
+            <Route path="cv/:cvName" element={<PdfViewerComponent />} />
           </Route>
           <Route path="companies">
             <Route index element={<Companies />} />
@@ -104,6 +105,7 @@ function Router() {
           <Route path="employees">
             <Route index element={<ManagerEmployeesPage />} />
             <Route path="detail/:id" element={<ManagerDetailEmployee />} />
+            <Route path="cv/:cvName" element={<PdfViewerComponent />} />
           </Route>
           <Route path="departments">
             <Route index element={<ManagerDepartments />} />

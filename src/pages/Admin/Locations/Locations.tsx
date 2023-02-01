@@ -20,6 +20,7 @@ import {
 import AddLocation from "./AddLocation";
 import EditLocation from "./EditLocation";
 import DataGridToolbar from "../../../components/DataGridToolbar";
+import Breadcrumbs from "../../../components/Breadcrumbs";
 
 type Row = ILocation;
 
@@ -151,6 +152,8 @@ function Locations() {
         openModal={openAddLocationModal}
         handleCloseModal={handleCloseAddLocationModal}
       />
+
+      <Breadcrumbs />
 
       {idToBeEdited && (
         <EditLocation

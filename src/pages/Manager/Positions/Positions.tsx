@@ -18,6 +18,7 @@ import {
 } from "../../../services/positionApiSlice";
 import { errorToast, successToast } from "../../../utils/toastify";
 import AddPosition from "./AddPosition";
+import Breadcrumbs from "../../../components/Breadcrumbs";
 
 type Row = IPosition;
 
@@ -114,6 +115,8 @@ function Positions() {
       >
         + Add Position
       </Button>
+
+      <Breadcrumbs />
 
       <DataGrid
         rows={positions}
