@@ -33,7 +33,7 @@ const managersSidebarMainListItems = [
   },
   {
     to: "/manager-dashboard/change-password",
-    label: "Change Password",
+    label: "Password",
     icon: <LockIcon />,
   },
 ];
