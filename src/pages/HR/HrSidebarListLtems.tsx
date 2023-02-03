@@ -30,7 +30,7 @@ const hrsSidebarSettingsListItems = [
   },
   {
     to: "/hr-dashboard/change-password",
-    label: "Change Password",
+    label: "Password",
     icon: <LockIcon />,
   },
 ];

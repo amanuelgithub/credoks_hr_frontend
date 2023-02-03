@@ -188,7 +188,7 @@ export const AdminSidebarMainListItems = () => {
           <ListItemIcon>
             <LockIcon />
           </ListItemIcon>
-          <ListItemText secondary="Change Password" />
+          <ListItemText secondary="Password" />
         </ListItemButton>
       </Link>
     </React.Fragment>
