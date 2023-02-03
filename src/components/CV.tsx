@@ -33,7 +33,7 @@ function CV({
             <div>
               {cv.length > 15 ? (
                 <div>
-                  <div>{`${cv.slice(0, 15)}...pdf`}</div>
+                  <div>{`${cv.slice(0, 7)}...pdf`}</div>
                 </div>
               ) : (
                 cv
