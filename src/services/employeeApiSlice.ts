@@ -24,6 +24,14 @@ export const employeeApiSlice = apiSlice.injectEndpoints({
       keepUnusedDataFor: 10,
     }),
 
+    getEmployeesWithCompletedProbationOfaCompany: builder.query<any[], any>({
+      query: (companyId: string) => ({
+        url: `/employees/company/probation-completed/${companyId}`,
+      }),
+      providesTags: [{ type: "Employee", id: "LIST" }],
+      keepUnusedDataFor: 10,
+    }),
+
     getEmployee: builder.query<IEmployee, any>({
       query: (id: string | undefined) => ({ url: `/employees/${id}` }),
       providesTags: [{ type: "Employee", id: "LIST" }],
@@ -135,4 +143,5 @@ export const {
   useChangePasswordMutation,
   // reportting
   useGetCompaniesEmployeesReportQuery,
+  useGetEmployeesWithCompletedProbationOfaCompanyQuery,
 } = employeeApiSlice;

@@ -1,6 +1,5 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import PageNotFound from "./components/PageNotFound";
-import AdminDashboard from "./pages/Admin/Dashboard/AdminDashboard";
 import Companies from "./pages/Admin/Companies/Companies";
 import DetailCompany from "./pages/Admin/Companies/DetailCompany";
 import AdminEmployeesPage from "./pages/Admin/Employees/Employees";
@@ -12,7 +11,6 @@ import Login from "./pages/Login";
 import { useAppSelector } from "../src/app/hooks";
 import AdminPositions from "./pages/Admin/Positions/Positions";
 import ManagerPositions from "./pages/Manager/Positions/Positions";
-import HrDashboard from "./pages/HR/HrDashboard";
 import AdminRoutesProtector from "./components/RouteProtector/AdminRoutesProtector";
 import HrRoutesProtector from "./components/RouteProtector/HrRoutesProtector";
 import ManagerRoutesProtector from "./components/RouteProtector/ManagerRoutesProtector";
@@ -21,7 +19,6 @@ import HRDetailEmployee from "./pages/HR/Employees/DetailEmployee";
 import ManagerDetailEmployee from "./pages/Manager/Employees/DetailEmployee";
 import AdminDashboardContent from "./pages/Admin/Dashboard/AdminDashboardContent";
 import ManagerDashboardContent from "./pages/Manager/Dashboard/ManagerDashboardContent";
-import ManagerDashboard from "./pages/Manager/Dashboard/ManagerDashboard";
 import AdminDepartments from "./pages/Admin/Departments/Departments";
 import ManagerDepartments from "./pages/Manager/Departments/Departments";
 import DetailDepartment from "./pages/Admin/Departments/DetailDepartment";
@@ -31,6 +28,10 @@ import Pay from "./pages/HR/pay/Pay";
 import Payslip from "./pages/HR/pay/Payslip";
 import ChangePassword from "./components/ChangePassword";
 import PdfViewerComponent from "./components/PdfViewerComponent";
+import HrDashboard from "./components/Dashboard/HrDashboard";
+import EmployeesCompletedProbation from "./pages/HR/Employees/EmployeesCompletedProbation";
+import AdminDashboard from "./components/Dashboard/AdminDashboard";
+import ManagerDashboard from "./components/Dashboard/ManagerDashboard";
 
 function Router() {
   const token = useAppSelector((state) => state.auth.access_token);
@@ -80,6 +81,10 @@ function Router() {
             <Route index element={<HREmployeesPage />} />
             <Route path="detail/:id" element={<HRDetailEmployee />} />
             <Route path="cv/:cvName" element={<PdfViewerComponent />} />
+            <Route
+              path="probation/completed"
+              element={<EmployeesCompletedProbation />}
+            />
           </Route>
 
           <Route path="payroll">
