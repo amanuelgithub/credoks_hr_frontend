@@ -21,10 +21,7 @@ import ProfileAvatar from "../ProfileAvatar";
 import Button from "@mui/material/Button";
 import Paper from "@mui/material/Paper";
 import { useGetCompanyQuery } from "../../services/companyApiSlice";
-import {
-  AdminSidebarMainListItems,
-  AdminSidebarSecondaryListItems,
-} from "../../pages/Admin/Dashboard/AdminSidebarListItems";
+import { AdminSidebarMainListItems } from "../../pages/Admin/Dashboard/AdminSidebarListItems";
 
 const drawerWidth: number = 240;
 
@@ -76,13 +73,7 @@ const Drawer = styled(MuiDrawer, {
   },
 }));
 
-function DashboardContent({
-  dashboardName,
-  children,
-}: {
-  dashboardName: string;
-  children: any;
-}) {
+function DashboardContent({ children }: { children: any }) {
   const [appbarOpen, setAppbarOpen] = useState(true);
   const toggleDrawer = () => {
     setAppbarOpen(!appbarOpen);
@@ -137,7 +128,7 @@ function DashboardContent({
             noWrap
             sx={{ flexGrow: 1 }}
           >
-            {dashboardName}
+            Admin Dashboard
           </Typography>
           <Box>
             {/* <IconButton color="inherit" sx={{ mr: 1.5 }}>
@@ -253,9 +244,8 @@ export default function AdminDashboard() {
   const { data } = useGetCompanyQuery(companyId);
 
   return (
-    <DashboardContent dashboardName={data?.name}>
+    <DashboardContent>
       <AdminSidebarMainListItems />
-      <AdminSidebarSecondaryListItems />
     </DashboardContent>
   );
 }

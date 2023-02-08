@@ -52,8 +52,7 @@ function ProcessPayroll() {
 
   const { data: company } = useGetCompanyQuery(companyId);
 
-  const [processPayroll, { isSuccess, isError, isLoading }] =
-    useProcessPayrollMutation();
+  const [processPayroll, { isSuccess, isError }] = useProcessPayrollMutation();
 
   useEffect(() => {
     if (isSuccess) {
@@ -78,14 +77,14 @@ function ProcessPayroll() {
   };
 
   return (
-    <div className="h-screen relative">
+    <div className="h-full relative">
       <ToastContainer />
 
       <Breadcrumbs />
 
       <Box marginY={3} textAlign="center">
         <Typography variant="h5">
-          CREATE A PAYROLl FOR {company.name.toString().toUpperCase()}
+          CREATE A PAYROLL FOR {company.name.toString().toUpperCase()}
         </Typography>
       </Box>
       <div>
@@ -103,7 +102,7 @@ function ProcessPayroll() {
             }, 1000);
           }}
         >
-          {({ values, errors, touched, handleSubmit, isSubmitting }) => (
+          {({ errors, touched, handleSubmit, isSubmitting }) => (
             <Box component="form" onSubmit={handleSubmit}>
               <div className="w-full flex gap-10">
                 <FormControl
@@ -169,7 +168,7 @@ function ProcessPayroll() {
                   variant="outlined"
                   sx={{ borderRadius: 8 }}
                 >
-                  Run Payroll Processer
+                  Run Payroll Processor
                 </Button>
               </Box>
             </Box>
@@ -181,7 +180,7 @@ function ProcessPayroll() {
 
       <Box>
         <Typography variant="h5" sx={{ marginY: 3 }}>
-          ALL PROCESSESSED PAYROLLS
+          ALL PROCESSED PAYROLLS
         </Typography>
         <Payrolls />
       </Box>

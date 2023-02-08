@@ -94,7 +94,7 @@ function Employees() {
 
   useEffect(() => {
     if (data !== undefined) {
-      let fetchedEmployees = data !== undefined ? data : [];
+      const fetchedEmployees = data !== undefined ? data : [];
       setEmployees(fetchedEmployees);
     }
 
@@ -224,7 +224,7 @@ function Employees() {
   };
 
   return (
-    <div style={{ height: "100vh", width: "100%" }}>
+    <div style={{ height: "100%", width: "100%" }}>
       {/* react-toastifiy container */}
       <ToastContainer />
 

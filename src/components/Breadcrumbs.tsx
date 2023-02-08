@@ -1,10 +1,10 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import useBreadcrumbs from "use-react-router-breadcrumbs";
+import useBreadcrumbs, { BreadcrumbData } from "use-react-router-breadcrumbs";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 
 function Breadcrumbs() {
-  const breadcrumbs = useBreadcrumbs();
+  const breadcrumbs: BreadcrumbData[] = useBreadcrumbs();
 
   return (
     <div className="px-2 py-1 my-1 text-sm bg-white rounded-full">

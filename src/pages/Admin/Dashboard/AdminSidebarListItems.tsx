@@ -194,13 +194,3 @@ export const AdminSidebarMainListItems = () => {
     </React.Fragment>
   );
 };
-
-export const AdminSidebarSecondaryListItems = () => {
-  return (
-    <React.Fragment>
-      <ListSubheader component="div" inset>
-        Saved reports
-      </ListSubheader>
-    </React.Fragment>
-  );
-};

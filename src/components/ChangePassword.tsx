@@ -21,7 +21,7 @@ const initialValues: IChangePassword = {
   confirmPassword: "",
 };
 
-function ChangePassword() {
+export default function ChangePassword() {
   const [confirmPassCorrect, setConfirmPassword] = useState(false);
 
   const authEmpID = useAppSelector((state) => state.auth.sub);
@@ -146,5 +146,3 @@ function ChangePassword() {
     </>
   );
 }
-
-export default ChangePassword;

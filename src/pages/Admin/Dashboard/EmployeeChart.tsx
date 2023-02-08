@@ -73,7 +73,9 @@ function EmployeeChart() {
           <Card sx={{ width: "fit-content", mb: 2 }}>
             <CardHeader
               title={companyEmpStatusData.name}
-              subheader="employee types"
+              // subheader="employee types"
+
+              sx={{ textAlign: "center" }}
             />
             <Divider />
 

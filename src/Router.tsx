@@ -18,6 +18,7 @@ import AdminDetailEmployee from "./pages/Admin/Employees/DetailEmployee";
 import HRDetailEmployee from "./pages/HR/Employees/DetailEmployee";
 import ManagerDetailEmployee from "./pages/Manager/Employees/DetailEmployee";
 import AdminDashboardContent from "./pages/Admin/Dashboard/AdminDashboardContent";
+import { HrDashboardContent } from "./pages/HR/Dashboard/HrDashboardContent";
 import ManagerDashboardContent from "./pages/Manager/Dashboard/ManagerDashboardContent";
 import AdminDepartments from "./pages/Admin/Departments/Departments";
 import ManagerDepartments from "./pages/Manager/Departments/Departments";
@@ -77,6 +78,8 @@ function Router() {
       {/* HR Routes */}
       <Route element={<HrRoutesProtector />}>
         <Route path="hr-dashboard" element={<HrDashboard />}>
+          <Route index element={<HrDashboardContent />} />
+
           <Route path="employees">
             <Route index element={<HREmployeesPage />} />
             <Route path="detail/:id" element={<HRDetailEmployee />} />

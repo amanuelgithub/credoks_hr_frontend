@@ -22,8 +22,9 @@ import ProfileAvatar from "../ProfileAvatar";
 import Button from "@mui/material/Button";
 import Paper from "@mui/material/Paper";
 import { useGetCompanyQuery } from "../../services/companyApiSlice";
-import { HrSidebarMainListItems } from "../../pages/HR/HrSidebarListLtems";
+import { HrSidebarMainListItems } from "../../pages/HR/Dashboard/HrSidebarListLtems";
 import Badge from "@mui/material/Badge";
+import NotifProbationComplete from "../NotifProbationComplete";
 
 const drawerWidth: number = 240;
 
@@ -139,13 +140,7 @@ function DashboardContent({
             {dashboardName}
           </Typography>
           <Box>
-            <Link to="/hr-dashboard/employees/probation/completed">
-              <IconButton color="inherit" sx={{ mr: 1.5 }}>
-                <Badge badgeContent={1} color="secondary">
-                  <NotificationsIcon />
-                </Badge>
-              </IconButton>
-            </Link>
+            <NotifProbationComplete />
           </Box>
 
           <Box sx={{ position: "relative" }}>
@@ -244,6 +239,10 @@ export default function HrDashboard() {
   const companyId = useAppSelector((state) => state.auth.companyId);
 
   const { data } = useGetCompanyQuery(companyId);
+
+  useEffect(() => {
+    console.log("companyid: ", companyId);
+  }, []);
 
   return (
     <DashboardContent dashboardName={data?.name}>
