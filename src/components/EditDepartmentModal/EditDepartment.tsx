@@ -9,16 +9,14 @@ import * as yup from "yup";
 import { Field, Formik } from "formik";
 import { ToastContainer } from "react-toastify";
 import Button from "@mui/material/Button";
-import { ICompany } from "../../../models/ICompany";
+import { ICompany } from "../../models/ICompany";
 import {
   useGetDepartmentQuery,
   useUpdateDepartmentMutation,
-} from "../../../services/departmentApiSlice";
-import { useGetCompaniesQuery } from "../../../services/companyApiSlice";
-import { IDepartment } from "../../../models/IDepartment";
-import { errorToast, successToast } from "../../../utils/toastify";
-
-let initialCompanies: ICompany[] = [];
+} from "../../services/departmentApiSlice";
+import { useGetCompaniesQuery } from "../../services/companyApiSlice";
+import { IDepartment } from "../../models/IDepartment";
+import { errorToast, successToast } from "../../utils/toastify";
 
 const validationSchema = yup.object({
   name: yup.string().required(),
@@ -32,7 +30,7 @@ const style = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: 600,
-  height: "95%",
+  height: "55%",
   bgcolor: "background.paper",
   border: "2px solid #000",
   boxShadow: 24,
@@ -53,9 +51,6 @@ function EditDepartment({
   const [updateDepartment, { isSuccess, isError }] =
     useUpdateDepartmentMutation();
 
-  const [, setCompanies] = useState(initialCompanies);
-  const { data: fetchedCompanies } = useGetCompaniesQuery();
-
   const handleSubmit = async (values: IDepartment) => {
     try {
       await updateDepartment(values).unwrap();
@@ -64,17 +59,6 @@ function EditDepartment({
       console.log("Error: ", err);
     }
   };
-
-  useEffect(() => {
-    if (fetchedCompanies !== undefined) {
-      let companies = fetchedCompanies !== undefined ? fetchedCompanies : [];
-      setCompanies(companies);
-    }
-
-    return () => {
-      setCompanies(initialCompanies);
-    };
-  }, [fetchedCompanies]);
 
   useEffect(() => {
     if (isSuccess) successToast("Successfully Updated Department.");

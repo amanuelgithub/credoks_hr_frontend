@@ -15,6 +15,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import AddDepartment from "./AddDepartment";
+import EditDepartment from "../../../components/EditDepartmentModal/EditDepartment";
 import {
   useDeleteDepartmentMutation,
   useGetDepartmentsOfCompanyQuery,
@@ -36,6 +37,13 @@ function Departments() {
   const { data } = useGetDepartmentsOfCompanyQuery(companyId);
 
   const [openAddDepartmentModal, setOpenAddDepartmentModal] = useState(false);
+
+  // edit department modal state controller
+  const [idToBeEdited, setIdToBeEdited] = useState("");
+  const [openEditDepartmentModal, setOpenEditDepartmentModal] = useState(false);
+  const handleOpenEditDepartmentModal = () => setOpenEditDepartmentModal(true);
+  const handleCloseEditDepartmentModal = () =>
+    setOpenEditDepartmentModal(false);
 
   // delete confirmation dialog/modal state controller
   const [idTobeDeleted, setIdTobeDeleted] = useState("");
@@ -67,7 +75,8 @@ function Departments() {
 
   const handleEditDepartmentFieldAction = useCallback(
     (id: GridRowId) => () => {
-      // edit the department
+      setIdToBeEdited(id.toString());
+      handleOpenEditDepartmentModal();
     },
     []
   );
@@ -138,6 +147,16 @@ function Departments() {
           openModal={openDeleteModal}
           handleCloseModal={() => setOpenDeleteModal(true)}
           handleDelete={handleDeleteDepartment}
+        />
+      )}
+
+      {/* edit department modal */}
+      {idToBeEdited && (
+        <EditDepartment
+          key={idToBeEdited}
+          id={idToBeEdited}
+          openModal={openEditDepartmentModal}
+          handleCloseModal={handleCloseEditDepartmentModal}
         />
       )}
 

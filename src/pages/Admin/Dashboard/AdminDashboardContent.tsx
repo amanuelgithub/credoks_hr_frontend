@@ -1,4 +1,3 @@
-import Box from "@mui/material/Box";
 import TotalStatsCard from "../../../components/DashboardStats/TotalStatsCard";
 import PeopleIcon from "@mui/icons-material/People";
 import { useGetCompaniesTotalStatsQuery } from "../../../services/reportApiSlice";
@@ -15,7 +14,7 @@ function AdminDashboardContent() {
 
   return (
     <div style={{ height: "100%", width: "100%" }}>
-      <Box sx={{ display: "flex", gap: 2 }}>
+      <div className="flex flex-col justify-center md:flex-row md:justify-evenly gap-2">
         <TotalStatsCard
           amount={totalStats?.totalCompanies}
           text={"Companies"}
@@ -36,7 +35,7 @@ function AdminDashboardContent() {
           text={"Locations"}
           icon={<PlaceIcon />}
         />
-      </Box>
+      </div>
 
       <EmpLineChart />
 

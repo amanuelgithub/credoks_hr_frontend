@@ -8,13 +8,12 @@ import {
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import Button from "@mui/material/Button";
-import MoreIcon from "@mui/icons-material/More";
 import { ToastContainer } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { IDepartment } from "../../../models/IDepartment";
 import DeleteModal from "../../../components/DeleteModal/DeleteModal";
 import AddDepartment from "./AddDepartment";
-import EditDepartment from "./EditDepartment";
+import EditDepartment from "../../../components/EditDepartmentModal/EditDepartment";
 import {
   useDeleteDepartmentMutation,
   useGetDepartmentsQuery,
@@ -62,13 +61,6 @@ function Departments() {
     };
   }, [data]);
 
-  const handleMoreDepartmentFieldAction = React.useCallback(
-    (id: GridRowId) => () => {
-      navigate(`/admin-dashboard/departments/detail/${id}`);
-    },
-    []
-  );
-
   const handleDeleteDepartmentFieldAction = React.useCallback(
     (id: GridRowId) => () => {
       setIdToBeDeleted(id.toString());
@@ -97,11 +89,6 @@ function Departments() {
         width: 200,
         getActions: (params) => [
           <GridActionsCellItem
-            icon={<MoreIcon />}
-            label="Detail"
-            onClick={handleMoreDepartmentFieldAction(params.id)}
-          />,
-          <GridActionsCellItem
             icon={<EditIcon />}
             label="Edit"
             onClick={handleEditDepartmentFieldAction(params.id)}
@@ -114,11 +101,7 @@ function Departments() {
         ],
       },
     ],
-    [
-      handleMoreDepartmentFieldAction,
-      handleDeleteDepartmentFieldAction,
-      handleEditDepartmentFieldAction,
-    ]
+    [handleDeleteDepartmentFieldAction, handleEditDepartmentFieldAction]
   );
 
   // hander to delete an employee
