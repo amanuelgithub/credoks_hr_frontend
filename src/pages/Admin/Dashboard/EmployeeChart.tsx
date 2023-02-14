@@ -46,9 +46,9 @@ function EmployeeChart() {
 
   return (
     <>
-      <div className="flex flex-col justify-center gap-2 my-5 md:flex-row md:justify-evenly">
+      <div className="flex flex-col gap-2 sm:flex-row sm:justify-center sm:gap-2 my-5 md:flex-row md:justify-evenly">
         {companyEmpStatusArrayChartData.map((companyEmpStatusData) => (
-          <Card sx={{ width: "33%", mb: 2 }}>
+          <Card className="w-full md:w-1/2">
             <CardHeader
               title={companyEmpStatusData.name}
               // subheader="employee types"
