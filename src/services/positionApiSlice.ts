@@ -29,6 +29,15 @@ export const positionApiSlice = apiSlice.injectEndpoints({
       invalidatesTags: [{ type: "Position", id: "LIST" }],
     }),
 
+    updatePosition: builder.mutation({
+      query: (position: IPosition) => ({
+        url: `/positions/${position.id}`,
+        method: "PATCH",
+        body: position,
+      }),
+      invalidatesTags: [{ type: "Position", id: "LIST" }],
+    }),
+
     deletePosition: builder.mutation({
       query: (id: string | undefined) => ({
         url: `/positions/${id}`,
@@ -45,4 +54,5 @@ export const {
   useGetPositionQuery,
   useGetPositionsQuery,
   useGetPositionsOfCompanyQuery,
+  useUpdatePositionMutation,
 } = positionApiSlice;

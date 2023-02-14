@@ -17,6 +17,7 @@ import Typography from "@mui/material/Typography";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import UploadIcon from "@mui/icons-material/Upload";
+import Box from "@mui/material/Box";
 
 export const AdminSidebarMainListItems = () => {
   const [expanded, setExpanded] = React.useState<string | false>(false);
@@ -48,9 +49,13 @@ export const AdminSidebarMainListItems = () => {
           id="panel1bh-header"
           sx={{ borderBottom: "1px solid gray" }}
         >
-          <Typography sx={{ width: "33%", flexShrink: 0 }}>
-            Companies
-          </Typography>
+          <Box display={"flex"} gap={4}>
+            <BusinessIcon />
+
+            <Typography sx={{ width: "33%", flexShrink: 0 }}>
+              Companies
+            </Typography>
+          </Box>
         </AccordionSummary>
         <AccordionDetails sx={{ bgcolor: "f7f7f7" }}>
           {/* all companies */}
@@ -86,9 +91,13 @@ export const AdminSidebarMainListItems = () => {
           id="panel1bh-header"
           sx={{ borderBottom: "1px solid gray" }}
         >
-          <Typography sx={{ width: "33%", flexShrink: 0 }}>
-            Departments
-          </Typography>
+          <Box display={"flex"} gap={4}>
+            <GroupsIcon />
+
+            <Typography sx={{ width: "33%", flexShrink: 0 }}>
+              Departments
+            </Typography>
+          </Box>
         </AccordionSummary>
         <AccordionDetails sx={{ bgcolor: "f7f7f7" }}>
           <Link to="/admin-dashboard/departments">
@@ -113,9 +122,13 @@ export const AdminSidebarMainListItems = () => {
           id="panel1bh-header"
           sx={{ borderBottom: "1px solid gray" }}
         >
-          <Typography sx={{ width: "33%", flexShrink: 0 }}>
-            Locations
-          </Typography>
+          <Box display={"flex"} gap={4}>
+            <LocationOnIcon />
+
+            <Typography sx={{ width: "33%", flexShrink: 0 }}>
+              Locations
+            </Typography>
+          </Box>
         </AccordionSummary>
         <AccordionDetails sx={{ bgcolor: "f7f7f7" }}>
           <Link to="/admin-dashboard/locations">
@@ -140,9 +153,13 @@ export const AdminSidebarMainListItems = () => {
           id="panel1bh-header"
           sx={{ borderBottom: "1px solid gray" }}
         >
-          <Typography sx={{ width: "33%", flexShrink: 0 }}>
-            Employees
-          </Typography>
+          <Box display={"flex"} gap={4}>
+            <PeopleIcon />
+
+            <Typography sx={{ width: "33%", flexShrink: 0 }}>
+              Employees
+            </Typography>
+          </Box>
         </AccordionSummary>
         <AccordionDetails sx={{ bgcolor: "f7f7f7" }}>
           <Link to="/admin-dashboard/employees">
@@ -167,9 +184,13 @@ export const AdminSidebarMainListItems = () => {
           id="panel1bh-header"
           sx={{ borderBottom: "1px solid gray" }}
         >
-          <Typography sx={{ width: "33%", flexShrink: 0 }}>
-            Positions
-          </Typography>
+          <Box display={"flex"} gap={4}>
+            <GradingIcon />
+
+            <Typography sx={{ width: "33%", flexShrink: 0 }}>
+              Positions
+            </Typography>
+          </Box>
         </AccordionSummary>
         <AccordionDetails sx={{ bgcolor: "f7f7f7" }}>
           <Link to="/admin-dashboard/positions">

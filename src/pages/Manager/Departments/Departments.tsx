@@ -1,5 +1,4 @@
 import { useState, useEffect, useMemo, useCallback } from "react";
-import MoreIcon from "@mui/icons-material/More";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
@@ -66,13 +65,6 @@ function Departments() {
     }
   }, [departmentDeleted, errorDeletingDepart]);
 
-  const handleMoreDepartmentFieldAction = useCallback(
-    (id: GridRowId) => () => {
-      // navigate to the detail page of the department
-    },
-    []
-  );
-
   const handleEditDepartmentFieldAction = useCallback(
     (id: GridRowId) => () => {
       setIdToBeEdited(id.toString());
@@ -101,11 +93,6 @@ function Departments() {
         width: 200,
         getActions: (params) => [
           <GridActionsCellItem
-            icon={<MoreIcon />}
-            label="More"
-            onClick={handleMoreDepartmentFieldAction(params.id)}
-          />,
-          <GridActionsCellItem
             icon={<EditIcon />}
             label="Edit"
             onClick={handleEditDepartmentFieldAction(params.id)}
@@ -118,11 +105,7 @@ function Departments() {
         ],
       },
     ],
-    [
-      handleMoreDepartmentFieldAction,
-      handleEditDepartmentFieldAction,
-      handleDeleteDepartmentFieldAction,
-    ]
+    [handleEditDepartmentFieldAction, handleDeleteDepartmentFieldAction]
   );
 
   const handleDeleteDepartment = (id: string) => {

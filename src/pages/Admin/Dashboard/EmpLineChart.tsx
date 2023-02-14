@@ -1,4 +1,4 @@
-import React from "react";
+import { useState } from "react";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -10,7 +10,9 @@ import {
   Legend,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
-import { faker } from "@faker-js/faker";
+import { useGetCompaniesNewEmployeesReportQuery } from "../../../services/reportApiSlice";
+import { getCurrentYear } from "../../../utils/time";
+import Divider from "@mui/material/Divider";
 
 ChartJS.register(
   CategoryScale,
@@ -49,69 +51,73 @@ const labels = [
   "November",
   "December",
 ];
-const smapleData = [
-  {
-    companyName: "Credoks Digital",
-    year: "2023",
-    monthlyData: [
-      { month: "January", noNewEmp: 0 },
-      { month: "February", noNewEmp: 0 },
-      { month: "March", noNewEmp: 0 },
-      { month: "April", noNewEmp: 0 },
-      { month: "May", noNewEmp: 0 },
-      { month: "June", noNewEmp: 5 },
-      { month: "July", noNewEmp: 0 },
-      { month: "August", noNewEmp: 0 },
-      { month: "September", noNewEmp: 0 },
-      { month: "October", noNewEmp: 0 },
-      { month: "November", noNewEmp: 0 },
-      { month: "Decemeber", noNewEmp: 10 },
-    ],
-  },
-  {
-    companyName: "Startup Technologies",
-    year: "2023",
-    monthlyData: [
-      { month: "January", noNewEmp: 0 },
-      { month: "February", noNewEmp: 0 },
-      { month: "March", noNewEmp: 0 },
-      { month: "April", noNewEmp: 0 },
-      { month: "May", noNewEmp: 0 },
-      { month: "June", noNewEmp: 0 },
-      { month: "July", noNewEmp: 0 },
-      { month: "August", noNewEmp: 0 },
-      { month: "September", noNewEmp: 0 },
-      { month: "October", noNewEmp: 4 },
-      { month: "November", noNewEmp: 0 },
-      { month: "Decemeber", noNewEmp: 10 },
-    ],
-  },
-];
 
-export const data = {
-  labels,
-  datasets: [
-    {
-      label: smapleData[0].companyName,
-      data: labels.map(
-        (lab, index) => smapleData[0].monthlyData[index].noNewEmp
-      ),
-      borderColor: "rgb(255, 99, 132)",
-      backgroundColor: "rgba(255, 99, 132, 0.5)",
-    },
-    {
-      label: smapleData[1].companyName,
-      data: labels.map(
-        (lab, index) => smapleData[1].monthlyData[index].noNewEmp
-      ),
-      borderColor: "rgb(53, 162, 235)",
-      backgroundColor: "rgba(53, 162, 235, 0.5)",
-    },
-  ],
-};
+const currentYear = getCurrentYear();
 
 function EmpLineChart() {
-  return <Line options={options} data={data} />;
+  const [selectedYear, setSelectedYear] = useState<number>(currentYear);
+  const { data: companiesNewEmpReports } =
+    useGetCompaniesNewEmployeesReportQuery(selectedYear);
+
+  // last five years
+  const lastFiveYears = [
+    currentYear,
+    currentYear - 1,
+    currentYear - 2,
+    currentYear - 3,
+    currentYear - 4,
+  ];
+
+  const orgDatasets = [];
+  for (let report of companiesNewEmpReports ?? []) {
+    const firstColor = Math.random() * 255;
+    const secondColor = Math.random() * 255;
+    const thirdColor = Math.random() * 255;
+
+    const dataset = {
+      label: report.companyName,
+      data: labels.map((lab, index) => report.monthlyReport[index].noNewEmp),
+      borderColor: `rgb(${firstColor}, ${secondColor}, ${thirdColor})`,
+      backgroundColor: `rgba(${firstColor}, ${secondColor}, ${thirdColor}, 0.5)`,
+    };
+    orgDatasets.push(dataset);
+  }
+
+  const chartData = {
+    labels,
+    datasets: orgDatasets,
+  };
+
+  return (
+    <div className="my-12">
+      <div className="sm:flex sm:justify-start sm:items-center sm:gap-4">
+        <p className="font-bold">Select Year: </p>
+        <div className="sm:flex sm:justify-center items-center sm:gap-4 ">
+          {lastFiveYears.map((year, index) => (
+            <button
+              key={index}
+              type="button"
+              onClick={() => setSelectedYear(year)}
+              className={`border border-gray-200 bg-white px-4 py-2 rounded-full
+                         hover:bg-yellow-500 ${
+                           selectedYear === year
+                             ? "bg-yellow-500 hover:bg-yellow-500"
+                             : ""
+                         }`}
+            >
+              {year}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <Divider sx={{ my: 2 }} />
+
+      <div>
+        <Line options={options} data={chartData} />
+      </div>
+    </div>
+  );
 }
 
 export default EmpLineChart;

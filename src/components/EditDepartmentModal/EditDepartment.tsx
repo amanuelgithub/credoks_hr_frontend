@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import TextField from "@mui/material/TextField";
 import IconButton from "@mui/material/IconButton";
 import Box from "@mui/material/Box";
@@ -9,12 +9,10 @@ import * as yup from "yup";
 import { Field, Formik } from "formik";
 import { ToastContainer } from "react-toastify";
 import Button from "@mui/material/Button";
-import { ICompany } from "../../models/ICompany";
 import {
   useGetDepartmentQuery,
   useUpdateDepartmentMutation,
 } from "../../services/departmentApiSlice";
-import { useGetCompaniesQuery } from "../../services/companyApiSlice";
 import { IDepartment } from "../../models/IDepartment";
 import { errorToast, successToast } from "../../utils/toastify";
 

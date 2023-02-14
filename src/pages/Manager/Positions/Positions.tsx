@@ -7,6 +7,7 @@ import {
 } from "@mui/x-data-grid";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
 import { ToastContainer } from "react-toastify";
 import { useAppSelector } from "../../../app/hooks";
 import DataGridToolbar from "../../../components/DataGridToolbar";
@@ -19,6 +20,7 @@ import {
 import { errorToast, successToast } from "../../../utils/toastify";
 import AddPosition from "./AddPosition";
 import Breadcrumbs from "../../../components/Breadcrumbs";
+import { EditPosition } from "../../../components/EditPositionModal/EditPosition";
 
 type Row = IPosition;
 
@@ -36,8 +38,15 @@ function Positions() {
 
   const [openAddPositionModal, setOpenAddPositionModal] = useState(false);
 
+  // delete position related
   const [idToBeDeleted, setIdToBeDeleted] = useState("");
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
+
+  // edit position related
+  const [idToBeEdited, setIdToBeEdited] = useState("");
+  const [openEditPositionModal, setOpenEditPositionModal] = useState(false);
+  const handleOpenEditPositionModal = () => setOpenEditPositionModal(true);
+  const handleCloseEditPositionModal = () => setOpenEditPositionModal(false);
 
   useEffect(() => {
     setPositions(data ?? []);
@@ -60,16 +69,28 @@ function Positions() {
     []
   );
 
+  const handleEditPositionFieldAction = useCallback(
+    (id: GridRowId) => () => {
+      setIdToBeEdited(id.toString());
+      handleOpenEditPositionModal();
+    },
+    []
+  );
+
   const columns = useMemo<GridColumns<Row>>(
     () => [
       { field: "id", headerName: "ID", width: 80 },
       { field: "title", headerName: "Title", width: 150 },
-      { field: "qualification", headerName: "Qualification", width: 200 },
       {
         field: "actions",
         type: "actions",
         width: 200,
         getActions: (params) => [
+          <GridActionsCellItem
+            icon={<EditIcon />}
+            label="Edit"
+            onClick={handleEditPositionFieldAction(params.id)}
+          />,
           <GridActionsCellItem
             icon={<DeleteIcon />}
             label="Delete"
@@ -107,6 +128,14 @@ function Positions() {
         openModal={openAddPositionModal}
         handleCloseModal={() => setOpenAddPositionModal(false)}
       />
+
+      {idToBeEdited && (
+        <EditPosition
+          id={idToBeEdited}
+          isOpen={openEditPositionModal}
+          handleCloseModal={handleCloseEditPositionModal}
+        />
+      )}
 
       <Button
         sx={{ my: 2 }}
