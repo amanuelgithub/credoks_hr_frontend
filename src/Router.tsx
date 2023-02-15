@@ -33,6 +33,7 @@ import HrDashboard from "./components/Dashboard/HrDashboard";
 import EmployeesCompletedProbation from "./pages/HR/Employees/EmployeesCompletedProbation";
 import AdminDashboard from "./components/Dashboard/AdminDashboard";
 import ManagerDashboard from "./components/Dashboard/ManagerDashboard";
+import AssignDepartHead from "./pages/Manager/Departments/AssignDepartHead";
 
 function Router() {
   const token = useAppSelector((state) => state.auth.access_token);
@@ -117,6 +118,7 @@ function Router() {
           </Route>
           <Route path="departments">
             <Route index element={<ManagerDepartments />} />
+            <Route path="assign-depart-head" element={<AssignDepartHead />} />
           </Route>
           <Route path="positions">
             <Route index element={<ManagerPositions />} />

@@ -21,10 +21,7 @@ import ProfileAvatar from "../ProfileAvatar";
 import Button from "@mui/material/Button";
 import Paper from "@mui/material/Paper";
 import { useGetCompanyQuery } from "../../services/companyApiSlice";
-import {
-  ManagerSidebarMainListItems,
-  ManagerSidebarSecondaryListItems,
-} from "../../pages/Manager/Dashboard/ManagerSidebarListItems";
+import { ManagerSidebarMainListItems } from "../../pages/Manager/Dashboard/ManagerSidebarListItems";
 
 const drawerWidth: number = 240;
 
@@ -257,8 +254,6 @@ export default function ManagerDashboard() {
       <ManagerSidebarMainListItems />
 
       <Divider sx={{ my: 1 }} />
-
-      <ManagerSidebarSecondaryListItems />
     </DashboardContent>
   );
 }
