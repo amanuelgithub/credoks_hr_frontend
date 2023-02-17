@@ -55,6 +55,14 @@ export const departmentApiSlice = apiSlice.injectEndpoints({
       invalidatesTags: [{ type: "Department", id: "LIST" }],
     }),
 
+    deleteDepartmentHead: builder.mutation({
+      query: (departmentId: string | undefined) => ({
+        url: `/departments/delete-head/${departmentId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: [{ type: "Department", id: "LIST" }],
+    }),
+
     deleteDepartment: builder.mutation({
       query: (id: string | undefined) => ({
         url: `/departments/${id}`,
@@ -73,4 +81,5 @@ export const {
   useGetDepartmentsQuery,
   useGetDepartmentsOfCompanyQuery,
   useAssignDepartmentHeadMutation,
+  useDeleteDepartmentHeadMutation,
 } = departmentApiSlice;

@@ -7,6 +7,7 @@ import ProfileAvatar from "../../../components/ProfileAvatar";
 import { IEmployee } from "../../../models/IEmployee";
 import {
   useAssignDepartmentHeadMutation,
+  useDeleteDepartmentHeadMutation,
   useGetDepartmentsOfCompanyQuery,
 } from "../../../services/departmentApiSlice";
 import Box from "@mui/material/Box";
@@ -47,10 +48,33 @@ function SelectDepartment({
 }
 
 function DepartmentHeadInfo({
+  departmentId,
   departmentHead,
 }: {
+  departmentId: string;
   departmentHead: IEmployee | undefined;
 }) {
+  const [deleteDepartmentHead, { isError, isSuccess }] =
+    useDeleteDepartmentHeadMutation();
+
+  useEffect(() => {
+    if (isSuccess) {
+      successToast("Department Head Successfully deleted");
+    }
+  }, [isSuccess, isError]);
+
+  const handleDeleteDepartmentHead = async () => {
+    console.log("depart id: ", departmentId);
+    console.log("department head: ", departmentHead);
+    try {
+      if (departmentId) {
+        await deleteDepartmentHead(departmentId).unwrap();
+      }
+    } catch (err) {
+      console.log(`Error: ${err}`);
+    }
+  };
+
   return (
     <div className="bg-white p-8 my-4 sm:flex sm:justify-between sm:items-center">
       <div className="flex flex-col sm:flex-row sm:justify-start sm:items-center gap-6">
@@ -75,9 +99,12 @@ function DepartmentHeadInfo({
 
       <div>
         <Button
+          type={"submit"}
+          onClick={handleDeleteDepartmentHead}
           variant="contained"
           color="warning"
           size="medium"
+
           // sx={{ borderRadius: 8 }}
         >
           Delete
@@ -228,9 +255,7 @@ function AssignDepartHead() {
       <ToastContainer />
 
       <div>
-        <h1 className="text-2xl font-semibold text-center">
-          Assign Department Head
-        </h1>
+        <h1 className="text-2xl font-semibold text-center">Department Head</h1>
         <hr className="bg-gray-200 my-8" />
         <div>
           <SelectDepartment
@@ -241,7 +266,10 @@ function AssignDepartHead() {
 
         {/* department head info */}
         {selectedDepartmentName && departmentHead && (
-          <DepartmentHeadInfo departmentHead={departmentHead} />
+          <DepartmentHeadInfo
+            departmentId={selectedDepartment?.id ?? ""}
+            departmentHead={departmentHead}
+          />
         )}
 
         {/* assign a new Department head */}
