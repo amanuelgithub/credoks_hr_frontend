@@ -77,5 +77,6 @@ export const apiSlice = createApi({
     "Position",
     "Leave",
     "Payroll",
+    "SalaryRevision",
   ],
 });

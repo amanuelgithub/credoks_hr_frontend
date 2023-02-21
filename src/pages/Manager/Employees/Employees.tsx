@@ -1,11 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  DataGrid,
-  GridActionsCellItem,
-  GridColumns,
-  GridRowId,
-  gridClasses,
-} from "@mui/x-data-grid";
+import { GridActionsCellItem, GridColumns, GridRowId } from "@mui/x-data-grid";
 import EditIcon from "@mui/icons-material/Edit";
 import { EmploymentStatusEnum, IEmployee } from "../../../models/IEmployee";
 import {
@@ -23,48 +17,13 @@ import AddIcon from "@mui/icons-material/Add";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Avatar from "@mui/material/Avatar";
-import { alpha, styled } from "@mui/material/styles";
 import DataGridToolbar from "../../../components/DataGridToolbar";
 import AddEmployee from "./AddEmployee";
 import { useAppSelector } from "../../../app/hooks";
 import { FormControl, MenuItem, Select } from "@mui/material";
 import DeleteModal from "../../../components/DeleteModal/DeleteModal";
 import Breadcrumbs from "../../../components/Breadcrumbs";
-
-const ODD_OPACITY = 0.2;
-
-const StripedDataGrid = styled(DataGrid)(({ theme }) => ({
-  [`& .${gridClasses.row}.even`]: {
-    backgroundColor: theme.palette.grey[200],
-    "&:hover, &.Mui-hovered": {
-      backgroundColor: alpha(theme.palette.primary.main, ODD_OPACITY),
-      "@media (hover: none)": {
-        backgroundColor: "transparent",
-      },
-    },
-    "&.Mui-selected": {
-      backgroundColor: alpha(
-        theme.palette.primary.main,
-        ODD_OPACITY + theme.palette.action.selectedOpacity
-      ),
-      "&:hover, &.Mui-hovered": {
-        backgroundColor: alpha(
-          theme.palette.primary.main,
-          ODD_OPACITY +
-            theme.palette.action.selectedOpacity +
-            theme.palette.action.hoverOpacity
-        ),
-        // Reset on touch devices, it doesn't add specificity
-        "@media (hover: none)": {
-          backgroundColor: alpha(
-            theme.palette.primary.main,
-            ODD_OPACITY + theme.palette.action.selectedOpacity
-          ),
-        },
-      },
-    },
-  },
-}));
+import { StripedDataGrid } from "../../../components/StripedDataGrid";
 
 type Row = IEmployee;
 

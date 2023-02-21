@@ -1,17 +1,11 @@
 import React, { useEffect, useState } from "react";
-import {
-  DataGrid,
-  GridActionsCellItem,
-  GridColumns,
-  GridRowId,
-  gridClasses,
-} from "@mui/x-data-grid";
+import { GridActionsCellItem, GridColumns, GridRowId } from "@mui/x-data-grid";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { IEmployee } from "../../../models/IEmployee";
 import {
-  useGetEmployeesQuery,
   useDeleteEmployeeMutation,
+  useGetEmployeesQuery,
 } from "../../../services/employeeApiSlice";
 import Button from "@mui/material/Button";
 import MoreIcon from "@mui/icons-material/More";
@@ -24,44 +18,9 @@ import AddIcon from "@mui/icons-material/Add";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Avatar from "@mui/material/Avatar";
-import { alpha, styled } from "@mui/material/styles";
 import DataGridToolbar from "../../../components/DataGridToolbar";
 import Breadcrumbs from "../../../components/Breadcrumbs";
-
-const ODD_OPACITY = 0.2;
-
-const StripedDataGrid = styled(DataGrid)(({ theme }) => ({
-  [`& .${gridClasses.row}.even`]: {
-    backgroundColor: theme.palette.grey[200],
-    "&:hover, &.Mui-hovered": {
-      backgroundColor: alpha(theme.palette.primary.main, ODD_OPACITY),
-      "@media (hover: none)": {
-        backgroundColor: "transparent",
-      },
-    },
-    "&.Mui-selected": {
-      backgroundColor: alpha(
-        theme.palette.primary.main,
-        ODD_OPACITY + theme.palette.action.selectedOpacity
-      ),
-      "&:hover, &.Mui-hovered": {
-        backgroundColor: alpha(
-          theme.palette.primary.main,
-          ODD_OPACITY +
-            theme.palette.action.selectedOpacity +
-            theme.palette.action.hoverOpacity
-        ),
-        // Reset on touch devices, it doesn't add specificity
-        "@media (hover: none)": {
-          backgroundColor: alpha(
-            theme.palette.primary.main,
-            ODD_OPACITY + theme.palette.action.selectedOpacity
-          ),
-        },
-      },
-    },
-  },
-}));
+import { StripedDataGrid } from "../../../components/StripedDataGrid";
 
 type Row = IEmployee;
 

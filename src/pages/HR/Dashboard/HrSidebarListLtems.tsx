@@ -13,6 +13,8 @@ import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import Typography from "@mui/material/Typography";
 import AccordionDetails from "@mui/material/AccordionDetails";
+import HistoryIcon from "@mui/icons-material/History";
+import PaidIcon from "@mui/icons-material/Paid";
 
 const hrsSidebarMainListItems = [
   {
@@ -40,6 +42,19 @@ const hrsSidebarEmployeesListItems = [
     to: "/hr-dashboard/employees",
     label: "Employees",
     icon: <PeopleIcon />,
+  },
+];
+
+const hrSidebarSalaryRevisionsListItems = [
+  {
+    to: "/hr-dashboard/salary-revision",
+    label: "Salary Revisions",
+    icon: <HistoryIcon />,
+  },
+  {
+    to: "/hr-dashboard/salary-revision/employee",
+    label: "Employee Salary Revisions",
+    icon: <PaymentsIcon />,
   },
 ];
 
@@ -71,7 +86,6 @@ export const HrSidebarMainListItems = () => {
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel1bh-content"
           id="panel1bh-header"
-          sx={{ borderTop: "1px solid gray" }}
         >
           <Typography sx={{ width: "33%", flexShrink: 0 }} variant="body2">
             Employees
@@ -89,6 +103,32 @@ export const HrSidebarMainListItems = () => {
         </AccordionDetails>
       </Accordion>
 
+      {/* Salary-Revisions */}
+      <Accordion
+        expanded={expanded === "panel2"}
+        onChange={handleAccordionChange("panel2")}
+      >
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel1bh-content"
+          id="panel1bh-header"
+        >
+          <Typography sx={{ width: "33%", flexShrink: 0 }} variant="body2">
+            Salary Revision
+          </Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          {hrSidebarSalaryRevisionsListItems.map((item) => (
+            <Link to={item.to}>
+              <ListItemButton>
+                <ListItemIcon>{item.icon}</ListItemIcon>
+                <ListItemText sx={{ fontSize: 10 }} secondary={item.label} />
+              </ListItemButton>
+            </Link>
+          ))}
+        </AccordionDetails>
+      </Accordion>
+
       {hrsSidebarMainListItems.map((item) => (
         <Link to={item.to}>
           <ListItemButton>
@@ -100,14 +140,13 @@ export const HrSidebarMainListItems = () => {
 
       {/* Settings */}
       <Accordion
-        expanded={expanded === "panel2"}
-        onChange={handleAccordionChange("panel2")}
+        expanded={expanded === "panel3"}
+        onChange={handleAccordionChange("panel3")}
       >
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel1bh-content"
           id="panel1bh-header"
-          sx={{ borderTop: "1px solid gray" }}
         >
           <Typography sx={{ width: "33%", flexShrink: 0 }} variant="body2">
             Settings

@@ -34,6 +34,9 @@ import EmployeesCompletedProbation from "./pages/HR/Employees/EmployeesCompleted
 import AdminDashboard from "./components/Dashboard/AdminDashboard";
 import ManagerDashboard from "./components/Dashboard/ManagerDashboard";
 import AssignDepartHead from "./pages/Manager/Departments/AssignDepartHead";
+import { SalaryRevisions } from "./pages/HR/SalaryRevision/SalaryRevisions";
+import { CreateSalaryRevision } from "./pages/HR/SalaryRevision/CreateSalaryRevision/CreateSalaryRevision";
+import { EmpSalaryRevisions } from "./components/EmpSalaryRevisions";
 
 function Router() {
   const token = useAppSelector((state) => state.auth.access_token);
@@ -88,6 +91,15 @@ function Router() {
             <Route
               path="probation/completed"
               element={<EmployeesCompletedProbation />}
+            />
+          </Route>
+
+          <Route path="salary-revision">
+            <Route index element={<SalaryRevisions />} />
+            <Route path={"create"} element={<CreateSalaryRevision />} />
+            <Route
+              path=":employeeId/salary-revisions"
+              element={<EmpSalaryRevisions />}
             />
           </Route>
 
