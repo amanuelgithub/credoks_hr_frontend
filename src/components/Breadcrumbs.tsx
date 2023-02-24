@@ -13,13 +13,12 @@ function Breadcrumbs() {
         <span key={match.pathname}>
           <NavLink
             to={match.pathname}
-            className="text-yellow-800 hover:underline"
+            className="text-yellow-900 hover:underline"
           >
             <ArrowForwardIosIcon
-              sx={{ width: 14, height: 14, color: "secondary.main" }}
+              sx={{ width: 14, height: 14, color: "black" }}
             />
-
-            {breadcrumb}
+            <span className="hover:underline">{breadcrumb}</span>
           </NavLink>
         </span>
       ))}
