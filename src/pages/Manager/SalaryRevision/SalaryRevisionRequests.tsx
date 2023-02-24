@@ -13,7 +13,7 @@ import { FormControl, MenuItem, Select } from "@mui/material";
 
 const initialSalaryRevisions: any[] = [];
 
-export default function SalaryRevisions() {
+export default function SalaryRevisionRequests() {
   // const companyId = useAppSelector((state) => state.auth.companyId);
   const [salaryRevisions, setSalaryRevisions] = useState(
     initialSalaryRevisions

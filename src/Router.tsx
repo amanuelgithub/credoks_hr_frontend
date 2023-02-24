@@ -35,7 +35,7 @@ import AdminDashboard from "./components/Dashboard/AdminDashboard";
 import ManagerDashboard from "./components/Dashboard/ManagerDashboard";
 import AssignDepartHead from "./pages/Manager/Departments/AssignDepartHead";
 import HrSalaryRevisions from "./pages/HR/SalaryRevision/SalaryRevisions";
-import ManagerSalaryRevisions from "./pages/Manager/SalaryRevision/SalaryRevisions";
+import SalaryRevisionRequests from "./pages/Manager/SalaryRevision/SalaryRevisionRequests";
 import { CreateSalaryRevision } from "./pages/HR/SalaryRevision/CreateSalaryRevision/CreateSalaryRevision";
 import { EmpSalaryRevisions } from "./components/EmpSalaryRevisions";
 
@@ -138,7 +138,7 @@ function Router() {
           </Route>
 
           <Route path="salary-revisions">
-            <Route index element={<ManagerSalaryRevisions />} />
+            <Route index element={<SalaryRevisionRequests />} />
           </Route>
 
           <Route path="change-password" element={<ChangePassword />} />
