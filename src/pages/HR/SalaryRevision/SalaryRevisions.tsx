@@ -2,7 +2,10 @@ import React, { useEffect, useState } from "react";
 import { GridColumns } from "@mui/x-data-grid";
 import { StripedDataGrid } from "../../../components/StripedDataGrid";
 import DataGridToolbar from "../../../components/DataGridToolbar";
-import { useGetSalaryRevisionsQuery } from "../../../services/salaryRevisionApiSlice";
+import {
+  useGetAllSalaryRevisionsOfCompanyQuery,
+  useGetSalaryRevisionsQuery,
+} from "../../../services/salaryRevisionApiSlice";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
@@ -13,17 +16,18 @@ import {
   SalaryRevisionStatusEnum,
 } from "../../../models/ISalaryRevision";
 import SalaryRevisionCard from "../../../components/SalaryRevisionCard";
+import { useAppSelector } from "../../../app/hooks";
 
 // type Row = ISalaryRevision;
 
 const initialSalaryRevisions: any[] = [];
 
 export default function SalaryRevisions() {
-  // const companyId = useAppSelector((state) => state.auth.companyId);
+  const companyId = useAppSelector((state) => state.auth.companyId);
   const [salaryRevisions, setSalaryRevisions] = useState(
     initialSalaryRevisions
   );
-  const { data, isSuccess } = useGetSalaryRevisionsQuery();
+  const { data, isSuccess } = useGetAllSalaryRevisionsOfCompanyQuery(companyId);
 
   const [selectedSalaryRevisionId, setSelectedSalaryRevisionId] = useState();
   const [selectedSalaryRevision, setSelectedSalaryRevision] = useState<

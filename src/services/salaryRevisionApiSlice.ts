@@ -17,6 +17,23 @@ export const salaryRevisionApiSlice = apiSlice.injectEndpoints({
       providesTags: [{ type: "SalaryRevision", id: "LIST" }],
     }),
 
+    getAllSalaryRevisionsOfCompany: builder.query<ISalaryRevision[], string>({
+      query: (companyId: string) => ({
+        url: `/salary-revision/company/${companyId}`,
+      }),
+      providesTags: [{ type: "SalaryRevision", id: "LIST" }],
+    }),
+
+    getAllPendingSalaryRevisionsOfCompany: builder.query<
+      ISalaryRevision[],
+      string
+    >({
+      query: (companyId: string) => ({
+        url: `/salary-revision/company/${companyId}/pending`,
+      }),
+      providesTags: [{ type: "SalaryRevision", id: "LIST" }],
+    }),
+
     // create a salary revision
     createSalaryRevision: builder.mutation({
       query: ({
@@ -53,6 +70,8 @@ export const salaryRevisionApiSlice = apiSlice.injectEndpoints({
 
 export const {
   useGetSalaryRevisionsQuery,
+  useGetAllPendingSalaryRevisionsOfCompanyQuery,
+  useGetAllSalaryRevisionsOfCompanyQuery,
   useGetEmployeeSalaryRevisionsQuery,
   useCreateSalaryRevisionMutation,
   useApproveSalaryRevisionMutation,

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { GridColumns } from "@mui/x-data-grid";
 import { StripedDataGrid } from "../../../components/StripedDataGrid";
 import DataGridToolbar from "../../../components/DataGridToolbar";
-import { useGetSalaryRevisionsQuery } from "../../../services/salaryRevisionApiSlice";
+import { useGetAllSalaryRevisionsOfCompanyQuery } from "../../../services/salaryRevisionApiSlice";
 import Typography from "@mui/material/Typography";
 import {
   ISalaryRevision,
@@ -10,15 +10,16 @@ import {
 } from "../../../models/ISalaryRevision";
 import SalaryRevisionCard from "../../../components/SalaryRevisionCard";
 import { FormControl, MenuItem, Select } from "@mui/material";
+import { useAppSelector } from "../../../app/hooks";
 
 const initialSalaryRevisions: any[] = [];
 
 export default function SalaryRevisionRequests() {
-  // const companyId = useAppSelector((state) => state.auth.companyId);
+  const companyId = useAppSelector((state) => state.auth.companyId);
   const [salaryRevisions, setSalaryRevisions] = useState(
     initialSalaryRevisions
   );
-  const { data, isSuccess } = useGetSalaryRevisionsQuery();
+  const { data, isSuccess } = useGetAllSalaryRevisionsOfCompanyQuery(companyId);
 
   const [selectedSalaryRevisionId, setSelectedSalaryRevisionId] = useState();
   const [selectedSalaryRevision, setSelectedSalaryRevision] = useState<
