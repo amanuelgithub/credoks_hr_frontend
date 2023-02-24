@@ -21,7 +21,7 @@ export const employeeApiSlice = apiSlice.injectEndpoints({
         url: `/employees/company/${companyId}`,
       }),
       providesTags: [{ type: "Employee", id: "LIST" }],
-      keepUnusedDataFor: 10,
+      keepUnusedDataFor: 1,
     }),
 
     getEmployeesWithCompletedProbationOfaCompany: builder.query<any[], any>({

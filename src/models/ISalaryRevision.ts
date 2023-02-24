@@ -15,6 +15,6 @@ export interface ISalaryRevision {
   makerDate?: Date;
   // Date a checker approved the salary revision
   checkerDate?: Date;
-  reasonForRevision: string;
-  comments: string;
+  reasonForRevision?: string;
+  comments?: string;
 }

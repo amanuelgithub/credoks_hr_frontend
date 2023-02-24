@@ -2,7 +2,10 @@ import React, { useEffect, useState } from "react";
 import { GridColumns } from "@mui/x-data-grid";
 import { StripedDataGrid } from "../../../components/StripedDataGrid";
 import DataGridToolbar from "../../../components/DataGridToolbar";
-import { useGetAllSalaryRevisionsOfCompanyQuery } from "../../../services/salaryRevisionApiSlice";
+import {
+  useApproveSalaryRevisionMutation,
+  useGetAllPendingSalaryRevisionsOfCompanyQuery,
+} from "../../../services/salaryRevisionApiSlice";
 import Typography from "@mui/material/Typography";
 import {
   ISalaryRevision,
@@ -16,21 +19,43 @@ const initialSalaryRevisions: any[] = [];
 
 export default function SalaryRevisionRequests() {
   const companyId = useAppSelector((state) => state.auth.companyId);
+  const checkerEmployeeId = useAppSelector((state) => state.auth.sub);
+
   const [salaryRevisions, setSalaryRevisions] = useState(
     initialSalaryRevisions
   );
-  const { data, isSuccess } = useGetAllSalaryRevisionsOfCompanyQuery(companyId);
+  const { data, isSuccess: successLoadingPendingSarRev } =
+    useGetAllPendingSalaryRevisionsOfCompanyQuery(companyId);
 
+  // states used to show information on the SelectedRevisionCard
   const [selectedSalaryRevisionId, setSelectedSalaryRevisionId] = useState();
   const [selectedSalaryRevision, setSelectedSalaryRevision] = useState<
     ISalaryRevision | undefined
   >();
 
+  // states used for salary-revision status update
+  const [salaryRevIdForStatusUpdate, setSalaryRevIdForStatusUpdate] =
+    useState("");
+  const [revisionStatus, setRevisionStatus] =
+    useState<SalaryRevisionStatusEnum>(SalaryRevisionStatusEnum.PENDING);
+
+  const [
+    approveOrDeclineSalaryRevisionStatus,
+    { isLoading, isError, isSuccess },
+  ] = useApproveSalaryRevisionMutation();
+
   useEffect(() => {
-    if (isSuccess) {
+    handleUpdateSalaryRevisionStatus({
+      id: salaryRevIdForStatusUpdate,
+      body: { revisionStatus: revisionStatus },
+    });
+  }, [salaryRevIdForStatusUpdate]);
+
+  useEffect(() => {
+    if (successLoadingPendingSarRev) {
       setSalaryRevisions(data);
     }
-  }, [isSuccess]);
+  }, [successLoadingPendingSarRev]);
 
   useEffect(() => {
     if (salaryRevisions) {
@@ -46,10 +71,33 @@ export default function SalaryRevisionRequests() {
     setSelectedSalaryRevision(undefined);
   };
 
-  const handleSalaryRevisionChange = (e: any, salRevId: string) => {
+  const handleUpdateSalaryRevisionStatus = async ({
+    id,
+    body,
+  }: {
+    id: string;
+    body: { revisionStatus: SalaryRevisionStatusEnum };
+  }) => {
+    try {
+      await approveOrDeclineSalaryRevisionStatus({
+        salaryRevisionId: salaryRevIdForStatusUpdate,
+        salaryRevision: {
+          revisionStatus: revisionStatus,
+          checkerEmployeeId: checkerEmployeeId,
+        },
+      }).unwrap();
+
+      console.log("updateEmploymentStatus");
+    } catch (err: any) {
+      console.log("Error: ", err);
+    }
+  };
+
+  const handleSalaryRevisionStatusChange = (e: any, salaryRevId: string) => {
     e.preventDefault();
 
-    // TODO: UPDATE SALARY OF AN EMPLOYEE
+    setSalaryRevIdForStatusUpdate(salaryRevId);
+    setRevisionStatus(e.target.value);
   };
 
   const columns = React.useMemo<GridColumns<any>>(
@@ -68,25 +116,12 @@ export default function SalaryRevisionRequests() {
         renderCell: (params) => {
           return (
             <>
-              {/*<p*/}
-              {/*  className={`${*/}
-              {/*    params.row.revisionStatus === SalaryRevisionStatusEnum.PENDING*/}
-              {/*      ? "bg-blue-500"*/}
-              {/*      : params.row.revisionStatus ===*/}
-              {/*        SalaryRevisionStatusEnum.APPROVED*/}
-              {/*      ? "bg-green-500"*/}
-              {/*      : "bg-red-500"*/}
-              {/*  } px-2 text-xs text-white rounded-full border border-gray-700`}*/}
-              {/*>*/}
-              {/*  {params.row.revisionStatus}*/}
-              {/*</p>*/}
-
               <FormControl fullWidth margin="normal" size="small">
                 <Select
                   defaultValue={params.row?.revisionStatus}
                   name="revisionStatus"
                   type="select"
-                  label="Revistion Status"
+                  label="Revision Status"
                   sx={{
                     // bgcolor: `primary.main`,
                     // color: "white",
@@ -104,7 +139,7 @@ export default function SalaryRevisionRequests() {
                   }`}
                   value={undefined}
                   onChange={(e: any) =>
-                    handleSalaryRevisionChange(e, params.row.id ?? "")
+                    handleSalaryRevisionStatusChange(e, params.row.id ?? "")
                   }
                 >
                   <MenuItem value={SalaryRevisionStatusEnum.PENDING}>
