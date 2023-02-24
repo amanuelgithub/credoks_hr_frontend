@@ -12,13 +12,13 @@ import {
   ISalaryRevision,
   SalaryRevisionStatusEnum,
 } from "../../../models/ISalaryRevision";
-import SalaryRevisionCard from "./SalaryRevisionCard";
+import SalaryRevisionCard from "../../../components/SalaryRevisionCard";
 
 // type Row = ISalaryRevision;
 
 const initialSalaryRevisions: any[] = [];
 
-export const SalaryRevisions = () => {
+export default function SalaryRevisions() {
   // const companyId = useAppSelector((state) => state.auth.companyId);
   const [salaryRevisions, setSalaryRevisions] = useState(
     initialSalaryRevisions
@@ -143,4 +143,4 @@ export const SalaryRevisions = () => {
       </div>
     </div>
   );
-};
+}

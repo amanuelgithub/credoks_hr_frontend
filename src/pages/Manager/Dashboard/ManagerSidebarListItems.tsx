@@ -34,6 +34,11 @@ const managersSidebarMainListItems = [
     icon: <AssignmentIndIcon />,
   },
   {
+    to: "/manager-dashboard/salary-revisions",
+    label: "Salary Revisions",
+    icon: <LockIcon />,
+  },
+  {
     to: "/manager-dashboard/change-password",
     label: "Password",
     icon: <LockIcon />,
@@ -68,7 +73,6 @@ export const ManagerSidebarMainListItems = () => {
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel1bh-content"
           id="panel1bh-header"
-          sx={{ borderBottom: "1px solid gray" }}
         >
           <Box display={"flex"} gap={4}>
             <GroupsIcon />

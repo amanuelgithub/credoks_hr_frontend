@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
-import { ISalaryRevision } from "../../../models/ISalaryRevision";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
-import { useGetEmployeeQuery } from "../../../services/employeeApiSlice";
 import { Divider } from "@mui/material";
+import { useGetEmployeeQuery } from "../services/employeeApiSlice";
+import { ISalaryRevision } from "../models/ISalaryRevision";
 
 type Props = {
   salaryRevision: ISalaryRevision | undefined;

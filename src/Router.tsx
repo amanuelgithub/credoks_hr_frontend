@@ -34,7 +34,8 @@ import EmployeesCompletedProbation from "./pages/HR/Employees/EmployeesCompleted
 import AdminDashboard from "./components/Dashboard/AdminDashboard";
 import ManagerDashboard from "./components/Dashboard/ManagerDashboard";
 import AssignDepartHead from "./pages/Manager/Departments/AssignDepartHead";
-import { SalaryRevisions } from "./pages/HR/SalaryRevision/SalaryRevisions";
+import HrSalaryRevisions from "./pages/HR/SalaryRevision/SalaryRevisions";
+import ManagerSalaryRevisions from "./pages/Manager/SalaryRevision/SalaryRevisions";
 import { CreateSalaryRevision } from "./pages/HR/SalaryRevision/CreateSalaryRevision/CreateSalaryRevision";
 import { EmpSalaryRevisions } from "./components/EmpSalaryRevisions";
 
@@ -95,7 +96,7 @@ function Router() {
           </Route>
 
           <Route path="salary-revision">
-            <Route index element={<SalaryRevisions />} />
+            <Route index element={<HrSalaryRevisions />} />
             <Route path={"create"} element={<CreateSalaryRevision />} />
             <Route
               path=":employeeId/salary-revisions"
@@ -134,6 +135,10 @@ function Router() {
           </Route>
           <Route path="positions">
             <Route index element={<ManagerPositions />} />
+          </Route>
+
+          <Route path="salary-revisions">
+            <Route index element={<ManagerSalaryRevisions />} />
           </Route>
 
           <Route path="change-password" element={<ChangePassword />} />
